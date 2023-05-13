@@ -1,34 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MakeUC Website
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+The primary tools in this project are:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [TypeScript](https://www.typescriptlang.org/)
+- [NextJS](https://nextjs.org/)
+  - NextJS 13+ is being used with the **app directory**. This is a brand-new and stable feature that differs from normal React applications. Please be familiar with the **app directory** before making contributions.
+  - To learn more about Next.js, take a look at the following resources:
+    - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+    - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Tailwind CSS](https://tailwindcss.com/)
+- [PostCSS](https://postcss.org/)
+  - Plugins in use:
+    - [PostCSS Import](https://github.com/postcss/postcss-import#readme)
+    - [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env#readme)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Current Standards
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Every application file should use TypeScript instead of JavaScript.
+2. At this time, no component library is being used. This is due to the very new **app directory** feature in NextJS. At this current time, every major component library does not have proper support for Server Components.
+3. Server Components are preferred to Client Components. This allows the majority of the site to be rendered on the server side. Additionally, a "tree" based approach should be used with components, and as such, the Client Components should be the leaf nodes.
+4. [Yarn](https://yarnpkg.com/) is the package manager of choice. 
+5. For styling, the following ways are in order of their preference. [Here are the definitions](https://nextjs.org/docs/app/building-your-application/styling).
+    - Tailwind CSS
+    - CSS Modules
+    - Global CSS
+    - CSS-in-JS (other methods preferred instead)
+6. Use the linting tools and their rules to ensure uniformity. Below is a list of configured linting tools.
+    - ESLint
+    - Stylelint
