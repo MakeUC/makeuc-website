@@ -12,6 +12,10 @@ jobs:
   lint-and-build:
     docker:
       - image: cimg/node:18.16.0
+        environment:
+          POSTGRES_PRISMA_URL: postgresql://postgres@localhost/circle_test
+          POSTGRES_URL_NON_POOLING: postgresql://postgres@localhost/circle_test
+      - image: cimg/postgres:13.2
     steps:
       # Checkout the code as the first step.
       - checkout
@@ -22,6 +26,11 @@ jobs:
       - run:
           name: Lint
           command: yarn lint
+      - run:
+          name: Perform Test Database Deployment
+          command: |
+            yarn prisma:generate
+            yarn prisma:deploy
       - run:
           name: Build
           command: yarn build
