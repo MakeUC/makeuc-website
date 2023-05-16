@@ -15,7 +15,7 @@ jobs:
         environment:
           POSTGRES_PRISMA_URL: postgresql://postgres@localhost/circle_test
           POSTGRES_URL_NON_POOLING: postgresql://postgres@localhost/circle_test
-      - image: cimg/postgres:13.2
+      - image: cimg/postgres:15.3
     steps:
       # Checkout the code as the first step.
       - checkout
