@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 
+import { LayoutHeader } from "~/components/general/layout-header";
 import { Config } from "~/constants/config";
 
 import type { ReactNode } from "react";
@@ -24,7 +25,10 @@ export interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <LayoutHeader />
+        {children}
+      </body>
     </html>
   );
 }
