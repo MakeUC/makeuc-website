@@ -1,6 +1,7 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
+import { LayoutFooter } from "~/components/general/layout-footer";
 import { LayoutHeader } from "~/components/general/layout-header";
 import { Config } from "~/constants/config";
 
@@ -8,7 +9,7 @@ import type { ReactNode } from "react";
 
 
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: {
@@ -25,9 +26,12 @@ export interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} dark`}>
         <LayoutHeader />
-        {children}
+        <div className="flex flex-col">
+          {children}
+        </div>
+        <LayoutFooter />
       </body>
     </html>
   );

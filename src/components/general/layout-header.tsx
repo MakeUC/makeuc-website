@@ -6,7 +6,7 @@ export function LayoutHeader() {
     <div className="flex items-center justify-between gap-4 p-4 bg-primary">
       {/* Left Side */}
       <div className="text-background">
-        <h1 className="text-xl">MakeUC</h1>
+        <h1 className="text-xl text-primary-foreground">MakeUC</h1>
       </div>
 
       {/* Right Side */}
