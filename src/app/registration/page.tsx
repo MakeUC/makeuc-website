@@ -5,9 +5,12 @@ import { PageTitle } from "~/components/general/typography";
 import { Button } from "~/components/ui/button";
 import { FormGroup, FormSection } from "~/components/ui/form";
 import { Checkbox } from "~/components/ui/inputs/checkbox";
+import { Combobox } from "~/components/ui/inputs/combobox";
 import { FileUpload } from "~/components/ui/inputs/file-upload";
 import { Input } from "~/components/ui/inputs/input";
+import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
+import { COUNTRY_OPTIONS, DEGREE_OPTIONS } from "~/constants/select-options";
 
 
 const MLH_CODE_OF_CONDUCT = (
@@ -52,13 +55,13 @@ export default function RegistrationPage() {
             </FormGroup>
             <Input label="Ethnicity" name="ethnicity" placeholder="Enter Ethnicity" required />
           </FormSection>
-          <FormSection name="Education" description="Your current academic studies help us prepare resources for you to use.">
+          <FormSection name="Education" description="Based on your current academic institution and what degree you are working towards.">
             <Input label="School" name="school" placeholder="Enter School" required />
             <FormGroup>
               <Input label="Major(s)" name="major" placeholder="Enter Degree" required />
-              <Input label="Degree" name="degree" placeholder="Enter Degree" required />
+              <Select label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} required />
             </FormGroup>
-            <Input label="Country" name="country" placeholder="Enter Country" required />
+            <Combobox label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />
             <Input label="Expected Graduation Year" name="graduationYear" placeholder="Enter Expected Graduation Year" required />
           </FormSection>
           <FormSection name="Additional Details" description="All of these fields are optional and you can fill in as much or as little detail as you would like.">
