@@ -6,5 +6,9 @@
   },
   "files.associations": {
     "*.css": "postcss"
-  }
+  },
+  "eslint.workingDirectories": [
+    "./client",
+    "./server"
+  ],
 }

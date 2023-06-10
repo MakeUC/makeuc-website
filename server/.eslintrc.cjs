@@ -1,12 +1,11 @@
 module.exports = {
-  extends: ["next/core-web-vitals"],
+  extends: ["eslint:recommended"],
   plugins: ["@typescript-eslint", "import"],
   rules: {
     // Built-in Fixable Rules
     "arrow-parens": ["warn", "as-needed"],
     "comma-dangle": ["warn", "always-multiline"],
     "linebreak-style": ["warn", "unix"],
-    "jsx-quotes": ["warn", "prefer-double"],
     "no-console": "warn",
     "no-multi-spaces": ["off"],
     "object-curly-spacing": ["warn", "always", { objectsInObjects: true, arraysInObjects: true }],
@@ -73,16 +72,15 @@ module.exports = {
     "@typescript-eslint/prefer-as-const": "warn",
     "@typescript-eslint/prefer-namespace-keyword": "warn",
     "@typescript-eslint/triple-slash-reference": "warn",
-
-    // React Rules
-    "react/function-component-definition": ["warn", { namedComponents: "function-declaration", unnamedComponents: "arrow-function" }],
-    "react/jsx-closing-bracket-location": "warn",
-    "react/jsx-key": "error",
+  },
+  env: {
+    node: true,
+    commonjs: true,
   },
   parserOptions: {
+    parser: "@typescript-eslint/parser",
     project: "./tsconfig.json",
-    ecmaVersion: 12,
-    sourceType: "module",
+    tsconfigRootDir: __dirname,
   },
   overrides: [
     {
@@ -127,9 +125,10 @@ module.exports = {
       },
     },
   ],
+  parser: "@typescript-eslint/parser",
   settings: {
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"],
+      "@typescript-eslint/parser": [".ts"],
     },
     "import/resolver": {
       typescript: {

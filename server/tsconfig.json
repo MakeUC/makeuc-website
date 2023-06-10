@@ -5,6 +5,15 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": [
+    "./.eslintrc.cjs",
+    "src/**/*.ts",
+    "keystone.ts",
+    "node_modules/.keystone/types.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,17 +1,31 @@
 {
   "name": "keystone-app",
   "version": "1.0.2",
-  "private": true,
+  "license": "MIT",
+  "main": "src/keystone.ts",
   "scripts": {
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
-    "postinstall": "keystone build --no-ui --frozen"
+    "lint": "eslint --max-warnings 0",
+    "postinstall": "keystone build --no-ui --frozen",
+    "download-data": "run-p download-data:universities",
+    "download-data:universities": "curl -o data/universities.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json'"
   },
   "dependencies": {
     "@keystone-6/auth": "^7.0.0",
     "@keystone-6/core": "^5.0.0",
     "@keystone-6/fields-document": "^7.0.0",
+    "lodash": "^4.17.21",
+    "npm-run-all": "^4.1.5",
     "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
+    "eslint": "8.40.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "lint-staged": "^13.2.2"
   }
 }

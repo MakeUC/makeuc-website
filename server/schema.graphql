@@ -6,8 +6,6 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
 }
 
@@ -29,7 +27,6 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -55,7 +52,13 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NestedStringFilter {
@@ -70,12 +73,6 @@ input NestedStringFilter {
   startsWith: String
   endsWith: String
   not: NestedStringFilter
-}
-
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
 }
 
 input DateTimeNullableFilter {
@@ -105,15 +102,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
-}
-
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -125,133 +114,232 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForCreateInput
   createdAt: DateTime
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-type Post {
+type Registrant {
   id: ID!
-  title: String
-  content: Post_content_Document
-  author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  firstName: String
+  lastName: String
+  email: String
+  age: Int
+  ethnicity: String
+  school: School
+  major: String
+  degree: String
+  country: String
+  expectedGraduationYear: Int
+  resumeUrl: String
+  hackathonsAttended: Int
+  notes: String
+  mlhCodeOfConductAgreement: Boolean
+  mlhPrivacyPolicyAgreement: Boolean
+  mlhEmailAgreement: Boolean
+  registrationYear: Int
+  createdAt: DateTime
+  emailRegistrationYearCompoundKey: String
 }
 
-type Post_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
-}
-
-input PostWhereUniqueInput {
+input RegistrantWhereUniqueInput {
   id: ID
+  emailRegistrationYearCompoundKey: String
 }
 
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+input RegistrantWhereInput {
+  AND: [RegistrantWhereInput!]
+  OR: [RegistrantWhereInput!]
+  NOT: [RegistrantWhereInput!]
   id: IDFilter
-  title: StringFilter
-  author: UserWhereInput
-  tags: TagManyRelationFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  email: StringFilter
+  age: IntFilter
+  ethnicity: StringFilter
+  school: SchoolWhereInput
+  major: StringFilter
+  degree: StringFilter
+  country: StringFilter
+  expectedGraduationYear: IntFilter
+  resumeUrl: StringFilter
+  hackathonsAttended: IntNullableFilter
+  notes: StringFilter
+  mlhCodeOfConductAgreement: BooleanFilter
+  mlhPrivacyPolicyAgreement: BooleanFilter
+  mlhEmailAgreement: BooleanFilter
+  registrationYear: IntNullableFilter
+  createdAt: DateTimeNullableFilter
+  emailRegistrationYearCompoundKey: StringFilter
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
 }
 
-input PostOrderByInput {
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input RegistrantOrderByInput {
   id: OrderDirection
-  title: OrderDirection
+  firstName: OrderDirection
+  lastName: OrderDirection
+  email: OrderDirection
+  age: OrderDirection
+  ethnicity: OrderDirection
+  major: OrderDirection
+  degree: OrderDirection
+  country: OrderDirection
+  expectedGraduationYear: OrderDirection
+  resumeUrl: OrderDirection
+  hackathonsAttended: OrderDirection
+  notes: OrderDirection
+  mlhCodeOfConductAgreement: OrderDirection
+  mlhPrivacyPolicyAgreement: OrderDirection
+  mlhEmailAgreement: OrderDirection
+  registrationYear: OrderDirection
+  createdAt: OrderDirection
+  emailRegistrationYearCompoundKey: OrderDirection
 }
 
-input PostUpdateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+input RegistrantUpdateInput {
+  firstName: String
+  lastName: String
+  email: String
+  age: Int
+  ethnicity: String
+  school: SchoolRelateToOneForUpdateInput
+  major: String
+  degree: String
+  country: String
+  expectedGraduationYear: Int
+  resumeUrl: String
+  hackathonsAttended: Int
+  notes: String
+  mlhCodeOfConductAgreement: Boolean
+  mlhPrivacyPolicyAgreement: Boolean
+  mlhEmailAgreement: Boolean
+  createdAt: DateTime
 }
 
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
+input SchoolRelateToOneForUpdateInput {
+  create: SchoolCreateInput
+  connect: SchoolWhereUniqueInput
   disconnect: Boolean
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input RegistrantUpdateArgs {
+  where: RegistrantWhereUniqueInput!
+  data: RegistrantUpdateInput!
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
+input RegistrantCreateInput {
+  firstName: String
+  lastName: String
+  email: String
+  age: Int
+  ethnicity: String
+  school: SchoolRelateToOneForCreateInput
+  major: String
+  degree: String
+  country: String
+  expectedGraduationYear: Int
+  resumeUrl: String
+  hackathonsAttended: Int
+  notes: String
+  mlhCodeOfConductAgreement: Boolean
+  mlhPrivacyPolicyAgreement: Boolean
+  mlhEmailAgreement: Boolean
+  createdAt: DateTime
 }
 
-input PostCreateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+input SchoolRelateToOneForCreateInput {
+  create: SchoolCreateInput
+  connect: SchoolWhereUniqueInput
 }
 
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
-}
-
-type Tag {
+type School {
   id: ID!
   name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  city: String
+  state: String
+  county: String
+  country: String
+  alias: String
+  createdAt: DateTime
 }
 
-input TagWhereUniqueInput {
+input SchoolWhereUniqueInput {
   id: ID
+  name: String
 }
 
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
+input SchoolWhereInput {
+  AND: [SchoolWhereInput!]
+  OR: [SchoolWhereInput!]
+  NOT: [SchoolWhereInput!]
   id: IDFilter
   name: StringFilter
-  posts: PostManyRelationFilter
+  city: StringFilter
+  state: StringFilter
+  county: StringFilter
+  country: StringFilter
+  alias: StringFilter
+  createdAt: DateTimeNullableFilter
 }
 
-input TagOrderByInput {
+input SchoolOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  city: OrderDirection
+  state: OrderDirection
+  county: OrderDirection
+  country: OrderDirection
+  alias: OrderDirection
+  createdAt: OrderDirection
 }
 
-input TagUpdateInput {
+input SchoolUpdateInput {
   name: String
-  posts: PostRelateToManyForUpdateInput
+  city: String
+  state: String
+  county: String
+  country: String
+  alias: String
+  createdAt: DateTime
 }
 
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
+input SchoolUpdateArgs {
+  where: SchoolWhereUniqueInput!
+  data: SchoolUpdateInput!
 }
 
-input TagCreateInput {
+input SchoolCreateInput {
   name: String
-  posts: PostRelateToManyForCreateInput
+  city: String
+  state: String
+  county: String
+  country: String
+  alias: String
+  createdAt: DateTime
 }
 
 """
@@ -266,18 +354,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createRegistrant(data: RegistrantCreateInput!): Registrant
+  createRegistrants(data: [RegistrantCreateInput!]!): [Registrant]
+  updateRegistrant(where: RegistrantWhereUniqueInput!, data: RegistrantUpdateInput!): Registrant
+  updateRegistrants(data: [RegistrantUpdateArgs!]!): [Registrant]
+  deleteRegistrant(where: RegistrantWhereUniqueInput!): Registrant
+  deleteRegistrants(where: [RegistrantWhereUniqueInput!]!): [Registrant]
+  createSchool(data: SchoolCreateInput!): School
+  createSchools(data: [SchoolCreateInput!]!): [School]
+  updateSchool(where: SchoolWhereUniqueInput!, data: SchoolUpdateInput!): School
+  updateSchools(data: [SchoolUpdateArgs!]!): [School]
+  deleteSchool(where: SchoolWhereUniqueInput!): School
+  deleteSchools(where: [SchoolWhereUniqueInput!]!): [School]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -301,15 +389,15 @@ input CreateInitialUserInput {
 }
 
 type Query {
-  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
+  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  post(where: PostWhereUniqueInput!): Post
-  postsCount(where: PostWhereInput! = {}): Int
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tag(where: TagWhereUniqueInput!): Tag
-  tagsCount(where: TagWhereInput! = {}): Int
+  registrants(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
+  registrant(where: RegistrantWhereUniqueInput!): Registrant
+  registrantsCount(where: RegistrantWhereInput! = {}): Int
+  schools(where: SchoolWhereInput! = {}, orderBy: [SchoolOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: SchoolWhereUniqueInput): [School!]
+  school(where: SchoolWhereUniqueInput!): School
+  schoolsCount(where: SchoolWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
@@ -400,11 +488,6 @@ enum KeystoneAdminUIFieldMetaItemViewFieldMode {
 enum KeystoneAdminUIFieldMetaItemViewFieldPosition {
   form
   sidebar
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 type KeystoneAdminUIFieldGroupMeta {
