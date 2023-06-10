@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { schools } from "./school";
+import { getSchoolData } from "./school";
 
 
 export const prisma = new PrismaClient({
@@ -15,9 +15,8 @@ export const prisma = new PrismaClient({
 export type PrismaInstance = typeof prisma;
 
 async function seedData() {
-  await prisma.school.deleteMany();
   if (await prisma.school.count() === 0) {
-    await prisma.school.createMany({ data: schools });
+    await prisma.school.createMany({ data: await getSchoolData() });
   }
 }
 
