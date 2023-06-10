@@ -4,7 +4,7 @@ import { OrganizerCarousel } from "~/features/organizer-display/components/Organ
 
 export const revalidate = Config.RevalidationFrequency;
 
-export default async function Home() {
+export default async function HomePage() {
   return (
     <main>
       Hello World!

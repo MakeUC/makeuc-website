@@ -15,36 +15,38 @@ module.exports = {
       },
     },
     colors: {
-      border: "var(--border)",
-      input: "var(--input)",
-      ring: "var(--ring)",
-      background: "var(--background)",
-      foreground: "var(--foreground)",
-      primary: {
+      "border": "var(--border)",
+      "input": "var(--input)",
+      "ring": "var(--ring)",
+      "background": "var(--background)",
+      "foreground": "var(--foreground)",
+      "background-inset": "var(--background-inset-color)",
+      "foreground-inset": "var(--foreground-inset-color)",
+      "primary": {
         DEFAULT: "var(--primary)",
         foreground: "var(--primary-foreground)",
       },
-      secondary: {
+      "secondary": {
         DEFAULT: "var(--secondary)",
         foreground: "var(--secondary-foreground)",
       },
-      destructive: {
+      "destructive": {
         DEFAULT: "var(--destructive)",
         foreground: "var(--destructive-foreground)",
       },
-      muted: {
+      "muted": {
         DEFAULT: "var(--muted)",
         foreground: "var(--muted-foreground)",
       },
-      accent: {
+      "accent": {
         DEFAULT: "var(--accent)",
         foreground: "var(--accent-foreground)",
       },
-      popover: {
+      "popover": {
         DEFAULT: "var(--popover)",
         foreground: "var(--popover-foreground)",
       },
-      card: {
+      "card": {
         DEFAULT: "var(--card)",
         foreground: "var(--card-foreground)",
       },
