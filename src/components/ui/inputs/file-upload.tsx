@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
 import { Label } from "./label";
@@ -42,10 +43,10 @@ export function FileUpload({ className, label, placeholder, ...props }: FileUplo
         className,
       )}
       >
-        <div className="px-3 py-2 rounded-l-md bg-primary">
+        <Button className="rounded-none rounded-l-md">
           Browse
-        </div>
-        <div className={cn("flex items-center px-3 py-2 background-inset rounded-r-md w-full text-foreground", !fileNames ? "text-foreground-inset" : undefined)}>
+        </Button>
+        <div className={cn("flex items-center px-3 py-2 push-in rounded-r-md w-full text-foreground", !fileNames ? "text-foreground-inset" : undefined)}>
           {fileNames ?? placeholder}
         </div>
         <input className="absolute w-full h-full top-0 left-0 flex-1 opacity-0 z-10 cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed" type="file" {...props} onChange={onChange} />

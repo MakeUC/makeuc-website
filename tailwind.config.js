@@ -20,6 +20,7 @@ module.exports = {
       "ring": "var(--ring)",
       "background": "var(--background)",
       "foreground": "var(--foreground)",
+      "background-inset": "var(--background-inset-color)",
       "foreground-inset": "var(--foreground-inset-color)",
       "primary": {
         DEFAULT: "var(--primary)",

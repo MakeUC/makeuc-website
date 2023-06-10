@@ -3,10 +3,10 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 
 export function LayoutHeader() {
   return (
-    <div className="flex items-center justify-between gap-4 p-4 bg-primary">
+    <div className="flex items-center justify-between gap-4 p-4 push-in">
       {/* Left Side */}
       <div className="text-background">
-        <h1 className="text-xl text-primary-foreground">MakeUC</h1>
+        <h1 className="text-xl text-foreground">MakeUC</h1>
       </div>
 
       {/* Right Side */}
