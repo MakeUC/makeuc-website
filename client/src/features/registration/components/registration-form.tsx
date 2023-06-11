@@ -10,10 +10,9 @@ import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
 
 import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constants/mlh-copy";
-import { COUNTRY_OPTIONS, DEGREE_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
+import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
 
 import { SchoolCombobox } from "./school-selector";
-
 
 
 export function RegistrationForm() {
@@ -29,12 +28,12 @@ export function RegistrationForm() {
           <Input label="Age" name="age" placeholder="Enter Age" required />
           <Select label="Gender" name="gender" placeholder="Enter Gender" options={GENDER_OPTIONS} required />
         </FormGroup>
-        <Input label="Ethnicity" name="ethnicity" placeholder="Enter Ethnicity" required />
+        <Select label="Ethnicity" name="ethnicity" placeholder="Enter Ethnicity" options={ETHNICITY_OPTIONS} required />
       </FormSection>
       <FormSection name="Education" description="Based on your current academic institution and what degree you are working towards.">
         <SchoolCombobox />
         <FormGroup>
-          <Input label="Major(s)" name="major" placeholder="Enter Degree" required />
+          <Input label="Major(s)" name="major" placeholder="Enter Major" required />
           <Select label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} required />
         </FormGroup>
         <Combobox label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />

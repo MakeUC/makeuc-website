@@ -5,6 +5,12 @@ export const GENDER_OPTIONS = makeSelectOptions(
   "Male", "Female", "Other", "Prefer not to answer",
 );
 
+export const ETHNICITY_OPTIONS = makeSelectOptions(
+  "American Indian or Alaska Native", "Asian", "Black or African American",
+  "Hispanic or Latino", "Native Hawaiian or Other Pacific Islander", "White",
+  "Other", "Prefer not to answer",
+);
+
 export const DEGREE_OPTIONS = makeSelectOptions(
   "High School",
   "Associate's",
