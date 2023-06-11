@@ -67,7 +67,11 @@ module.exports = {
     "@typescript-eslint/no-this-alias": "warn",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      argsIgnorePattern: "^_",
+      varsIgnorePattern: "^_",
+      caughtErrorsIgnorePattern: "^_",
+    }],
     "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/prefer-as-const": "warn",
     "@typescript-eslint/prefer-namespace-keyword": "warn",
@@ -93,7 +97,11 @@ module.exports = {
         "no-empty-function": "warn",
         "no-extra-semi": "warn",
         "no-loss-of-precision": "warn",
-        "no-unused-vars": "warn",
+        "no-unused-vars": ["warn", {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        }],
 
         // Disable typescript rules
         "@typescript-eslint/adjacent-overload-signatures": "off",

@@ -113,6 +113,10 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     lastName: (0, import_fields2.text)({ validation: { isRequired: true } }),
     email: (0, import_fields2.text)({ isIndexed: true, validation: { isRequired: true } }),
     age: (0, import_fields2.integer)({ validation: { isRequired: true } }),
+    gender: (0, import_fields2.select)({
+      options: ["Male", "Female", "Other", "Prefer not to answer"],
+      validation: { isRequired: true }
+    }),
     ethnicity: (0, import_fields2.select)({
       options: [
         "Asian",
@@ -129,7 +133,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     school: (0, import_fields2.relationship)({ ref: "School", many: false }),
     major: (0, import_fields2.text)({ validation: { isRequired: true } }),
     degree: (0, import_fields2.select)({
-      options: ["High School", "Associate's", "Bachelor's", "Master's", "Doctorate"],
+      options: ["High School", "Associate's", "Bachelor's", "Master's", "Doctorate", "Other"],
       validation: { isRequired: true }
     }),
     country: (0, import_fields2.text)({ validation: { isRequired: true } }),
@@ -226,7 +230,13 @@ var keystone_default = withAuth(
     session,
     telemetry: false,
     server: {
-      port: parseInt(process.env.PORT ?? "8000")
+      port: parseInt(process.env.PORT ?? "8000"),
+      cors: {
+        origin: "*",
+        allowedHeaders: "*",
+        credentials: true,
+        methods: "*"
+      }
     }
   })
 );

@@ -1,0 +1,6 @@
+query GetSchools($where: SchoolWhereInput!, $orderBy: [SchoolOrderByInput!]!, $skip: Int!, $take: Int!) {
+  schools(where: $where, orderBy: $orderBy, skip: $skip, take: $take) {
+    id
+    name
+  }
+}

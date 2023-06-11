@@ -19,6 +19,10 @@ export const Registrant = list(addCompoundKey({
     lastName: text({ validation: { isRequired: true } }),
     email: text({ isIndexed: true, validation: { isRequired: true } }),
     age: integer({ validation: { isRequired: true } }),
+    gender: select({
+      options: ["Male", "Female", "Other", "Prefer not to answer"],
+      validation: { isRequired: true },
+    }),
     ethnicity: select({
       options: [
         "Asian", "White", "Black or African American", "Hispanic or Latino",
@@ -31,7 +35,7 @@ export const Registrant = list(addCompoundKey({
     school: relationship({ ref: "School", many: false }),
     major: text({ validation: { isRequired: true } }),
     degree: select({
-      options: ["High School", "Associate's", "Bachelor's", "Master's", "Doctorate"],
+      options: ["High School", "Associate's", "Bachelor's", "Master's", "Doctorate", "Other"],
       validation: { isRequired: true },
     }),
     country: text({ validation: { isRequired: true } }),

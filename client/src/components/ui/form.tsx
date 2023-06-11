@@ -1,6 +1,6 @@
 
 import { FormTitle } from "~/components/general/typography";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/className";
 
 import type { ReactNode } from "react";
 

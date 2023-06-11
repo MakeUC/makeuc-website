@@ -18,6 +18,12 @@ export default withAuth(
     telemetry: false,
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
+      cors: {
+        origin: "*",
+        allowedHeaders: "*",
+        credentials: true,
+        methods: "*",
+      },
     },
   }),
 );

@@ -123,6 +123,7 @@ type Registrant {
   lastName: String
   email: String
   age: Int
+  gender: String
   ethnicity: String
   school: School
   major: String
@@ -154,6 +155,7 @@ input RegistrantWhereInput {
   lastName: StringFilter
   email: StringFilter
   age: IntFilter
+  gender: StringFilter
   ethnicity: StringFilter
   school: SchoolWhereInput
   major: StringFilter
@@ -204,6 +206,7 @@ input RegistrantOrderByInput {
   lastName: OrderDirection
   email: OrderDirection
   age: OrderDirection
+  gender: OrderDirection
   ethnicity: OrderDirection
   major: OrderDirection
   degree: OrderDirection
@@ -225,6 +228,7 @@ input RegistrantUpdateInput {
   lastName: String
   email: String
   age: Int
+  gender: String
   ethnicity: String
   school: SchoolRelateToOneForUpdateInput
   major: String
@@ -256,6 +260,7 @@ input RegistrantCreateInput {
   lastName: String
   email: String
   age: Int
+  gender: String
   ethnicity: String
   school: SchoolRelateToOneForCreateInput
   major: String

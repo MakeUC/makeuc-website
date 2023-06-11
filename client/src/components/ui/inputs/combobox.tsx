@@ -1,5 +1,4 @@
 "use client";
-
 import { Check, ChevronsUpDown } from "lucide-react";
 import * as React from "react";
 
@@ -15,9 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/className";
 
 import { Label } from "./label";
+
+import type { Command as CommandPrimitive } from "cmdk";
 
 
 export interface ComboboxOption {
@@ -33,9 +34,20 @@ export interface ComboboxProps {
   placeholder?: React.ReactNode;
   searchText?: string;
   empty?: React.ReactNode;
+  command?: React.ComponentPropsWithoutRef<typeof CommandPrimitive>,
+  onSearch?: (search: string) => void;
 }
 
-export function Combobox({ label, name, options, placeholder = "Select Option", searchText = "Search Options", empty = "No Option Found" }: ComboboxProps) {
+export function Combobox({
+  label,
+  name,
+  options,
+  placeholder = "Select Option",
+  searchText = "Search Options",
+  empty = "No Option Found",
+  command,
+  onSearch,
+}: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -58,8 +70,8 @@ export function Combobox({ label, name, options, placeholder = "Select Option", 
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
-          <Command>
-            <CommandInput placeholder={searchText} />
+          <Command {...command}>
+            <CommandInput placeholder={searchText} onValueChange={onSearch} />
             <CommandEmpty>{empty}</CommandEmpty>
             <CommandGroup className="overflow-y-auto max-h-60">
               {options?.map(option => (
