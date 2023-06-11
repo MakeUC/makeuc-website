@@ -16,11 +16,11 @@ import {
 } from "~/components/ui/popover";
 import { cn } from "~/utils/className";
 
-import { makeWrappedInput } from "./input-wrapper";
-import { Label } from "./label";
+import { FormField, makeWrappedInput } from "./input-wrapper";
 
+import type { FormFieldProps } from "./input-wrapper";
 import type { Command as CommandPrimitive } from "cmdk";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode, KeyboardEventHandler } from "react";
 
 
 export interface ComboboxOption {
@@ -29,9 +29,7 @@ export interface ComboboxOption {
   value: string;
 }
 
-export interface ComboboxProps {
-  label?: string;
-  name?: string;
+export interface ComboboxProps extends Omit<FormFieldProps, "children"> {
   options?: ComboboxOption[];
   placeholder?: ReactNode;
   searchText?: string;
@@ -44,7 +42,10 @@ export interface ComboboxProps {
 
 export function ComboboxRaw({
   label,
+  labelSide,
   name,
+  fieldState,
+  detachedError,
   options,
   placeholder = "Select Option",
   searchText = "Search Options",
@@ -70,14 +71,18 @@ export function ComboboxRaw({
     setOpen(false);
   }, [_onChange]);
 
+  const onKeyDown = useCallback<KeyboardEventHandler<HTMLButtonElement>>(event => {
+    if (event.keyCode !== 9 && !event.shiftKey)
+      setOpen(true);
+  }, []);
+
   return (
-    <div className="flex-1">
-      {label && <Label className="block mb-4" htmlFor={name}>{label}</Label>}
+    <FormField name={name} label={label} labelSide={labelSide} fieldState={fieldState} detachedError={detachedError}>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild tabIndex={0} onKeyDown={onKeyDown}>
           <div
             aria-expanded={open}
-            className="flex h-10 w-full rounded-md push-in px-3 py-2 text-sm items-center justify-between cursor-pointer"
+            className="flex h-10 w-full rounded-md push-in-top push-in-bottom bg-background-inset px-3 py-2 text-sm items-center justify-between cursor-pointer"
           >
             {selectedOption ? selectedOption.label ?? selectedOption.value : <span className="text-foreground-inset">{placeholder}</span>}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -107,10 +112,11 @@ export function ComboboxRaw({
           </Command>
         </PopoverContent>
       </Popover>
-    </div>
+    </FormField>
   );
 }
 
 export const Combobox = makeWrappedInput<ComboboxProps>(
-  (props, fieldProps) => <ComboboxRaw {...props} {...fieldProps} />,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (props, { ref, ...fieldProps }, fieldState) => <ComboboxRaw {...props} {...fieldProps} fieldState={fieldState} />,
 );

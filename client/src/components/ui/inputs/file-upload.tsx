@@ -5,7 +5,9 @@ import * as React from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/utils/className";
 
-import { Label } from "./label";
+import { FormField } from "./input-wrapper";
+
+import type { FormFieldProps } from "./input-wrapper";
 
 
 function getFileNames(files: string | FileList | undefined): string | undefined {
@@ -23,12 +25,17 @@ function getFileNames(files: string | FileList | undefined): string | undefined 
   return fileNames.join(", ");
 }
 
-export interface FileUploadProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
-  label?: React.ReactNode;
-  name: string;
-}
+export type FileUploadProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> & Omit<FormFieldProps, "children">;
 
-export function FileUpload({ className, label, placeholder, ...props }: FileUploadProps) {
+export function FileUpload({
+  className,
+  label,
+  labelSide,
+  fieldState,
+  detachedError,
+  placeholder,
+  ...props
+}: FileUploadProps) {
   const [fileNames, setFileNames] = React.useState<string | undefined>(undefined);
 
   const onChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(event => {
@@ -36,22 +43,32 @@ export function FileUpload({ className, label, placeholder, ...props }: FileUplo
   }, []);
 
   return (
-    <div className="flex-1">
-      {label && <Label className="block mb-4" htmlFor={props.name}>{label}</Label>}
+    <FormField
+      label={label}
+      labelSide={labelSide}
+      name={props.name}
+      fieldState={fieldState}
+      detachedError={detachedError}
+    >
       <div className={cn(
         "relative flex h-10 w-full rounded-md text-sm ring-offset-background cursor-pointer",
         className,
       )}
       >
-        <Button className="rounded-none rounded-l-md">
+        <Button className="rounded-none rounded-l-md" type="button">
           Browse
         </Button>
-        <div className={cn("flex items-center px-3 py-2 push-in rounded-r-md w-full text-foreground", !fileNames ? "text-foreground-inset" : undefined)}>
+        <div className={cn("flex items-center px-3 py-2 push-in-top push-in-bottom bg-background-inset rounded-r-md w-full text-foreground", !fileNames ? "text-foreground-inset" : undefined)}>
           {fileNames ?? placeholder}
         </div>
-        <input className="absolute w-full h-full top-0 left-0 flex-1 opacity-0 z-10 cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed" type="file" {...props} onChange={onChange} />
+        <input
+          className="absolute w-full h-full top-0 left-0 flex-1 opacity-0 z-10 cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed"
+          type="file"
+          {...props}
+          onChange={onChange}
+        />
       </div>
-    </div>
+    </FormField>
   );
 }
 

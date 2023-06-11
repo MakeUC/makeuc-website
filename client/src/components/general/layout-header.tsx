@@ -3,7 +3,7 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 
 export function LayoutHeader() {
   return (
-    <div className="flex items-center justify-between gap-4 p-4 push-in">
+    <div className="flex items-center justify-between gap-4 p-4 push-in-bottom bg-background-inset">
       {/* Left Side */}
       <div className="text-background">
         <h1 className="text-xl text-foreground">MakeUC</h1>

@@ -4,30 +4,33 @@ import * as React from "react";
 
 import { cn } from "~/utils/className";
 
-import { makeWrappedInput } from "./input-wrapper";
-import { Label } from "./label";
+import { FormField, makeWrappedInput } from "./input-wrapper";
+
+import type { FormFieldProps } from "./input-wrapper";
 
 
-export interface InputRawProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: React.ReactNode;
-  name: string;
-}
+export type InputRawProps = React.InputHTMLAttributes<HTMLInputElement> & Omit<FormFieldProps, "children">;
 
 const InputRaw = React.forwardRef<HTMLInputElement, InputRawProps>(
-  ({ className, type, label, ...props }, ref) => {
+  ({ className, type, label, labelSide, fieldState, detachedError, ...props }, ref) => {
     return (
-      <div className="flex-1">
-        {label && <Label className="block mb-4" htmlFor={props.name}>{label}</Label>}
+      <FormField
+        label={label}
+        labelSide={labelSide}
+        name={props.name}
+        fieldState={fieldState}
+        detachedError={detachedError}
+      >
         <input
           type={type}
           className={cn(
-            "flex h-10 w-full rounded-md push-in px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-inset focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full rounded-md push-in-top push-in-bottom bg-background-inset px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground-inset focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
           ref={ref}
           {...props}
         />
-      </div>
+      </FormField>
     );
   },
 );
@@ -35,4 +38,6 @@ InputRaw.displayName = "InputRaw";
 
 export { InputRaw };
 
-export const Input = makeWrappedInput<InputRawProps>((props, fieldProps) => <InputRaw {...props} {...fieldProps} />);
+export const Input = makeWrappedInput<InputRawProps>(
+  (props, fieldProps, fieldState) => <InputRaw {...props} {...fieldProps} fieldState={fieldState} />,
+);

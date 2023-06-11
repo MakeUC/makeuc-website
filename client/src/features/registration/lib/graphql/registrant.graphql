@@ -1,0 +1,5 @@
+mutation CreateRegistrant($data: RegistrantCreateInput!) {
+  createRegistrant(data: $data) {
+    id
+  }
+}

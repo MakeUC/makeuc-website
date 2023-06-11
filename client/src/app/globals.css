@@ -26,6 +26,9 @@
     --destructive-foreground: hsl(200deg 78% 56%);
     --ring: hsl(215deg 20.2% 65.1%);
     --radius: 0.5rem;
+    --push-in-top-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%);
+    --push-in-top-shadow-no-overhang: inset 0 0 2px hsl(0deg 0% 0% / 40%);
+    --push-in-bottom-shadow: 0 2px 0 hsl(0deg 0% 100% / 7%);
   }
  
   .dark {
@@ -36,7 +39,7 @@
     --muted: hsl(223deg 47% 11%);
     --muted-foreground: hsl(201deg 88% 49%);
     --popover: hsl(213deg 73% 12%);
-    --popover-foreground: 215 hsl(20.2% 65.1%);
+    --popover-foreground: hsl(0deg 0% 100%);
     --card: hsl(217deg 52% 17%);
     --card-foreground: hsl(0deg 0% 100%);
     --border: hsl(216deg 34% 17%);
@@ -48,9 +51,12 @@
     --accent: hsl(200deg 90% 56%);
     --accent-foreground: hsl(217deg 52% 0%);
     --destructive: hsl(0deg 63% 31%);
-    --destructive-foreground: hsl(200deg 90% 56%);
+    --destructive-foreground: hsl(0deg 0% 100%);
     --ring: hsl(216deg 34% 17%);
     --radius: 0.5rem;
+    --push-in-top-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%);
+    --push-in-top-shadow-no-overhang: inset 0 0 2px hsl(0deg 0% 0% / 40%);
+    --push-in-bottom-shadow: 0 2px 0 hsl(0deg 0% 100% / 7%);
   }
 }
  
@@ -67,9 +73,37 @@
 }
 
 @layer components {
-  .push-in {
-    box-shadow: 0 2px 0 hsl(0deg 0% 100% / 7%), inset 0 2px 2px hsl(0deg 0% 0% / 40%);
-    background: var(--background-inset-color);
+  *:not(.no-push-in-top) .push-in-top {
+    box-shadow: var(--push-in-top-shadow);
+  }
+
+  *:not(.no-push-in-bottom) .push-in-bottom {
+    box-shadow: var(--push-in-bottom-shadow);
+  }
+
+  .push-in-top.push-in-bottom {
+    box-shadow: var(--push-in-bottom-shadow), var(--push-in-top-shadow);
+  }
+  
+  .no-push-in-top:not(.no-push-in-bottom) .push-in-top.push-in-bottom {
+    box-shadow: var(--push-in-bottom-shadow);
+  }
+
+  .no-push-in-bottom:not(.no-push-in-top) .push-in-top.push-in-bottom {
+    box-shadow: var(--push-in-top-shadow);
+  }
+
+  .no-push-in-top.no-push-in-bottom .push-in-top,
+  .no-push-in-top.no-push-in-bottom .push-in-bottom {
+    box-shadow: none;
+  }
+
+  .push-in-top-no-overhang {
+    box-shadow: var(--push-in-top-shadow-no-overhang);
+  }
+
+  .push-in-top-no-overhang.push-in-bottom {
+    box-shadow: var(--push-in-bottom-shadow), var(--push-in-top-shadow-no-overhang);
   }
 
   .bump-out {
@@ -78,5 +112,11 @@
 
   .dark .bump-out {
     box-shadow: 0 3px 2px hsl(0deg 0% 0% / 40%), inset 0 3px 1px hsl(0deg 0% 100% / 7%);
+  }
+}
+
+@layer utilities {
+  .remove-rounded-b * {
+    @apply rounded-b-none;
   }
 }

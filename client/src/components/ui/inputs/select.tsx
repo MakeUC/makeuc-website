@@ -2,10 +2,10 @@
 
 import { cn } from "~/utils/className";
 
-import { makeWrappedInput } from "./input-wrapper";
-import { Label } from "./label";
+import { FormField, makeWrappedInput } from "./input-wrapper";
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValue } from "./select-root";
 
+import type { FormFieldProps } from "./input-wrapper";
 import type { SelectProps as RadixSelectProps } from "@radix-ui/react-select";
 
 
@@ -15,21 +15,34 @@ export interface SelectOption {
   value: string;
 }
 
-export interface SelectProps extends Omit<RadixSelectProps, "onValueChange"> {
+export interface SelectProps extends Omit<RadixSelectProps, "onValueChange" | "name">, Omit<FormFieldProps, "children"> {
   onChange?: (value: string) => void;
   options?: SelectOption[];
   placeholder?: string;
-  label?: string;
-  name: string;
   className?: string;
 }
 
-export function SelectRaw({ options, placeholder, label, className, onChange, ...props }: SelectProps) {
+export function SelectRaw({
+  options,
+  placeholder,
+  label,
+  labelSide,
+  fieldState,
+  detachedError,
+  className,
+  onChange,
+  ...props
+}: SelectProps) {
   return (
-    <div className="flex-1">
-      {label && <Label className="block mb-4" htmlFor={props.name}>{label}</Label>}
+    <FormField
+      label={label}
+      labelSide={labelSide}
+      name={props.name}
+      fieldState={fieldState}
+      detachedError={detachedError}
+    >
       <SelectRoot onValueChange={onChange} {...props}>
-        <SelectTrigger className={cn("push-in", className)}>
+        <SelectTrigger className={cn("push-in-top push-in-bottom bg-background-inset", className)}>
           <SelectValue placeholder={<span className="text-foreground-inset">{placeholder}</span>} />
         </SelectTrigger>
         <SelectContent className="overflow-y-auto max-h-60">
@@ -40,8 +53,11 @@ export function SelectRaw({ options, placeholder, label, className, onChange, ..
           }
         </SelectContent>
       </SelectRoot>
-    </div >
+    </FormField>
   );
 }
 
-export const Select = makeWrappedInput<SelectProps>((props, fieldProps) => <SelectRaw {...props} {...fieldProps} />);
+export const Select = makeWrappedInput<SelectProps>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (props, { ref, ...fieldProps }, fieldState) => <SelectRaw {...props} {...fieldProps} fieldState={fieldState} />,
+);

@@ -12,6 +12,8 @@ export interface InputNumberRawProps extends Omit<InputRawProps, "onChange" | "t
   onChange?: (value: number | undefined) => void;
 }
 
+// TODO: Add Increment and Decrement buttons, along with a "step" prop to determine how much or little they should be increased by
+// TODO: Make adding decimal points work without adding to the center of a number
 const InputNumberRaw = forwardRef<HTMLInputElement, InputNumberRawProps>(
   ({ onChange: _onChange, ...props }, ref) => {
     const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => {
@@ -34,5 +36,5 @@ InputNumberRaw.displayName = "InputNumberRaw";
 export { InputNumberRaw };
 
 export const InputNumber = makeWrappedInput<InputNumberRawProps>(
-  (props, fieldProps) => <InputNumberRaw {...props} {...fieldProps} />,
+  (props, fieldProps, fieldState) => <InputNumberRaw {...props} {...fieldProps} fieldState={fieldState} />,
 );

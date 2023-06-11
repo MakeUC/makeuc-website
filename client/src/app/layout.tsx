@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import { LayoutFooter } from "~/components/general/layout-footer";
 import { LayoutHeader } from "~/components/general/layout-header";
@@ -29,6 +30,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className={`${inter.className} dark`}>
         <ApolloWrapper>
+          <Toaster position="top-right" toastOptions={{
+            style: {
+              borderRadius: "var(--radius)",
+              background: "var(--popover)",
+              border: "2px solid var(--background)",
+              color: "var(--popover-foreground)",
+            },
+          }}
+          />
           <LayoutHeader />
           <div className="flex flex-col">
             {children}
