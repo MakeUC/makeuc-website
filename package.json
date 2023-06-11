@@ -20,7 +20,7 @@
     "lint-staged": "run-p lint-staged:*",
     "lint-staged:client": "cd client && yarn lint-staged",
     "lint-staged:server": "cd server && yarn lint-staged",
-    "prisma:deploy": "cd server && prisma:deploy",
+    "prisma:deploy": "cd server && yarn prisma:deploy",
     "start": "run-p start:*",
     "start:client": "cd client && yarn start",
     "start:server": "cd server && yarn start",
