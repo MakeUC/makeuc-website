@@ -5,7 +5,7 @@
   "main": "src/keystone.ts",
   "scripts": {
     "dev": "keystone dev",
-    "start": "keystone start",
+    "start": "keystone start --with-migrations",
     "build": "keystone build",
     "lint": "eslint --max-warnings 0",
     "seed-data": "ts-node src/scripts/seed/index.ts",
