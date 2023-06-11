@@ -8,7 +8,6 @@
     "start": "keystone start",
     "build": "keystone build",
     "lint": "eslint --max-warnings 0",
-    "postinstall": "keystone build --no-ui --frozen",
     "seed-data": "ts-node src/scripts/seed/index.ts",
     "download-data": "run-p download-data:universities",
     "download-data:universities": "run-s download-data:universities:*",
