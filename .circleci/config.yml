@@ -27,13 +27,10 @@ jobs:
           name: Lint
           command: yarn lint
       - run:
-          name: Perform Test Database Deployment
+          name: Build and Test Database Deployment
           command: |
-            yarn prisma:generate
+            yarn build
             yarn prisma:deploy
-      - run:
-          name: Build
-          command: yarn build
 
 workflows:
   production:

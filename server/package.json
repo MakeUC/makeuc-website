@@ -15,8 +15,10 @@
     "download-data:universities:part-1": "curl -o data/universities-1.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=0'",
     "download-data:universities:part-2": "curl -o data/universities-2.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=2000'",
     "download-data:universities:part-3": "curl -o data/universities-3.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=4000'",
-    "download-data:universities:part-4": "curl -o data/universities-4.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=6000'"
-
+    "download-data:universities:part-4": "curl -o data/universities-4.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=6000'",
+    "prisma:push": "prisma db push",
+    "prisma:dev": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@keystone-6/auth": "^7.0.0",
