@@ -3,15 +3,16 @@ import * as React from "react";
 
 import { cn } from "~/utils/className";
 
+import { makeWrappedInput } from "./input-wrapper";
 import { Label } from "./label";
 
 
-export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: React.ReactNode;
   name: string;
 }
 
-const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const TextAreaRaw = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ className, label, ...props }, ref) => {
     return (
       <div>
@@ -28,6 +29,10 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     );
   },
 );
-TextArea.displayName = "TextArea";
+TextAreaRaw.displayName = "TextAreaRaw";
 
-export { TextArea };
+export { TextAreaRaw };
+
+export const TextArea = makeWrappedInput<TextAreaProps>(
+  (props, fieldProps) => <TextAreaRaw {...props} {...fieldProps} />,
+);

@@ -1,6 +1,6 @@
 "use client";
 import { Check, ChevronsUpDown } from "lucide-react";
-import * as React from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   Command,
@@ -16,9 +16,11 @@ import {
 } from "~/components/ui/popover";
 import { cn } from "~/utils/className";
 
+import { makeWrappedInput } from "./input-wrapper";
 import { Label } from "./label";
 
 import type { Command as CommandPrimitive } from "cmdk";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 
 export interface ComboboxOption {
@@ -31,14 +33,16 @@ export interface ComboboxProps {
   label?: string;
   name?: string;
   options?: ComboboxOption[];
-  placeholder?: React.ReactNode;
+  placeholder?: ReactNode;
   searchText?: string;
-  empty?: React.ReactNode;
-  command?: React.ComponentPropsWithoutRef<typeof CommandPrimitive>,
+  empty?: ReactNode;
+  command?: ComponentPropsWithoutRef<typeof CommandPrimitive>,
+  value?: string;
   onSearch?: (search: string) => void;
+  onChange?: (value: string) => void;
 }
 
-export function Combobox({
+export function ComboboxRaw({
   label,
   name,
   options,
@@ -46,15 +50,25 @@ export function Combobox({
   searchText = "Search Options",
   empty = "No Option Found",
   command,
+  value: _value,
   onSearch,
+  onChange: _onChange,
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [internalValue, setInternalValue] = useState("");
 
-  const selectedOption = React.useMemo(
+  const value = useMemo(() => _value ?? internalValue, [_value, internalValue]);
+
+  const selectedOption = useMemo(
     () => !!value ? options?.find(option => option.value === value) : undefined,
     [options, value],
   );
+
+  const onChange = useCallback((newValue: string) => {
+    _onChange?.(newValue);
+    setInternalValue(newValue);
+    setOpen(false);
+  }, [_onChange]);
 
   return (
     <div className="flex-1">
@@ -77,10 +91,7 @@ export function Combobox({
               {options?.map(option => (
                 <CommandItem
                   key={option.value}
-                  onSelect={() => {
-                    setValue(option.value);
-                    setOpen(false);
-                  }}
+                  onSelect={() => onChange(option.value)}
                   className="cursor-pointer"
                 >
                   <Check
@@ -99,3 +110,7 @@ export function Combobox({
     </div>
   );
 }
+
+export const Combobox = makeWrappedInput<ComboboxProps>(
+  (props, fieldProps) => <ComboboxRaw {...props} {...fieldProps} />,
+);

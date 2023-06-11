@@ -4,15 +4,16 @@ import * as React from "react";
 
 import { cn } from "~/utils/className";
 
+import { makeWrappedInput } from "./input-wrapper";
 import { Label } from "./label";
 
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputRawProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: React.ReactNode;
   name: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const InputRaw = React.forwardRef<HTMLInputElement, InputRawProps>(
   ({ className, type, label, ...props }, ref) => {
     return (
       <div className="flex-1">
@@ -30,6 +31,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
-Input.displayName = "Input";
+InputRaw.displayName = "InputRaw";
 
-export { Input };
+export { InputRaw };
+
+export const Input = makeWrappedInput<InputRawProps>((props, fieldProps) => <InputRaw {...props} {...fieldProps} />);

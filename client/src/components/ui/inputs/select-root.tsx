@@ -7,7 +7,7 @@ import * as React from "react";
 import { cn } from "~/utils/className";
 
 
-const SelectRaw = SelectPrimitive.Root;
+const SelectRoot = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
 
@@ -110,7 +110,7 @@ const SelectSeparator = React.forwardRef<
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export {
-  SelectRaw,
+  SelectRoot,
   SelectGroup,
   SelectValue,
   SelectTrigger,

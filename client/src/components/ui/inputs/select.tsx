@@ -1,7 +1,10 @@
 "use client";
 
+import { cn } from "~/utils/className";
+
+import { makeWrappedInput } from "./input-wrapper";
 import { Label } from "./label";
-import { SelectContent, SelectItem, SelectRaw, SelectTrigger, SelectValue } from "./select-raw";
+import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValue } from "./select-root";
 
 import type { SelectProps as RadixSelectProps } from "@radix-ui/react-select";
 
@@ -12,19 +15,21 @@ export interface SelectOption {
   value: string;
 }
 
-export interface SelectProps extends RadixSelectProps {
+export interface SelectProps extends Omit<RadixSelectProps, "onValueChange"> {
+  onChange?: (value: string) => void;
   options?: SelectOption[];
   placeholder?: string;
   label?: string;
   name: string;
+  className?: string;
 }
 
-export function Select({ options, placeholder, label, ...props }: SelectProps) {
+export function SelectRaw({ options, placeholder, label, className, onChange, ...props }: SelectProps) {
   return (
     <div className="flex-1">
       {label && <Label className="block mb-4" htmlFor={props.name}>{label}</Label>}
-      <SelectRaw>
-        <SelectTrigger className="push-in">
+      <SelectRoot onValueChange={onChange} {...props}>
+        <SelectTrigger className={cn("push-in", className)}>
           <SelectValue placeholder={<span className="text-foreground-inset">{placeholder}</span>} />
         </SelectTrigger>
         <SelectContent className="overflow-y-auto max-h-60">
@@ -34,7 +39,9 @@ export function Select({ options, placeholder, label, ...props }: SelectProps) {
             ))
           }
         </SelectContent>
-      </SelectRaw>
+      </SelectRoot>
     </div >
   );
 }
+
+export const Select = makeWrappedInput<SelectProps>((props, fieldProps) => <SelectRaw {...props} {...fieldProps} />);

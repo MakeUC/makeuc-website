@@ -2,10 +2,13 @@
 import { useSuspenseQuery } from "@apollo/client";
 import { useCallback, useMemo } from "react";
 
+
 import { Combobox } from "~/components/ui/inputs/combobox";
 import { debounce } from "~/lib/lodash";
 
 import { GetSchoolsDocument, OrderDirection, QueryMode } from "../generated/graphql/graphql";
+
+import type { Control, Path } from "react-hook-form";
 
 
 const DEFAULT_VARS = {
@@ -15,7 +18,18 @@ const DEFAULT_VARS = {
   where: {},
 };
 
-export function SchoolCombobox() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface SchoolComboboxProps<ControlType extends Control<any, any>> {
+  control: ControlType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  name: ControlType extends Control<infer P, any> ? Path<P> : never;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function SchoolCombobox<ControlType extends Control<any, any>>({
+  control,
+  name,
+}: SchoolComboboxProps<ControlType>) {
   const { data, refetch } = useSuspenseQuery(GetSchoolsDocument, {
     variables: DEFAULT_VARS,
   });
@@ -36,5 +50,16 @@ export function SchoolCombobox() {
     });
   }, [onSearchDebounce]);
 
-  return <Combobox options={options} onSearch={onSearch} label="School" name="school" searchText="Search for School" placeholder="Enter School" command={{ shouldFilter: false }} />;
+  return (
+    <Combobox
+      control={control}
+      options={options}
+      onSearch={onSearch}
+      label="School"
+      name={name}
+      searchText="Search for School"
+      placeholder="Enter School"
+      command={{ shouldFilter: false }}
+    />
+  );
 }
