@@ -47,7 +47,9 @@ jobs:
       - run:
           name: Build and Test Database Deployment
           command: |
-            yarn build
+            yarn lint
+            yarn compile
+            yarn build:server
             yarn prisma:deploy
 
 workflows:
