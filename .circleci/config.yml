@@ -19,11 +19,11 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - restore-client-packages:
+      - restore_cache:
           name: Restore Client Packages
           keys:
             - client-node_modules-{{ checksum "client/yarn.lock" }}
-      - restore-server-packages:
+      - restore_cache:
           name: Restore Server Packages
           keys:
             - server-node_modules-{{ checksum "server/yarn.lock" }}
@@ -31,12 +31,12 @@ jobs:
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           pkg-manager: yarn
-      - save-client-packages:
+      - save_cache:
           name: Save Client Packages
           key: client-node_modules-{{ checksum "client/yarn.lock" }}
           paths:
             - client/node_modules
-      - save-server-packages:
+      - save_cache:
           name: Save Server Packages
           key: server-node_modules-{{ checksum "server/yarn.lock" }}
           paths:
