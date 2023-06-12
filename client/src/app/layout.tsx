@@ -28,7 +28,7 @@ export interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className} dark`}>
+      <body className={`${inter.className} flex flex-col min-h-screen dark`}>
         <ApolloWrapper>
           <Toaster position="top-right" toastOptions={{
             style: {
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           }}
           />
           <LayoutHeader />
-          <div className="flex flex-col">
+          <div className="flex flex-col flex-1">
             {children}
           </div>
           <LayoutFooter />
