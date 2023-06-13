@@ -20,10 +20,11 @@ function FooterLink({ children, ...props }: FooterLinkProps) {
 
 export function LayoutFooter() {
   return (
-    <div className="mt-16 flex flex-col-reverse items-center gap-5 sm:flex-row sm:justify-between bg-muted min-h-[3rem] px-8 py-4">
+    <div className="mt-16 flex flex-col-reverse items-center gap-4 sm:flex-row sm:justify-between bg-muted min-h-[3rem] px-8 py-4">
       <div className="flex gap-7">
         <FooterLink href="#">Privacy</FooterLink>
         <FooterLink href="#">Terms</FooterLink>
+        <FooterLink target="_blank" href="https://mlh.io/code-of-conduct">Code of Conduct</FooterLink>
       </div>
       <div className="flex gap-7">
         <FooterLink target="_blank" href="https://twitter.com/makeuc_io"><Twitter /></FooterLink>

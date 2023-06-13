@@ -7,21 +7,24 @@ import LogoPng from "~/assets/logo.png";
 
 import { Button } from "../ui/button";
 
+import { DesktopNavbar } from "./navbar-desktop";
+import { MobileNavbar } from "./navbar-mobile";
+
 import type { ReactNode } from "react";
 
 
-interface NavLinkProps {
+export interface NavigationLink {
+  key: string;
   href: string;
-  children?: ReactNode;
+  children: ReactNode;
 }
 
-function NavLink({ href, children }: NavLinkProps) {
-  return (
-    <Link href={href} className="text-md text-muted-gray-foreground font-medium">
-      {children}
-    </Link>
-  );
-}
+const LINKS: NavigationLink[] = [
+  { key: "about", href: "#", children: "About" },
+  { key: "tracks", href: "#", children: "Tracks" },
+  { key: "faq", href: "#", children: "FAQ" },
+  { key: "sponsors", href: "#", children: "Sponsors" },
+];
 
 export function LayoutHeader() {
   return (
@@ -33,22 +36,15 @@ export function LayoutHeader() {
             <Image src={LogoPng} alt="MakeUC Logo" width="54" height="54" />
           </Link>
 
-          {/* Center */}
-          <div className="hidden flex-1 items-center gap-6 md:flex">
-            <NavLink href="#">About</NavLink>
-            <NavLink href="#">Tracks</NavLink>
-            <NavLink href="#">FAQ</NavLink>
-            <NavLink href="#">Sponsors</NavLink>
-          </div>
+          <DesktopNavbar className="sm:flex" links={LINKS} />
         </div>
 
         {/* Right Side */}
         <div className="flex justify-end items-center gap-4">
-          <Link
-            href="/registration"
-          >
+          <Link href="/registration" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
           </Link>
+          <MobileNavbar className="sm:hidden" links={LINKS} />
         </div>
       </div>
     </div>
