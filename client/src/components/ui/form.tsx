@@ -15,7 +15,7 @@ export function FormSection({ name, description, children }: FormSectionProps) {
   return (
     <>
       <hr className="border border-muted-foreground md:col-span-2" />
-      <div className="flex flex-col mb-4 items-center text-center md:items-start md:mb-0 md:text-left">
+      <div className="flex flex-col items-center text-center md:items-start md:text-left">
         <FormTitle>{name}</FormTitle>
         <p className="text-sm max-w-sm mt-4 text-muted-foreground leading-8">{description}</p>
       </div>
