@@ -6,10 +6,11 @@
   :root {
     --background: hsl(40deg 2% 98%);
     --background-inset-color: hsl(40deg 10% 93%);
-    --foreground-inset-color: hsl(20deg 5% 50%);
     --foreground: hsl(0deg 0% 5%);
+    --foreground-inset-color: hsl(20deg 5% 50%);
     --muted: hsl(210deg 40% 96.1%);
     --muted-foreground: hsl(215.4deg 16.3% 46.9%);
+    --muted-gray-foreground: hsl(213deg 40% 60%);
     --popover: hsl(40deg 2% 98%);
     --popover-foreground: hsl(200deg 78% 56%);
     --card: hsl(40deg 2% 98%);
@@ -18,8 +19,8 @@
     --input: hsl(214.3deg 31.8% 91.4%);
     --primary: hsl(200deg 78% 56%);
     --primary-foreground: hsl(217deg 52% 17%);
-    --secondary: hsl(210deg 40% 96.1%);
-    --secondary-foreground: hsl(200deg 78% 56%);
+    --secondary: hsl(40deg 2% 98%);
+    --secondary-foreground: hsl(0deg 0% 5%);
     --accent: hsl(210deg 40% 96.1%);
     --accent-foreground: hsl(200deg 78% 56%);
     --destructive: hsl(0deg 100% 50%);
@@ -34,10 +35,11 @@
   .dark {
     --background: hsl(217deg 52% 17%);
     --background-inset-color: hsl(213deg 73% 12%);
-    --foreground-inset-color: hsl(213deg 20% 60%);
     --foreground: hsl(0deg 0% 100%);
+    --foreground-inset-color: hsl(213deg 20% 60%);
     --muted: hsl(223deg 47% 11%);
     --muted-foreground: hsl(201deg 88% 49%);
+    --muted-gray-foreground: hsl(213deg 40% 60%);
     --popover: hsl(213deg 73% 12%);
     --popover-foreground: hsl(0deg 0% 100%);
     --card: hsl(217deg 52% 17%);
@@ -46,8 +48,8 @@
     --input: hsl(216deg 34% 17%);
     --primary: hsl(200deg 90% 56%);
     --primary-foreground: hsl(217deg 52% 0%);
-    --secondary: hsl(222.2deg 47.4% 11.2%);
-    --secondary-foreground: hsl(200deg 90% 56%);
+    --secondary: hsl(217deg 52% 17%);
+    --secondary-foreground: hsl(0deg 0% 100%);
     --accent: hsl(200deg 90% 56%);
     --accent-foreground: hsl(217deg 52% 0%);
     --destructive: hsl(0deg 63% 31%);
