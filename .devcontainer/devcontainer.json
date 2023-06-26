@@ -21,6 +21,7 @@
 				"dbaeumer.vscode-eslint",
 				"eamodio.gitlens",
 				"Gruntfuggly.todo-tree",
+				"GraphQL.vscode-graphql",
 				"Prisma.prisma",
 				"stylelint.vscode-stylelint",
 				"VisualStudioExptTeam.vscodeintellicode"

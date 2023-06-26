@@ -1,0 +1,40 @@
+{
+  "name": "keystone-app",
+  "version": "1.0.2",
+  "license": "MIT",
+  "main": "src/keystone.ts",
+  "scripts": {
+    "dev": "keystone dev",
+    "start": "run-s prisma:deploy download-data seed-data start:*",
+    "start:keystone": "keystone start",
+    "build": "keystone build",
+    "lint": "eslint --max-warnings 0",
+    "seed-data": "ts-node src/scripts/seed/index.ts",
+    "download-data": "run-p download-data:universities",
+    "download-data:universities": "run-s download-data:universities:*",
+    "download-data:universities:part-1": "curl -o data/universities-1.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=0'",
+    "download-data:universities:part-2": "curl -o data/universities-2.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=2000'",
+    "download-data:universities:part-3": "curl -o data/universities-3.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=4000'",
+    "download-data:universities:part-4": "curl -o data/universities-4.json 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Colleges_and_Universities/FeatureServer/0/query?where=1%3D1&outFields=NAME,CITY,STATE,TYPE,COUNTY,COUNTRY,ALIAS&returnGeometry=false&outSR=&f=json&maxRecordCount=2000&resultRecordCount=2000&resultOffset=6000'",
+    "prisma:push": "keystone prisma db push",
+    "prisma:dev": "keystone prisma migrate dev",
+    "prisma:deploy": "keystone prisma migrate deploy"
+  },
+  "dependencies": {
+    "@keystone-6/auth": "^7.0.0",
+    "@keystone-6/core": "^5.0.0",
+    "@keystone-6/fields-document": "^7.0.0",
+    "lodash": "^4.17.21",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
+    "eslint": "8.40.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "lint-staged": "^13.2.2"
+  }
+}

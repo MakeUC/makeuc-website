@@ -19,21 +19,38 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
+      - restore_cache:
+          name: Restore Client Packages
+          keys:
+            - client-node_modules-{{ checksum "client/yarn.lock" }}
+      - restore_cache:
+          name: Restore Server Packages
+          keys:
+            - server-node_modules-{{ checksum "server/yarn.lock" }}
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           pkg-manager: yarn
+      - save_cache:
+          name: Save Client Packages
+          key: client-node_modules-{{ checksum "client/yarn.lock" }}
+          paths:
+            - client/node_modules
+      - save_cache:
+          name: Save Server Packages
+          key: server-node_modules-{{ checksum "server/yarn.lock" }}
+          paths:
+            - server/node_modules
       - run:
           name: Lint
           command: yarn lint
       - run:
-          name: Perform Test Database Deployment
+          name: Build and Test Database Deployment
           command: |
-            yarn prisma:generate
+            yarn lint
+            yarn compile
+            yarn build:server
             yarn prisma:deploy
-      - run:
-          name: Build
-          command: yarn build
 
 workflows:
   production:
