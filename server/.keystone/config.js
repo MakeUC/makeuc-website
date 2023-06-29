@@ -130,7 +130,8 @@ function sendRegistrantEmail(registrant) {
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`,
       regURL: `${REGISTRATION_URL}${registrant.id}`
-    }
+    },
+    asm: { groupId: 168180 }
   });
 }
 function sendRegistrantConfirmationEmail(registrant) {
@@ -141,7 +142,8 @@ function sendRegistrantConfirmationEmail(registrant) {
     templateId: "d-c944baee63bb4b868d3bd036663826d2",
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`
-    }
+    },
+    asm: { groupId: 168180 }
   });
 }
 var Registrant = (0, import_core.list)(addCompoundKey({

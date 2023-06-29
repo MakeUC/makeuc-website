@@ -19,6 +19,7 @@ export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
       name: `${registrant.firstName} ${registrant.lastName}`,
       regURL: `${REGISTRATION_URL}${registrant.id}`,
     },
+    asm: { groupId: 168180 },
   });
 }
 
@@ -31,6 +32,7 @@ export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Ite
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`,
     },
+    asm: { groupId: 168180 },
   });
 }
 
