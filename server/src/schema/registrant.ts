@@ -4,7 +4,35 @@ import { integer, relationship, text, timestamp, select, checkbox } from "@keyst
 
 import { allOperations, isAuthenticated } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
+import { FROM_ADDRESS, REGISTRATION_URL, sendgrid } from "../utils/sendgrid";
 
+import type { Lists } from ".keystone/types";
+
+
+export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
+  return sendgrid.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    subject: `Confirm MakeUC ${new Date().getFullYear()} Registration`,
+    templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
+    dynamicTemplateData: {
+      name: `${registrant.firstName} ${registrant.lastName}`,
+      regURL: `${REGISTRATION_URL}${registrant.id}`,
+    },
+  });
+}
+
+export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Item) {
+  return sendgrid.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    subject: `MakeUC ${new Date().getFullYear()} Registration Confirmed`,
+    templateId: "d-c944baee63bb4b868d3bd036663826d2",
+    dynamicTemplateData: {
+      name: `${registrant.firstName} ${registrant.lastName}`,
+    },
+  });
+}
 
 export const Registrant = list(addCompoundKey({
   access: {
@@ -58,8 +86,16 @@ export const Registrant = list(addCompoundKey({
     createdAt: timestamp({
       defaultValue: { kind: "now" },
     }),
+    verified: checkbox({ defaultValue: false }),
   },
   graphql: {
     maxTake: 50,
+  },
+  hooks: {
+    async afterOperation({ operation, item }) {
+      if (operation !== "create" || !item) return;
+
+      await sendRegistrantEmail(item as Lists.Registrant.Item);
+    },
   },
 }, ["email", "registrationYear"]));

@@ -41,6 +41,7 @@ model Registrant {
   mlhEmailAgreement                Boolean   @default(false)
   registrationYear                 Int?      @default(2023)
   createdAt                        DateTime? @default(now())
+  verified                         Boolean   @default(false)
   emailRegistrationYearCompoundKey String    @unique @default("")
 
   @@index([email])

@@ -138,6 +138,7 @@ type Registrant {
   mlhEmailAgreement: Boolean
   registrationYear: Int
   createdAt: DateTime
+  verified: Boolean
   emailRegistrationYearCompoundKey: String
 }
 
@@ -170,6 +171,7 @@ input RegistrantWhereInput {
   mlhEmailAgreement: BooleanFilter
   registrationYear: IntNullableFilter
   createdAt: DateTimeNullableFilter
+  verified: BooleanFilter
   emailRegistrationYearCompoundKey: StringFilter
 }
 
@@ -220,6 +222,7 @@ input RegistrantOrderByInput {
   mlhEmailAgreement: OrderDirection
   registrationYear: OrderDirection
   createdAt: OrderDirection
+  verified: OrderDirection
   emailRegistrationYearCompoundKey: OrderDirection
 }
 
@@ -242,6 +245,7 @@ input RegistrantUpdateInput {
   mlhPrivacyPolicyAgreement: Boolean
   mlhEmailAgreement: Boolean
   createdAt: DateTime
+  verified: Boolean
 }
 
 input SchoolRelateToOneForUpdateInput {
@@ -274,6 +278,7 @@ input RegistrantCreateInput {
   mlhPrivacyPolicyAgreement: Boolean
   mlhEmailAgreement: Boolean
   createdAt: DateTime
+  verified: Boolean
 }
 
 input SchoolRelateToOneForCreateInput {
@@ -374,6 +379,7 @@ type Mutation {
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  verifyRegistrant(id: ID!): Registrant
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure

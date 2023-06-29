@@ -4,8 +4,7 @@ import Link from "next/link";
 
 
 import LogoPng from "~/assets/logo.png";
-
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 
 import { DesktopNavbar } from "./navbar-desktop";
 import { MobileNavbar } from "./navbar-mobile";
@@ -20,16 +19,16 @@ export interface NavigationLink {
 }
 
 const LINKS: NavigationLink[] = [
-  { key: "about", href: "#", children: "About" },
-  { key: "tracks", href: "#", children: "Tracks" },
-  { key: "faq", href: "#", children: "FAQ" },
-  { key: "sponsors", href: "#", children: "Sponsors" },
+  { key: "about", href: "/about", children: "About" },
+  { key: "tracks", href: "/tracks", children: "Tracks" },
+  { key: "faq", href: "/faq", children: "FAQ" },
+  // { key: "sponsors", href: "#", children: "Sponsors" },
 ];
 
 export function LayoutHeader() {
   return (
-    <div className="flex justify-center py-2 px-4 push-in-bottom bg-background-inset">
-      <div className="flex items-center justify-between gap-4 w-full">
+    <div className="flex justify-center py-2 px-4 push-in-bottom bg-background-inset sticky top-0 z-10">
+      <nav className="flex items-center justify-between gap-4 w-full">
         {/* Left Side */}
         <div className="flex gap-6">
           <Link href="/" className="flex items-center gap-2">
@@ -46,7 +45,7 @@ export function LayoutHeader() {
           </Link>
           <MobileNavbar className="sm:hidden" links={LINKS} />
         </div>
-      </div>
+      </nav>
     </div>
   );
 }

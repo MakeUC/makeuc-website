@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}": types.CreateRegistrantDocument,
+    "mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}\n\nmutation VerifyRegistrant($id: ID!) {\n  verifyRegistrant(id: $id) {\n    id\n  }\n}": types.CreateRegistrantDocument,
     "query GetSchools($where: SchoolWhereInput!, $orderBy: [SchoolOrderByInput!]!, $skip: Int!, $take: Int!) {\n  schools(where: $where, orderBy: $orderBy, skip: $skip, take: $take) {\n    id\n    name\n  }\n}": types.GetSchoolsDocument,
 };
 
@@ -34,7 +34,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}"): (typeof documents)["mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}"];
+export function graphql(source: "mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}\n\nmutation VerifyRegistrant($id: ID!) {\n  verifyRegistrant(id: $id) {\n    id\n  }\n}"): (typeof documents)["mutation CreateRegistrant($data: RegistrantCreateInput!) {\n  createRegistrant(data: $data) {\n    id\n  }\n}\n\nmutation VerifyRegistrant($id: ID!) {\n  verifyRegistrant(id: $id) {\n    id\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

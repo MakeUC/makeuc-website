@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // keystone.ts
@@ -23,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core4 = require("@keystone-6/core");
+var import_core5 = require("@keystone-6/core");
 
 // src/auth/index.ts
 var import_auth = require("@keystone-6/auth");
@@ -47,6 +57,9 @@ var session = (0, import_session.statelessSessions)({
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   secret: sessionSecret
 });
+
+// src/graphql/index.ts
+var import_core2 = require("@keystone-6/core");
 
 // src/schema/registrant.ts
 var import_core = require("@keystone-6/core");
@@ -100,7 +113,37 @@ function addCompoundKey(listConfig, fieldNames) {
   return newListConfig;
 }
 
+// src/utils/sendgrid.ts
+var import_mail = __toESM(require("@sendgrid/mail"));
+var API_KEY = process.env.SENDGRID_API_KEY;
+import_mail.default.setApiKey(API_KEY);
+var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
+var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
+
 // src/schema/registrant.ts
+function sendRegistrantEmail(registrant) {
+  return import_mail.default.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    subject: `Confirm MakeUC ${(/* @__PURE__ */ new Date()).getFullYear()} Registration`,
+    templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
+    dynamicTemplateData: {
+      name: `${registrant.firstName} ${registrant.lastName}`,
+      regURL: `${REGISTRATION_URL}${registrant.id}`
+    }
+  });
+}
+function sendRegistrantConfirmationEmail(registrant) {
+  return import_mail.default.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    subject: `MakeUC ${(/* @__PURE__ */ new Date()).getFullYear()} Registration Confirmed`,
+    templateId: "d-c944baee63bb4b868d3bd036663826d2",
+    dynamicTemplateData: {
+      name: `${registrant.firstName} ${registrant.lastName}`
+    }
+  });
+}
 var Registrant = (0, import_core.list)(addCompoundKey({
   access: {
     operation: {
@@ -152,18 +195,53 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     }),
     createdAt: (0, import_fields2.timestamp)({
       defaultValue: { kind: "now" }
-    })
+    }),
+    verified: (0, import_fields2.checkbox)({ defaultValue: false })
   },
   graphql: {
     maxTake: 50
+  },
+  hooks: {
+    async afterOperation({ operation, item }) {
+      if (operation !== "create" || !item)
+        return;
+      await sendRegistrantEmail(item);
+    }
   }
 }, ["email", "registrationYear"]));
 
+// src/graphql/index.ts
+var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
+  mutation: {
+    verifyRegistrant: import_core2.graphql.field({
+      type: base.object("Registrant"),
+      args: { id: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.ID) }) },
+      async resolve(source, { id }, context) {
+        const foundRegistrant = await context.prisma.registrant.findFirst({
+          where: { id, verified: { equals: false } }
+        });
+        if (!foundRegistrant) {
+          throw Error("You have already been verified!");
+        }
+        const registrant = await context.prisma.registrant.update({
+          data: { verified: true },
+          where: { id }
+        });
+        if (!registrant) {
+          return null;
+        }
+        await sendRegistrantConfirmationEmail(registrant);
+        return registrant;
+      }
+    })
+  }
+}));
+
 // src/schema/school.ts
-var import_core2 = require("@keystone-6/core");
+var import_core3 = require("@keystone-6/core");
 var import_access3 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
-var School = (0, import_core2.list)({
+var School = (0, import_core3.list)({
   access: {
     operation: {
       ...allOperations(isAuthenticated),
@@ -187,9 +265,9 @@ var School = (0, import_core2.list)({
 });
 
 // src/schema/user.ts
-var import_core3 = require("@keystone-6/core");
+var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
-var User = (0, import_core3.list)({
+var User = (0, import_core4.list)({
   access: {
     operation: allOperations(isAuthenticated)
   },
@@ -218,7 +296,7 @@ var lists = {
 
 // keystone.ts
 var keystone_default = withAuth(
-  (0, import_core4.config)({
+  (0, import_core5.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -229,6 +307,7 @@ var keystone_default = withAuth(
     lists,
     session,
     telemetry: false,
+    extendGraphqlSchema,
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {

@@ -220,6 +220,7 @@ export type Mutation = {
   updateSchools?: Maybe<Array<Maybe<School>>>;
   updateUser?: Maybe<User>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
+  verifyRegistrant?: Maybe<Registrant>;
 };
 
 
@@ -324,6 +325,11 @@ export type MutationUpdateUserArgs = {
 
 export type MutationUpdateUsersArgs = {
   data: Array<UserUpdateArgs>;
+};
+
+
+export type MutationVerifyRegistrantArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type NestedStringFilter = {
@@ -450,6 +456,7 @@ export type Registrant = {
   registrationYear?: Maybe<Scalars['Int']['output']>;
   resumeUrl?: Maybe<Scalars['String']['output']>;
   school?: Maybe<School>;
+  verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type RegistrantCreateInput = {
@@ -471,6 +478,7 @@ export type RegistrantCreateInput = {
   notes?: InputMaybe<Scalars['String']['input']>;
   resumeUrl?: InputMaybe<Scalars['String']['input']>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
+  verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type RegistrantOrderByInput = {
@@ -494,6 +502,7 @@ export type RegistrantOrderByInput = {
   notes?: InputMaybe<OrderDirection>;
   registrationYear?: InputMaybe<OrderDirection>;
   resumeUrl?: InputMaybe<OrderDirection>;
+  verified?: InputMaybe<OrderDirection>;
 };
 
 export type RegistrantUpdateArgs = {
@@ -520,6 +529,7 @@ export type RegistrantUpdateInput = {
   notes?: InputMaybe<Scalars['String']['input']>;
   resumeUrl?: InputMaybe<Scalars['String']['input']>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
+  verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type RegistrantWhereInput = {
@@ -547,6 +557,7 @@ export type RegistrantWhereInput = {
   registrationYear?: InputMaybe<IntNullableFilter>;
   resumeUrl?: InputMaybe<StringFilter>;
   school?: InputMaybe<SchoolWhereInput>;
+  verified?: InputMaybe<BooleanFilter>;
 };
 
 export type RegistrantWhereUniqueInput = {
@@ -717,6 +728,13 @@ export type CreateRegistrantMutationVariables = Exact<{
 
 export type CreateRegistrantMutation = { __typename?: 'Mutation', createRegistrant?: { __typename?: 'Registrant', id: string } | null };
 
+export type VerifyRegistrantMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type VerifyRegistrantMutation = { __typename?: 'Mutation', verifyRegistrant?: { __typename?: 'Registrant', id: string } | null };
+
 export type GetSchoolsQueryVariables = Exact<{
   where: SchoolWhereInput;
   orderBy: Array<SchoolOrderByInput> | SchoolOrderByInput;
@@ -729,4 +747,5 @@ export type GetSchoolsQuery = { __typename?: 'Query', schools?: Array<{ __typena
 
 
 export const CreateRegistrantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateRegistrant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegistrantCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRegistrant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRegistrantMutation, CreateRegistrantMutationVariables>;
+export const VerifyRegistrantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyRegistrant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyRegistrant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<VerifyRegistrantMutation, VerifyRegistrantMutationVariables>;
 export const GetSchoolsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSchools"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SchoolWhereInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SchoolOrderByInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"schools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetSchoolsQuery, GetSchoolsQueryVariables>;
