@@ -12,6 +12,7 @@ services:
     network_mode: service:db
     env_file:
       - .env
+      - .env.local
     environment:
       - POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10
       - POSTGRES_PRISMA_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10&pgbouncer=true

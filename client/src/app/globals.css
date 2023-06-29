@@ -122,3 +122,9 @@
     @apply rounded-b-none;
   }
 }
+
+.hero-image {
+  background: url("../assets/hero.png");
+  background-repeat: repeat-x;
+  background-size: 100vh auto;
+}

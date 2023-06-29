@@ -1,6 +1,7 @@
 import { config } from "@keystone-6/core";
 
 import { withAuth, session } from "./src/auth";
+import { extendGraphqlSchema } from "./src/graphql";
 import { lists } from "./src/schema";
 
 
@@ -16,6 +17,7 @@ export default withAuth(
     lists,
     session,
     telemetry: false,
+    extendGraphqlSchema,
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {

@@ -12,7 +12,7 @@ export default function RegistrationPage() {
       <div className="px-8 w-full max-w-5xl">
         <PageTitle>Registration</PageTitle>
         <RegistrationForm />
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }

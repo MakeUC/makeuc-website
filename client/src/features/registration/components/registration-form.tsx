@@ -12,7 +12,6 @@ import { Button } from "~/components/ui/button";
 import { FormGroup, FormSection } from "~/components/ui/form";
 import { Checkbox } from "~/components/ui/inputs/checkbox";
 import { Combobox } from "~/components/ui/inputs/combobox";
-import { FileUpload } from "~/components/ui/inputs/file-upload";
 import { Input } from "~/components/ui/inputs/input";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
@@ -78,6 +77,8 @@ export function RegistrationForm() {
         }
         return "Unknown Error";
       },
+    }, {
+      duration: 10000,
     })
       // TODO: Change to a "registration successful" page
       .then(() => push("/"));
@@ -107,7 +108,7 @@ export function RegistrationForm() {
         <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" />
       </FormSection>
       <FormSection name="Additional Details" description="All of these fields are optional and you can fill in as much or as little detail as you would like.">
-        <FileUpload label="Resume" name="resume" placeholder="Select Resume" />
+        {/* <FileUpload label="Resume" name="resume" placeholder="Select Resume" /> */}
         <InputNumber control={control} label="Number of Hackathons Attended" name="hackathonsAttended" placeholder="Enter Number of Hackathons Attended" />
         <TextArea control={control} label="Additional Notes" name="notes" placeholder="Enter Additional Notes" />
       </FormSection>

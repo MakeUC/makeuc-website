@@ -3,3 +3,9 @@ mutation CreateRegistrant($data: RegistrantCreateInput!) {
     id
   }
 }
+
+mutation VerifyRegistrant($id: ID!) {
+  verifyRegistrant(id: $id) {
+    id
+  }
+}
