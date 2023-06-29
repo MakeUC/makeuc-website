@@ -27,7 +27,7 @@ export function About() {
       </p>
       <hr className="border border-muted-foreground" />
       <h3 className="text-2xl font-bold tracking-wider text-center">Past Hackathons</h3>
-      <div className="grid grid-cols-[repeat(1,_1fr)] md:grid-cols-[repeat(3,_1fr)] justify-center items-center gap-8">
+      {/* <div className="grid grid-cols-[repeat(1,_1fr)] md:grid-cols-[repeat(3,_1fr)] justify-center items-center gap-8">
         <Link href="https://makeuc-2020.devpost.com/" className="grid grid-rows-[1fr,_auto] justify-center items-center h-full gap-4 hover:brightness-125">
           <Image
             src={Logo2020}
@@ -50,6 +50,38 @@ export function About() {
             alt="MakeUC Logo 2022"
             width={160}
           />
+          <h4 className="text-center text-muted-foreground">Fall 2022</h4>
+        </Link>
+      </div> */}
+      <div className="flex flex-col md:flex-row justify-stretch gap-8 h-full">
+        <Link href="https://makeuc-2020.devpost.com/" className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125">
+          <div className="flex items-center h-full">
+            <Image
+              src={Logo2020}
+              alt="MakeUC Logo 2020"
+              width={80}
+            />
+          </div>
+          <h4 className="text-center text-muted-foreground">Fall 2020</h4>
+        </Link>
+        <Link href="https://makeuc-2021.devpost.com/" className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125">
+          <div className="flex items-center h-full">
+            <Image
+              src={Logo2021}
+              alt="MakeUC Logo 2021"
+              width={160}
+            />
+          </div>
+          <h4 className="text-center text-muted-foreground">Fall 2021</h4>
+        </Link>
+        <Link href="https://makeuc-2022.devpost.com/" className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125">
+          <div className="flex items-center h-full">
+            <Image
+              src={Logo2022}
+              alt="MakeUC Logo 2022"
+              width={160}
+            />
+          </div>
           <h4 className="text-center text-muted-foreground">Fall 2022</h4>
         </Link>
       </div>
