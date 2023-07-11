@@ -379,6 +379,7 @@ type Mutation {
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
 }
 
@@ -411,6 +412,7 @@ type Query {
   schoolsCount(where: SchoolWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
+  statistics(year: Int!): String
 }
 
 union AuthenticatedItem = User

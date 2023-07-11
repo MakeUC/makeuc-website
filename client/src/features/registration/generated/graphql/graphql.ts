@@ -214,6 +214,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean']['output'];
+  seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
   updateRegistrant?: Maybe<Registrant>;
   updateRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   updateSchool?: Maybe<School>;
@@ -366,6 +367,7 @@ export type Query = {
   school?: Maybe<School>;
   schools?: Maybe<Array<School>>;
   schoolsCount?: Maybe<Scalars['Int']['output']>;
+  statistics?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']['output']>;
@@ -407,6 +409,11 @@ export type QuerySchoolsArgs = {
 
 export type QuerySchoolsCountArgs = {
   where?: SchoolWhereInput;
+};
+
+
+export type QueryStatisticsArgs = {
+  year: Scalars['Int']['input'];
 };
 
 

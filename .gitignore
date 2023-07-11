@@ -23,6 +23,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# npm files (yarn is prefered)
+package-lock.json
+
 # vercel
 .vercel
 
