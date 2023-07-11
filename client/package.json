@@ -66,5 +66,9 @@
     "postcss-preset-env": "^8.3.2",
     "stylelint": "^15.6.1",
     "stylelint-config-standard-scss": "^9.0.0"
+  },
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.19.1"
   }
 }

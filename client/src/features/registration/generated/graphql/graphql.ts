@@ -214,6 +214,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean']['output'];
+  seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
   updateRegistrant?: Maybe<Registrant>;
   updateRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   updateSchool?: Maybe<School>;
