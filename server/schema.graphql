@@ -379,6 +379,7 @@ type Mutation {
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
 }
 

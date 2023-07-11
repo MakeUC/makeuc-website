@@ -1,12 +1,22 @@
 import { graphql } from "@keystone-6/core";
 
 import { sendRegistrantConfirmationEmail } from "../schema/registrant";
+import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
 
 
 export const extendGraphqlSchema = graphql.extend(base => ({
   mutation: {
+    seedSchoolIndiaData: graphql.field({
+      type: graphql.Boolean,
+      async resolve(source, _, context: Context) {
+        if (!context.session) return null;
+
+        await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
+        return true;
+      },
+    }),
     verifyRegistrant: graphql.field({
       type: base.object("Registrant"),
       args: { id: graphql.arg({ type: graphql.nonNull(graphql.ID) }) },
