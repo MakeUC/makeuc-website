@@ -7,9 +7,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve"
   },
   "include": [
     "./.eslintrc.cjs",
+    "admin/**/*.ts",
+    "admin/**/*.tsx",
     "src/**/*.ts",
     "keystone.ts",
     "node_modules/.keystone/types.ts"
