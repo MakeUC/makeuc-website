@@ -214,43 +214,44 @@ var Registrant = (0, import_core.list)(addCompoundKey({
 
 // src/graphql/index.ts
 var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
-  graphql: {
+  query: {
     // Fill in statistics
     statistics: import_core2.graphql.field({
-      type: base.object("Registrant"),
+      type: import_core2.graphql.String,
       //Undefined --> Change in the future
       args: { year: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.Int) }) },
       async resolve(source, { year }, context) {
-        const registrants = await context.db.Registrant.findMany({
+        const registrants = await context.prisma.registrant.findMany({
           where: { registrationYear: { equals: year } }
         });
-        const females = registrants.filter((registrant) => registrant.gender === "Female");
-        const femalePercentage = females.length / registrants.length * 100;
-        const schools = [...new Set(registrants.map((registrant) => registrant.schoolId))];
-        const countries = [...new Set(registrants.map((registrant) => registrant.country))];
-        const ethnicities = {
-          "Asian": registrants.filter((registrant) => registrant.ethnicity === "Asian").length,
-          "White": registrants.filter((registrant) => registrant.ethnicity === "White").length,
-          "Black or African American": registrants.filter((registrant) => registrant.ethnicity === "Black or African American").length,
-          "Hispanic or Latino": registrants.filter((registrant) => registrant.ethnicity === "Hispanic or Latino").length,
-          "Prefer not to answer": registrants.filter((registrant) => registrant.ethnicity === "Prefer not to answer").length
-        };
-        const educations = {
-          "Bachelor's": registrants.filter((registrant) => registrant.degree === "Bachelor's").length,
-          "Master's": registrants.filter((registrant) => registrant.degree === "Master's").length,
-          "Associate's": registrants.filter((registrant) => registrant.degree === "Associate's").length,
-          "Doctorate": registrants.filter((registrant) => registrant.degree === "Doctorate").length,
-          "High School": registrants.filter((registrant) => registrant.degree === "High School").length
-        };
-        let stats = {
-          countRegistrants: registrants.length,
-          femalePercent: femalePercentage,
-          countSchoolsRepresented: schools.length,
-          countCountriesRepresented: countries.length,
-          ethnicityBreakdown: ethnicities,
-          educationBreakdown: educations
-        };
-        return stats;
+        const registrantCount = registrants.length;
+        let femaleCount = 0;
+        const schools = /* @__PURE__ */ new Set();
+        const countries = /* @__PURE__ */ new Set();
+        const ethnicities = /* @__PURE__ */ new Map();
+        const education = /* @__PURE__ */ new Map();
+        for (const registrant of registrants) {
+          if (registrant.gender === "Female")
+            ++femaleCount;
+          if (registrant.schoolId)
+            schools.add(registrant.schoolId);
+          if (registrant.country)
+            schools.add(registrant.country);
+          ethnicities.set(registrant.ethnicity, (ethnicities.get(registrant.ethnicity) ?? 0) + 1);
+          education.set(registrant.degree, (education.get(registrant.degree) ?? 0) + 1);
+        }
+        return JSON.stringify({
+          countRegistrants: registrantCount,
+          femalePercent: 100 * femaleCount / registrantCount,
+          countSchoolsRepresented: schools.size,
+          countCountriesRepresented: countries.size,
+          ethnicityBreakdown: Object.fromEntries(
+            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / registrantCount])
+          ),
+          educationBreakdown: Object.fromEntries(
+            [...education.entries()].map(([degree, count]) => [degree, count / registrantCount])
+          )
+        });
       }
     })
   },
