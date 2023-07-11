@@ -412,6 +412,7 @@ type Query {
   schoolsCount(where: SchoolWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
+  statistics(year: Int!): String
 }
 
 union AuthenticatedItem = User
