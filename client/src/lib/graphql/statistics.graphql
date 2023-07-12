@@ -1,0 +1,3 @@
+query GetStatistics($year: Int!) {
+  statistics(year: $year)
+}

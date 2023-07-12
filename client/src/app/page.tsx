@@ -8,11 +8,8 @@ import { About } from "~/components/general/about";
 import { Faq } from "~/components/general/faq";
 import { Button } from "~/components/ui/button";
 import { ViewportSection } from "~/components/ui/viewport-section";
-import { Config } from "~/constants/config";
 import { TrackGrid } from "~/features/tracks";
 
-
-export const revalidate = Config.RevalidationFrequency;
 
 export default async function HomePage() {
   return (

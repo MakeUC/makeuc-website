@@ -28,7 +28,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         for (const registrant of registrants) {
           if (registrant.gender === "Female") ++femaleCount;
           if (registrant.schoolId) schools.add(registrant.schoolId);
-          if (registrant.country) schools.add(registrant.country);
+          if (registrant.country) countries.add(registrant.country);
           ethnicities.set(registrant.ethnicity, (ethnicities.get(registrant.ethnicity) ?? 0) + 1);
           education.set(registrant.degree, (education.get(registrant.degree) ?? 0) + 1);
         }
