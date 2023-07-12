@@ -1,12 +1,13 @@
 "use client";
-import { useQuery } from "@apollo/client";
+
+import { useSuspenseQuery } from "@apollo/client";
 import { Loader } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { z } from "zod";
 
 import { GetStatisticsDocument } from "~/generated/graphql/graphql";
 
-import { EducationChart, EthinicityChart } from "./charts";
+import { Chart } from "./chart";
 
 
 export const statistics = z.object({
@@ -20,12 +21,13 @@ export const statistics = z.object({
 
 export type Statistics = z.infer<typeof statistics>;
 
-export function Stats() {
-  const [isCanvasVisible, setCanvasVisible] = useState(true);
-  const handleToggle = () => { setCanvasVisible(!isCanvasVisible); };
+export interface StatsProps {
+  year: number;
+}
 
-  const { data: statisticsData, loading, error } = useQuery(GetStatisticsDocument, {
-    variables: { year: new Date().getFullYear() - 1 },
+export function Stats({ year }: StatsProps) {
+  const { data: statisticsData, error } = useSuspenseQuery(GetStatisticsDocument, {
+    variables: { year },
   });
 
   const statisticsJson = useMemo(() => {
@@ -42,64 +44,34 @@ export function Stats() {
     return result.data;
   }, [statisticsData]);
 
-  if (loading || error || !statisticsJson) {
+  if (error || !statisticsJson) {
     return <Loader className="animate-spin" />;
   }
 
   return (
-    <div className="m-auto p-6">
-      {/* <!-- Total registration value --> */}
-      <div className="relative w-11/12 max-w-[1080px] mx-auto p-4">
-        <h3 className="text-center text-3xl leading-[1.2] hidden md:block">Total Registration: {statisticsJson.countRegistrants}</h3>
+    <div className="p-6">
+      <div className="flex flex-col gap-2 text-center">
+        <span className="text-4xl font-semibold">{statisticsJson.countRegistrants}</span>
+        <h3 className="text-lg text-muted-foreground">Total Registrants</h3>
       </div>
 
-      {/* <!-- Values --> */}
-      <div className="w-[95%] flex mx-auto rounded-md relative py-10 justify-between">
-        <h3 className="text-2xl text-center">{statisticsJson.femalePercent.toFixed(2)}% Female Attendance</h3>
-        <h3 className="text-2xl text-center">{statisticsJson.countSchoolsRepresented} Schools Represented</h3>
-        <h3 className="text-2xl text-center">{statisticsJson.countCountriesRepresented} Countries Represented</h3>
-      </div>
-
-      <div className=" m-auto w-full flex flex-col p-5 justify-center">
-        <div id="content" className="flex flex-wrap justify-between">
-
-          <div className="w-[45%] p-7 px-0 flex flex-col mx-3 justify-center">
-            <h3 className="text-3xl leading-10 text-center pb-4">Ethnicities</h3>
-
-            <div className="h-80 py-4 flex justify-center">
-              {isCanvasVisible ? (
-                <EthinicityChart ethnicities={statisticsJson.ethnicityBreakdown} />
-              ) : (
-                <ul className="px-5 py-3 text-center">
-                  {Object.entries(statisticsJson.ethnicityBreakdown).map(([ethnicity, value], index) => (
-                    <li key={index} className="text-xl leading-10">{ethnicity}: {(value * 100).toFixed(2)}%</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-
-          <div className="w-[45%] p-7 px-0 flex flex-col mx-3">
-            {/* <!-- title --> */}
-            <h3 className="text-3xl leading-10 text-center pb-4">Education Level</h3>
-            <div className="h-80 py-4 flex justify-center">
-              {isCanvasVisible ? (
-                <EducationChart educationLevels={statisticsJson.educationBreakdown} />
-              ) : (
-                <ul className="px-5 py-3 text-center">
-                  {Object.entries(statisticsJson.educationBreakdown).map(([ethnicity, value], index) => (
-                    <li key={index} className="text-xl leading-10">{ethnicity}: {(value * 100).toFixed(2)}%</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-[repeat(3,_1fr)] gap-4 my-8 p-2 justify-between">
+        <div className="flex flex-col gap-2 text-center">
+          <span className="text-3xl font-semibold">{statisticsJson.femalePercent.toFixed(2)}%</span>
+          <h3 className="text-lg text-muted-foreground">Female Attendance</h3>
         </div>
-        <div className="flex justify-center"><button onClick={handleToggle} className="bg-primary text-primary-foreground font-bold py-2 px-4 w-[25%] rounded-md border">
-          {isCanvasVisible ? "Show List" : "Show Canvas"}
-        </button></div>
+        <div className="flex flex-col gap-2 text-center">
+          <span className="text-3xl font-semibold">{statisticsJson.countSchoolsRepresented}</span>
+          <h3 className="text-lg text-muted-foreground">Schools Represented</h3>
+        </div>
+        <div className="flex flex-col gap-2 text-center">
+          <span className="text-3xl font-semibold">{statisticsJson.countCountriesRepresented}</span>
+          <h3 className="text-lg text-muted-foreground">Countries Represented</h3>
+        </div>
       </div>
-
+      <div className="flex flex-col justify-between md:flex-row gap-8">
+        <Chart data={statisticsJson.ethnicityBreakdown} title="Ethnicity" />
+        <Chart data={statisticsJson.educationBreakdown} title="Education" />
+      </div>
     </div>);
 }
