@@ -12,5 +12,6 @@ export default function FAQPage() {
           <Faq />
         </div>
       </div>
-    </div>);
+    </div>
+  );
 }

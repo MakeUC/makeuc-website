@@ -6,7 +6,6 @@ import Logo from "~/assets/logo.png";
 import MakeUCText from "~/assets/makeuc-text.png";
 import { About } from "~/components/general/about";
 import { Faq } from "~/components/general/faq";
-import { Stats } from "~/components/general/stats";
 import { Button } from "~/components/ui/button";
 import { ViewportSection } from "~/components/ui/viewport-section";
 import { Config } from "~/constants/config";
@@ -71,13 +70,6 @@ export default async function HomePage() {
             <span className="text-xl font-semibold text-center">There are no sponsors currently. Please check back in the future!</span>
             <PlugZap size={48} strokeWidth={1} />
           </div>
-        </div>
-      </ViewportSection>
-
-      <ViewportSection className="flex items-center justify-center py-8 bg-muted">
-        <div className="px-8 w-full max-w-5xl">
-          <h2 className="text-3xl font-bold tracking-wider text-center mb-5">Statistics</h2>
-          <Stats />
         </div>
       </ViewportSection>
     </main>
