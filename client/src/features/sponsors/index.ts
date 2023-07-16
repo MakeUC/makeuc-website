@@ -1,0 +1,1 @@
+export { SponsorGrid, SponsorGridPlaceholder } from "./components/sponsor-grid";
