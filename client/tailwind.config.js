@@ -15,6 +15,7 @@ module.exports = {
       },
     },
     colors: {
+      "white": "#fff",
       "border": "var(--border)",
       "input": "var(--input)",
       "ring": "var(--ring)",
