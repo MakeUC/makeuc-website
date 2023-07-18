@@ -31,7 +31,7 @@ export function LayoutFooter() {
         <FooterLink target="_blank" href="https://instagram.com/makeuc.io"><Instagram /></FooterLink>
         <FooterLink target="_blank" href="https://www.linkedin.com/company/makeuc/?viewAsMember=true"><Linkedin /></FooterLink>
         <FooterLink target="_blank" href="https://github.com/makeuc"><Github /></FooterLink>
-        <FooterLink target="_blank" href="mailto:contact@makeuc.io"><Mail /></FooterLink>
+        <FooterLink target="_blank" href="mailto:info@makeuc.io"><Mail /></FooterLink>
       </div>
     </div>
   );

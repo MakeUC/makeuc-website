@@ -366,6 +366,47 @@ async function getSchoolIndiaData() {
 
 // src/graphql/index.ts
 var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
+  query: {
+    // Fill in statistics
+    statistics: import_core2.graphql.field({
+      type: import_core2.graphql.String,
+      //Undefined --> Change in the future
+      args: { year: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.Int) }) },
+      async resolve(source, { year }, context) {
+        const registrants = await context.prisma.registrant.findMany({
+          where: { registrationYear: { equals: year } }
+        });
+        const registrantCount = registrants.length;
+        let femaleCount = 0;
+        const schools = /* @__PURE__ */ new Set();
+        const countries = /* @__PURE__ */ new Set();
+        const ethnicities = /* @__PURE__ */ new Map();
+        const education = /* @__PURE__ */ new Map();
+        for (const registrant of registrants) {
+          if (registrant.gender === "Female")
+            ++femaleCount;
+          if (registrant.schoolId)
+            schools.add(registrant.schoolId);
+          if (registrant.country)
+            countries.add(registrant.country);
+          ethnicities.set(registrant.ethnicity, (ethnicities.get(registrant.ethnicity) ?? 0) + 1);
+          education.set(registrant.degree, (education.get(registrant.degree) ?? 0) + 1);
+        }
+        return JSON.stringify({
+          countRegistrants: registrantCount,
+          femalePercent: 100 * femaleCount / registrantCount,
+          countSchoolsRepresented: schools.size,
+          countCountriesRepresented: countries.size,
+          ethnicityBreakdown: Object.fromEntries(
+            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / registrantCount])
+          ),
+          educationBreakdown: Object.fromEntries(
+            [...education.entries()].map(([degree, count]) => [degree, count / registrantCount])
+          )
+        });
+      }
+    })
+  },
   mutation: {
     seedSchoolIndiaData: import_core2.graphql.field({
       type: import_core2.graphql.Boolean,
