@@ -38,8 +38,8 @@ export function Chart({ data, title }: ChartProps) {
       .map(([key, value]) => [key, (value * 100).toFixed(2)]),
     ), [data]);
 
-  const buildChart = useCallback((canvas: HTMLCanvasElement) => {
-    const context = canvas.getContext("2d");
+  const buildChart = useCallback((canvas: HTMLCanvasElement | null) => {
+    const context = canvas?.getContext("2d");
 
     // eslint-disable-next-line no-console
     if (!context) return console.error("Missing context for a chart's canvas!");
