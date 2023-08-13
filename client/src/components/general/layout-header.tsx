@@ -6,6 +6,7 @@ import Link from "next/link";
 import LogoPng from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
 
+import { MLHBanner } from "./mlh-banner";
 import { DesktopNavbar } from "./navbar-desktop";
 import { MobileNavbar } from "./navbar-mobile";
 
@@ -44,6 +45,11 @@ export function LayoutHeader() {
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
           </Link>
           <MobileNavbar className="sm:hidden" links={LINKS} />
+          <div className="self-end">
+            <div className="relative -bottom-4">
+              <MLHBanner />
+            </div>
+          </div>
         </div>
       </nav>
     </div>
