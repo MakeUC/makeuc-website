@@ -1,6 +1,7 @@
 import AxureImage from "../assets/axure.png";
 import BalsamiqImage from "../assets/balsamiq.png";
 import InfineraImage from "../assets/infinera.png";
+import PRHIImage from "../assets/prhi.png";
 import StickerMuleImage from "../assets/sticker-mule.png";
 import TaskadeImage from "../assets/taskade.png";
 import WolframAlphaImage from "../assets/wolfram-alpha.png";
@@ -20,7 +21,13 @@ export const sponsorData: SponsorTier[] = [
   },
   {
     name: "Birdwing",
-    sponsors: [],
+    sponsors: [
+      {
+        name: "PRHI",
+        url: "https://www.patientsafetytech.com/",
+        imageSrc: PRHIImage,
+      },
+    ],
   },
   {
     name: "Morpho",
