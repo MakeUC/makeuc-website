@@ -93,12 +93,12 @@ utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.defaul
   if (!req.context.session)
     return res.sendStatus(403);
   const file_ = req.files?.file;
-  const file = Array.isArray(file_) ? file_[0] : file_;
-  if (!file)
+  const file2 = Array.isArray(file_) ? file_[0] : file_;
+  if (!file2)
     return res.status(400).send("File not attached");
   let fileObj;
   try {
-    const fileStr = file.data.toString("utf-8");
+    const fileStr = file2.data.toString("utf-8");
     fileObj = JSON.parse(fileStr);
   } catch {
     return res.status(400).send("Failed to parse the data.");
@@ -311,6 +311,9 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     country: (0, import_fields2.text)({ validation: { isRequired: true } }),
     expectedGraduationYear: (0, import_fields2.integer)({ validation: { isRequired: true } }),
     resumeUrl: (0, import_fields2.text)(),
+    resume: (0, import_fields2.file)({
+      storage: "TODO"
+    }),
     hackathonsAttended: (0, import_fields2.integer)(),
     notes: (0, import_fields2.text)(),
     mlhCodeOfConductAgreement: (0, import_fields2.checkbox)(),
@@ -515,6 +518,8 @@ var keystone_default = withAuth(
     session,
     telemetry: false,
     extendGraphqlSchema,
+    // storage: { // TODO: update keystone config
+    // },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {

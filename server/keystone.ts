@@ -26,6 +26,9 @@ export default withAuth(
     session,
     telemetry: false,
     extendGraphqlSchema,
+    // storage: { // TODO: update keystone config
+
+    // },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
