@@ -248,19 +248,6 @@ var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
 var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
 
 // src/schema/registrant.ts
-function sendRegistrantEmail(registrant) {
-  return import_mail.default.send({
-    from: FROM_ADDRESS,
-    to: registrant.email,
-    subject: `Confirm MakeUC ${(/* @__PURE__ */ new Date()).getFullYear()} Registration`,
-    templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
-    dynamicTemplateData: {
-      name: `${registrant.firstName} ${registrant.lastName}`,
-      regURL: `${REGISTRATION_URL}${registrant.id}`
-    },
-    asm: { groupId: 168180 }
-  });
-}
 function sendRegistrantConfirmationEmail(registrant) {
   return import_mail.default.send({
     from: FROM_ADDRESS,
@@ -312,7 +299,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     expectedGraduationYear: (0, import_fields2.integer)({ validation: { isRequired: true } }),
     resumeUrl: (0, import_fields2.text)(),
     resume: (0, import_fields2.file)({
-      storage: "TODO"
+      storage: "resume_storage"
     }),
     hackathonsAttended: (0, import_fields2.integer)(),
     notes: (0, import_fields2.text)(),
@@ -337,7 +324,6 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item)
         return;
-      await sendRegistrantEmail(item);
     }
   }
 }, ["email", "registrationYear"]));
@@ -502,6 +488,12 @@ var lists = {
 };
 
 // keystone.ts
+var {
+  S3_BUCKET_NAME: bucketName = "resumes",
+  S3_REGION: region = "us-east-2",
+  S3_ACCESS_KEY_ID: accessKeyId = "minioadmin",
+  S3_SECRET_ACCESS_KEY: secretAccessKey = "minioadmin"
+} = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
     db: {
@@ -518,8 +510,20 @@ var keystone_default = withAuth(
     session,
     telemetry: false,
     extendGraphqlSchema,
-    // storage: { // TODO: update keystone config
-    // },
+    storage: {
+      // TODO: update keystone config
+      resume_storage: {
+        kind: "s3",
+        type: "image",
+        bucketName,
+        region,
+        accessKeyId,
+        secretAccessKey,
+        signed: { expiry: 5e3 },
+        endpoint: "http://127.0.0.1:9000/",
+        forcePathStyle: true
+      }
+    },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {

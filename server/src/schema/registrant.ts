@@ -73,7 +73,7 @@ export const Registrant = list(addCompoundKey({
 
     resumeUrl: text(),
     resume: file({
-      storage: "TODO",
+      storage: "resume_storage",
     }),
     hackathonsAttended: integer(),
     notes: text(),
@@ -100,7 +100,7 @@ export const Registrant = list(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item) return;
 
-      await sendRegistrantEmail(item as Lists.Registrant.Item);
+      // await sendRegistrantEmail(item as Lists.Registrant.Item);
     },
   },
 }, ["email", "registrationYear"]));

@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     volumes:
@@ -25,37 +25,54 @@ services:
     env_file:
       - .env
   # minio:
-  #   image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z # figure out which image to get
-  #   command: server --console-address ":9001" http://minio{1...4}/data{1...2} # need to change the url
+  #   image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z
+  #   ports:
+  #     - 9000:9000
   #   expose:
-  #     - "9000"
-  #     - "9001"
-  #   # environment:
-  #     # MINIO_ROOT_USER: minioadmin # S3_ROOT_ACCESS_KEY in .env
-  #     # MINIO_ROOT_PASSWORD: minioadmin # S3_ROOT_SECRET_KEY in .env
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-  #     interval: 30s
-  #     timeout: 20s
-  #     retries: 3
-  #   hostname: minio1 # change naming here 
+  #     - 9000
   #   volumes:
-  #     - data1-1:/data1
-  #     - data1-2:/data2
+  #     - minio_storage:/data
+  #   environment:
+  #     MINIO_ROOT_USER: minioadmin
+  #     MINIO_ROOT_PASSWORD: minioadmin
+  #   command: server /data
+  minio:
+    image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z # figure out which image to get
+    command: server --console-address ":9001" /data/minio # need to change the url
+    ports:
+      - 9000:9000
+      - 9001:9001
+    env_file:
+      - .env
+    environment:
+      MINIO_ROOT_USER: ${S3_ROOT_ACCESS_KEY} # S3_ROOT_ACCESS_KEY in .env
+      MINIO_ROOT_PASSWORD: ${S3_ROOT_SECRET_KEY} # S3_ROOT_SECRET_KEY in .env
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:9000/minio/health/live"
+        ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    hostname: minio1 # change naming here
+    volumes:
+      - data1-1:/data1
+      - data1-2:/data2
 
-      # createbuckets:
-      #   image: minio/mc
-      #   depends_on:
-      #     - minio
-      #   entrypoint: >
-      #     /bin/sh -c "
-      #     /usr/bin/mc alias set myminio http://minio:9000 minio minio123;
-      #     /usr/bin/mc mb myminio/somebucketname;
-      #     /usr/bin/mc policy set public myminio/somebucketname;
-      #     exit 0;
-      #     "
+  createbuckets:
+    image: minio/mc
+    env_file:
+      - .env
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "echo ${S3_BUCKET_NAME}; /usr/bin/mc alias set myminio http://minio:9000 ${S3_ROOT_ACCESS_KEY} ${S3_ROOT_SECRET_KEY}; /usr/bin/mc mb myminio/${S3_BUCKET_NAME}; /usr/bin/mc policy set public myminio/${S3_BUCKET_NAME}; exit 0; "
 
 volumes:
   postgres-data:
-  # data1-1:
-  # data1-2:
+  data1-1:
+  data1-2:

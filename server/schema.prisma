@@ -36,6 +36,8 @@ model Registrant {
   country                          String    @default("")
   expectedGraduationYear           Int
   resumeUrl                        String    @default("")
+  resume_filesize                  Int?
+  resume_filename                  String?
   hackathonsAttended               Int?
   notes                            String    @default("")
   mlhCodeOfConductAgreement        Boolean   @default(false)

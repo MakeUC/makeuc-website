@@ -39,7 +39,7 @@ const registrationFormSchema = z.object({
   degree: z.string().min(1),
   country: z.string().min(1),
   expectedGraduationYear: z.number().min(2000),
-  resume: z.custom<File>(file => file instanceof File),
+  // resume: z.custom<File>(file => file instanceof File),
   hackathonsAttended: z.number().optional(),
   notes: z.string().optional(),
   mlhCodeOfConductAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Code of Conduct." }) }),
@@ -64,6 +64,9 @@ export function RegistrationForm() {
       variables: {
         data: {
           ...values,
+          resume: {
+            upload: (values as any).resume,
+          },
           school: { connect: { id: school } },
         },
       },
