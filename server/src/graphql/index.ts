@@ -35,14 +35,14 @@ export const extendGraphqlSchema = graphql.extend(base => ({
 
         return JSON.stringify({
           countRegistrants: registrantCount,
-          femalePercent: 100 * femaleCount / registrantCount,
+          femalePercent: 100 * femaleCount / (registrantCount || 1),
           countSchoolsRepresented: schools.size,
           countCountriesRepresented: countries.size,
           ethnicityBreakdown: Object.fromEntries(
-            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / registrantCount])
+            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / (registrantCount || 1)])
           ),
           educationBreakdown: Object.fromEntries(
-            [...education.entries()].map(([degree, count]) => [degree, count / registrantCount])
+            [...education.entries()].map(([degree, count]) => [degree, count / (registrantCount || 1)])
           ),
         });
       },

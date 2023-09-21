@@ -2,10 +2,11 @@
 
 import * as React from "react";
 
+
 import { Button } from "~/components/ui/button";
 import { cn } from "~/utils/className";
 
-import { FormField } from "./input-wrapper";
+import { FormField, makeWrappedInput } from "./input-wrapper";
 
 import type { FormFieldProps } from "./input-wrapper";
 
@@ -25,22 +26,29 @@ function getFileNames(files: string | FileList | undefined): string | undefined 
   return fileNames.join(", ");
 }
 
-export type FileUploadProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> & Omit<FormFieldProps, "children">;
+export interface FileUploadRawProps extends
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange" | "name">, Omit<FormFieldProps, "children"> {
+  onChange?: (files: FileList | undefined) => void,
+}
 
-export function FileUpload({
+export function FileUploadRaw({
   className,
   label,
   labelSide,
   fieldState,
   detachedError,
   placeholder,
+  // TODO: Add support for "value" input
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  value: _value,
   ...props
-}: FileUploadProps) {
+}: FileUploadRawProps) {
   const [fileNames, setFileNames] = React.useState<string | undefined>(undefined);
 
   const onChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(event => {
     setFileNames(getFileNames(event.target.files || undefined));
-  }, []);
+    props.onChange?.(event.target.files || undefined);
+  }, [props]);
 
   return (
     <FormField
@@ -72,3 +80,6 @@ export function FileUpload({
   );
 }
 
+export const FileUpload = makeWrappedInput<FileUploadRawProps>(
+  (props, fieldProps, fieldState) => <FileUploadRaw {...props} {...fieldProps} fieldState={fieldState} />,
+);

@@ -3,7 +3,6 @@
 import {
   ApolloClient,
   ApolloLink,
-  HttpLink,
   SuspenseCache,
 } from "@apollo/client";
 import {
@@ -11,12 +10,16 @@ import {
   NextSSRInMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
+import {
+  createUploadLink,
+} from "apollo-upload-client";
 
 
 function makeClient() {
-  const httpLink = new HttpLink({
+  const httpLink = createUploadLink({
     uri: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/graphql`,
-  });
+    headers: { "Apollo-Require-Preflight": "true" },
+  }) as unknown as ApolloLink;
 
   return new ApolloClient({
     cache: new NextSSRInMemoryCache(),

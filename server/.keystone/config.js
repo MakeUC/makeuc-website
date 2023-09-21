@@ -93,12 +93,12 @@ utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.defaul
   if (!req.context.session)
     return res.sendStatus(403);
   const file_ = req.files?.file;
-  const file = Array.isArray(file_) ? file_[0] : file_;
-  if (!file)
+  const file2 = Array.isArray(file_) ? file_[0] : file_;
+  if (!file2)
     return res.status(400).send("File not attached");
   let fileObj;
   try {
-    const fileStr = file.data.toString("utf-8");
+    const fileStr = file2.data.toString("utf-8");
     fileObj = JSON.parse(fileStr);
   } catch {
     return res.status(400).send("Failed to parse the data.");
@@ -248,19 +248,6 @@ var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
 var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
 
 // src/schema/registrant.ts
-function sendRegistrantEmail(registrant) {
-  return import_mail.default.send({
-    from: FROM_ADDRESS,
-    to: registrant.email,
-    subject: `Confirm MakeUC ${(/* @__PURE__ */ new Date()).getFullYear()} Registration`,
-    templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
-    dynamicTemplateData: {
-      name: `${registrant.firstName} ${registrant.lastName}`,
-      regURL: `${REGISTRATION_URL}${registrant.id}`
-    },
-    asm: { groupId: 168180 }
-  });
-}
 function sendRegistrantConfirmationEmail(registrant) {
   return import_mail.default.send({
     from: FROM_ADDRESS,
@@ -310,7 +297,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     }),
     country: (0, import_fields2.text)({ validation: { isRequired: true } }),
     expectedGraduationYear: (0, import_fields2.integer)({ validation: { isRequired: true } }),
-    resumeUrl: (0, import_fields2.text)(),
+    resume: (0, import_fields2.file)({ storage: "resume_storage" }),
     hackathonsAttended: (0, import_fields2.integer)(),
     notes: (0, import_fields2.text)(),
     mlhCodeOfConductAgreement: (0, import_fields2.checkbox)(),
@@ -334,7 +321,6 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item)
         return;
-      await sendRegistrantEmail(item);
     }
   }
 }, ["email", "registrationYear"]));
@@ -394,14 +380,14 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         }
         return JSON.stringify({
           countRegistrants: registrantCount,
-          femalePercent: 100 * femaleCount / registrantCount,
+          femalePercent: 100 * femaleCount / (registrantCount || 1),
           countSchoolsRepresented: schools.size,
           countCountriesRepresented: countries.size,
           ethnicityBreakdown: Object.fromEntries(
-            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / registrantCount])
+            [...ethnicities.entries()].map(([ethnicity, count]) => [ethnicity, count / (registrantCount || 1)])
           ),
           educationBreakdown: Object.fromEntries(
-            [...education.entries()].map(([degree, count]) => [degree, count / registrantCount])
+            [...education.entries()].map(([degree, count]) => [degree, count / (registrantCount || 1)])
           )
         });
       }
@@ -499,6 +485,13 @@ var lists = {
 };
 
 // keystone.ts
+var {
+  S3_BUCKET_NAME: bucketName = "resumes",
+  S3_REGION: region = "us-east-2",
+  S3_ACCESS_KEY_ID: accessKeyId = "minioadmin",
+  S3_SECRET_ACCESS_KEY: secretAccessKey = "minioadmin",
+  S3_URL: s3Url = "http://minio:9000"
+} = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
     db: {
@@ -515,6 +508,20 @@ var keystone_default = withAuth(
     session,
     telemetry: false,
     extendGraphqlSchema,
+    storage: {
+      // TODO: update keystone config
+      resume_storage: {
+        kind: "s3",
+        type: "file",
+        bucketName,
+        region,
+        accessKeyId,
+        secretAccessKey,
+        signed: { expiry: 5e3 },
+        endpoint: s3Url,
+        forcePathStyle: true
+      }
+    },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
