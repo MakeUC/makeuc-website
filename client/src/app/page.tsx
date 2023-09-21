@@ -62,7 +62,7 @@ export default async function HomePage() {
       <ViewportSection className="flex items-center justify-center py-8">
         <div className="px-8 w-full max-w-5xl">
           <h2 className="text-3xl font-bold tracking-wider text-center mb-8">Sponsors</h2>
-          <h3 className="text-center">Are you interested in sponsoring MakeUC? Please email us at <Link href="mailto:info@makeuc.io" className="text-primary">info@makeuc.io</Link>!</h3>
+          <h3 className="text-center">Are you interested in sponsoring MakeUC? Please email us at <Link href="mailto:contact@makeuc.io" className="text-primary">info@makeuc.io</Link>!</h3>
           <br />
           <SponsorGridPlaceholder />
           {/* <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4">

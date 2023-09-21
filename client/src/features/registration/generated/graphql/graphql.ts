@@ -17,6 +17,8 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: { input: any; output: any; }
 };
 
 export type AuthenticatedItem = User;
@@ -41,6 +43,17 @@ export type DateTimeNullableFilter = {
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   not?: InputMaybe<DateTimeNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type FileFieldInput = {
+  upload: Scalars['Upload']['input'];
+};
+
+export type FileFieldOutput = {
+  __typename?: 'FileFieldOutput';
+  filename: Scalars['String']['output'];
+  filesize: Scalars['Int']['output'];
+  url: Scalars['String']['output'];
 };
 
 export type IdFilter = {
@@ -461,7 +474,7 @@ export type Registrant = {
   mlhPrivacyPolicyAgreement?: Maybe<Scalars['Boolean']['output']>;
   notes?: Maybe<Scalars['String']['output']>;
   registrationYear?: Maybe<Scalars['Int']['output']>;
-  resumeUrl?: Maybe<Scalars['String']['output']>;
+  resume?: Maybe<FileFieldOutput>;
   school?: Maybe<School>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
@@ -483,7 +496,7 @@ export type RegistrantCreateInput = {
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
-  resumeUrl?: InputMaybe<Scalars['String']['input']>;
+  resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
   verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -508,7 +521,6 @@ export type RegistrantOrderByInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<OrderDirection>;
   notes?: InputMaybe<OrderDirection>;
   registrationYear?: InputMaybe<OrderDirection>;
-  resumeUrl?: InputMaybe<OrderDirection>;
   verified?: InputMaybe<OrderDirection>;
 };
 
@@ -534,7 +546,7 @@ export type RegistrantUpdateInput = {
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
-  resumeUrl?: InputMaybe<Scalars['String']['input']>;
+  resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
   verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -562,7 +574,6 @@ export type RegistrantWhereInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<BooleanFilter>;
   notes?: InputMaybe<StringFilter>;
   registrationYear?: InputMaybe<IntNullableFilter>;
-  resumeUrl?: InputMaybe<StringFilter>;
   school?: InputMaybe<SchoolWhereInput>;
   verified?: InputMaybe<BooleanFilter>;
 };
