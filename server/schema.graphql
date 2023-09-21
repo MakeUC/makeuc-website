@@ -130,7 +130,6 @@ type Registrant {
   degree: String
   country: String
   expectedGraduationYear: Int
-  resumeUrl: String
   resume: FileFieldOutput
   hackathonsAttended: Int
   notes: String
@@ -170,7 +169,6 @@ input RegistrantWhereInput {
   degree: StringFilter
   country: StringFilter
   expectedGraduationYear: IntFilter
-  resumeUrl: StringFilter
   hackathonsAttended: IntNullableFilter
   notes: StringFilter
   mlhCodeOfConductAgreement: BooleanFilter
@@ -221,7 +219,6 @@ input RegistrantOrderByInput {
   degree: OrderDirection
   country: OrderDirection
   expectedGraduationYear: OrderDirection
-  resumeUrl: OrderDirection
   hackathonsAttended: OrderDirection
   notes: OrderDirection
   mlhCodeOfConductAgreement: OrderDirection
@@ -245,7 +242,6 @@ input RegistrantUpdateInput {
   degree: String
   country: String
   expectedGraduationYear: Int
-  resumeUrl: String
   resume: FileFieldInput
   hackathonsAttended: Int
   notes: String
@@ -286,7 +282,6 @@ input RegistrantCreateInput {
   degree: String
   country: String
   expectedGraduationYear: Int
-  resumeUrl: String
   resume: FileFieldInput
   hackathonsAttended: Int
   notes: String

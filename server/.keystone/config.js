@@ -297,10 +297,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     }),
     country: (0, import_fields2.text)({ validation: { isRequired: true } }),
     expectedGraduationYear: (0, import_fields2.integer)({ validation: { isRequired: true } }),
-    resumeUrl: (0, import_fields2.text)(),
-    resume: (0, import_fields2.file)({
-      storage: "resume_storage"
-    }),
+    resume: (0, import_fields2.file)({ storage: "resume_storage" }),
     hackathonsAttended: (0, import_fields2.integer)(),
     notes: (0, import_fields2.text)(),
     mlhCodeOfConductAgreement: (0, import_fields2.checkbox)(),
@@ -492,7 +489,8 @@ var {
   S3_BUCKET_NAME: bucketName = "resumes",
   S3_REGION: region = "us-east-2",
   S3_ACCESS_KEY_ID: accessKeyId = "minioadmin",
-  S3_SECRET_ACCESS_KEY: secretAccessKey = "minioadmin"
+  S3_SECRET_ACCESS_KEY: secretAccessKey = "minioadmin",
+  S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
@@ -514,13 +512,13 @@ var keystone_default = withAuth(
       // TODO: update keystone config
       resume_storage: {
         kind: "s3",
-        type: "image",
+        type: "file",
         bucketName,
         region,
         accessKeyId,
         secretAccessKey,
         signed: { expiry: 5e3 },
-        endpoint: "http://127.0.0.1:9000/",
+        endpoint: s3Url,
         forcePathStyle: true
       }
     },

@@ -11,6 +11,7 @@ const {
   S3_REGION: region = "us-east-2",
   S3_ACCESS_KEY_ID: accessKeyId = "minioadmin",
   S3_SECRET_ACCESS_KEY: secretAccessKey = "minioadmin",
+  S3_URL: s3Url = "http://minio:9000",
 } = process.env;
 
 export default withAuth(
@@ -36,13 +37,13 @@ export default withAuth(
     storage: { // TODO: update keystone config
       resume_storage: {
         kind: "s3",
-        type: "image",
+        type: "file",
         bucketName,
         region,
         accessKeyId,
         secretAccessKey,
         signed: { expiry: 5000 },
-        endpoint: "http://127.0.0.1:9000/",
+        endpoint: s3Url,
         forcePathStyle: true,
       },
     },

@@ -71,10 +71,7 @@ export const Registrant = list(addCompoundKey({
     country: text({ validation: { isRequired: true } }),
     expectedGraduationYear: integer({ validation: { isRequired: true } }),
 
-    resumeUrl: text(),
-    resume: file({
-      storage: "resume_storage",
-    }),
+    resume: file({ storage: "resume_storage" }),
     hackathonsAttended: integer(),
     notes: text(),
 
