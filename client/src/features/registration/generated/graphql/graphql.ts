@@ -475,7 +475,6 @@ export type Registrant = {
   notes?: Maybe<Scalars['String']['output']>;
   registrationYear?: Maybe<Scalars['Int']['output']>;
   resume?: Maybe<FileFieldOutput>;
-  resumeUrl?: Maybe<Scalars['String']['output']>;
   school?: Maybe<School>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
@@ -498,7 +497,6 @@ export type RegistrantCreateInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
-  resumeUrl?: InputMaybe<Scalars['String']['input']>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
   verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -523,7 +521,6 @@ export type RegistrantOrderByInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<OrderDirection>;
   notes?: InputMaybe<OrderDirection>;
   registrationYear?: InputMaybe<OrderDirection>;
-  resumeUrl?: InputMaybe<OrderDirection>;
   verified?: InputMaybe<OrderDirection>;
 };
 
@@ -550,7 +547,6 @@ export type RegistrantUpdateInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
-  resumeUrl?: InputMaybe<Scalars['String']['input']>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
   verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -578,7 +574,6 @@ export type RegistrantWhereInput = {
   mlhPrivacyPolicyAgreement?: InputMaybe<BooleanFilter>;
   notes?: InputMaybe<StringFilter>;
   registrationYear?: InputMaybe<IntNullableFilter>;
-  resumeUrl?: InputMaybe<StringFilter>;
   school?: InputMaybe<SchoolWhereInput>;
   verified?: InputMaybe<BooleanFilter>;
 };
