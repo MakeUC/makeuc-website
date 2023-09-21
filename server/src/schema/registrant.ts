@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
-import { integer, relationship, text, timestamp, select, checkbox } from "@keystone-6/core/fields";
+import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
 
 import { allOperations, isAuthenticated } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
@@ -71,7 +71,7 @@ export const Registrant = list(addCompoundKey({
     country: text({ validation: { isRequired: true } }),
     expectedGraduationYear: integer({ validation: { isRequired: true } }),
 
-    resumeUrl: text(),
+    resume: file({ storage: "resume_storage" }),
     hackathonsAttended: integer(),
     notes: text(),
 
@@ -97,7 +97,7 @@ export const Registrant = list(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item) return;
 
-      await sendRegistrantEmail(item as Lists.Registrant.Item);
+      // await sendRegistrantEmail(item as Lists.Registrant.Item);
     },
   },
 }, ["email", "registrationYear"]));
