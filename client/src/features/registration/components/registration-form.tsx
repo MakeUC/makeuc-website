@@ -65,9 +65,9 @@ export function RegistrationForm() {
       variables: {
         data: {
           ...values,
-          resume: {
-            upload: values.resume?.[0],
-          },
+          resume: !!values.resume?.[0] ? {
+            upload: values.resume[0],
+          } : undefined,
           school: { connect: { id: school } },
         },
       },
