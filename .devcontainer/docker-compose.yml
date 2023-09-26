@@ -40,8 +40,8 @@ services:
     image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z # figure out which image to get
     command: server --console-address ":9001" /data/minio # need to change the url
     ports:
-      - 9000:9000
-      - 9001:9001
+      - 9090:9000
+      - 9091:9001
     env_file:
       - .env
     environment:
