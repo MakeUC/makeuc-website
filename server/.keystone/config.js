@@ -329,7 +329,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
 var FAILED = Symbol("FAILED");
 var seenNames = /* @__PURE__ */ new Set();
 async function getSchoolIndiaData() {
-  const data = await import(`../../../data/universities-${5}.json`).catch(() => FAILED);
+  const data = await globImport_data_universities_json(`../../../data/universities-${5}.json`).catch(() => FAILED);
   if (typeof data === "symbol") {
     return [];
   }
@@ -535,3 +535,4 @@ var keystone_default = withAuth(
     }
   })
 );
+//# sourceMappingURL=config.js.map
