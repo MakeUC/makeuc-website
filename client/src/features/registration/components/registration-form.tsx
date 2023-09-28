@@ -113,7 +113,7 @@ export function RegistrationForm() {
         <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" />
       </FormSection>
       <FormSection name="Additional Details" description="All of these fields are optional and you can fill in as much or as little detail as you would like.">
-        <FileUpload control={control} label="Resume" name="resume" placeholder="Select Resume" />
+        {/* <FileUpload control={control} label="Resume" name="resume" placeholder="Select Resume" /> */}
         <InputNumber control={control} label="Number of Hackathons Attended" name="hackathonsAttended" placeholder="Enter Number of Hackathons Attended" />
         <TextArea control={control} label="Additional Notes" name="notes" placeholder="Enter Additional Notes" />
       </FormSection>
