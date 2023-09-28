@@ -26,9 +26,8 @@ Here are the steps to contributing to the MakeUC Website:
 
 1. Clone the repository
 2. Open the repository in VSCode
-3. Run `yarn install`
-4. Run `Dev Containers: Reopen in Container` in the command pallet in VSCode (`CTRL+SHIFT+P` by default)
-5. Using the terminal inside of VSCode, run `yarn dev`
+3. Run `Dev Containers: Reopen in Container` in the command pallet in VSCode (`CTRL+SHIFT+P` by default)
+4. Using the terminal inside of VSCode, run `yarn dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

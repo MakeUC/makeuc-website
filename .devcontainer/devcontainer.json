@@ -13,6 +13,7 @@
 		9090,
 		9091
 	],
+  "initializeCommand": "[ -f .devcontainer/.env.local ] && echo 'A local environment file already exists.' || cp .devcontainer/.env.local.default .devcontainer/.env.local",
 	"postCreateCommand": "yarn install",
 	"customizations": {
 		"vscode": {
