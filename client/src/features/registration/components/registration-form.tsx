@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 import { FormGroup, FormSection } from "~/components/ui/form";
 import { Checkbox } from "~/components/ui/inputs/checkbox";
 import { Combobox } from "~/components/ui/inputs/combobox";
-import { FileUpload } from "~/components/ui/inputs/file-upload";
+// import { FileUpload } from "~/components/ui/inputs/file-upload";
 import { Input } from "~/components/ui/inputs/input";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
