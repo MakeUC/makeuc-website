@@ -2,12 +2,14 @@ import AxureImage from "../assets/axure.png";
 import BalsamiqImage from "../assets/balsamiq.png";
 import elevanceHealthImage from "../assets/elevance.svg";
 import GoogleCloudImage from "../assets/google-cloud.svg";
+import HiiImage from "../assets/hii.png";
 import IBMImage from "../assets/ibm.svg";
 import InfineraImage from "../assets/infinera.png";
 import northropGrummanImage from "../assets/northrop_grumman.png";
 import OverleafImage from "../assets/overleaf.png";
 import PinnacleImage from "../assets/pinnacle.svg";
 import PRHIImage from "../assets/prhi.png";
+import StandOutStickersImage from "../assets/standout-stickers.png";
 import StickerMuleImage from "../assets/sticker-mule.png";
 import TaskadeImage from "../assets/taskade.png";
 import WolframAlphaImage from "../assets/wolfram-alpha.png";
@@ -108,6 +110,16 @@ export const sponsorData: SponsorTier[] = [
         name: "Pinnacle",
         url: "https://pinnacle.us.org/",
         imageSrc: PinnacleImage,
+      },
+      {
+        name: "StandOut Stickers",
+        url: "http://hackp.ac/mlh-StandOutStickers-hackathons",
+        imageSrc: StandOutStickersImage,
+      },
+      {
+        name: "HII",
+        url: "https://hii.com/",
+        imageSrc: HiiImage,
       },
     ],
   },
