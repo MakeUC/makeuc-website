@@ -5,7 +5,7 @@
   "main": "src/keystone.ts",
   "scripts": {
     "dev": "keystone dev",
-    "start": "run-s prisma:deploy download-data seed-data start:*",
+    "start": "run-s prisma:deploy start:*",
     "start:keystone": "keystone start",
     "build": "keystone build",
     "lint": "eslint --max-warnings 0",
