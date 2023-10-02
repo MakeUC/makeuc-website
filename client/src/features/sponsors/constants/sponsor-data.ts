@@ -66,6 +66,11 @@ export const sponsorData: SponsorTier[] = [
         url: "https://www.northropgrumman.com/careers/",
         imageSrc: northropGrummanImage,
       },
+      {
+        name: "HII",
+        url: "https://hii.com/",
+        imageSrc: HiiImage,
+      },
     ],
   },
   {
@@ -115,11 +120,6 @@ export const sponsorData: SponsorTier[] = [
         name: "StandOut Stickers",
         url: "http://hackp.ac/mlh-StandOutStickers-hackathons",
         imageSrc: StandOutStickersImage,
-      },
-      {
-        name: "HII",
-        url: "https://hii.com/",
-        imageSrc: HiiImage,
       },
     ],
   },
