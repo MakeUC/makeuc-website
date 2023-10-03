@@ -26,7 +26,6 @@
     "start:server": "cd server && yarn start",
     "prepare": "husky install",
     "postinstall": "run-p install:*",
-    "install:devcontainer": "[ -f .devcontainer/.env.local ] && echo 'A local environment file already exists.' || cp .devcontainer/.env.local.default .devcontainer/.env.local",
     "install:client": "cd client && yarn install",
     "install:server": "cd server && yarn install"
   },
