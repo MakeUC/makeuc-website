@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core5 = require("@keystone-6/core");
+var import_core6 = require("@keystone-6/core");
 
 // src/auth/index.ts
 var import_auth = require("@keystone-6/auth");
@@ -196,6 +196,9 @@ var import_fields2 = require("@keystone-6/core/fields");
 // src/auth/access.ts
 function isAuthenticated(args) {
   return !!args.session;
+}
+function everyPredicate(...predicates) {
+  return (args) => predicates.every((predicate) => predicate(args));
 }
 function allOperations(predicate) {
   return {
@@ -454,21 +457,47 @@ var School = (0, import_core3.list)({
   }
 });
 
-// src/schema/user.ts
+// src/schema/statistic.ts
 var import_core4 = require("@keystone-6/core");
+var import_access5 = require("@keystone-6/core/access");
 var import_fields4 = require("@keystone-6/core/fields");
-var User = (0, import_core4.list)({
+var CachedStatistic = (0, import_core4.list)({
+  access: {
+    operation: {
+      ...allOperations(everyPredicate()),
+      create: import_access5.allowAll
+    }
+  },
+  fields: {
+    number_of_project: (0, import_fields4.integer)({
+      validation: { isRequired: true }
+    }),
+    link_to_all_projects: (0, import_fields4.text)({
+      // Assuming the link is a URL, if not adjust accordingly.
+      validation: { isRequired: true }
+    }),
+    year: (0, import_fields4.integer)({
+      validation: { isRequired: true },
+      isIndexed: "unique"
+    })
+  }
+});
+
+// src/schema/user.ts
+var import_core5 = require("@keystone-6/core");
+var import_fields5 = require("@keystone-6/core/fields");
+var User = (0, import_core5.list)({
   access: {
     operation: allOperations(isAuthenticated)
   },
   fields: {
-    name: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields4.text)({
+    name: (0, import_fields5.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields5.text)({
       validation: { isRequired: true },
       isIndexed: "unique"
     }),
-    password: (0, import_fields4.password)({ validation: { isRequired: true } }),
-    createdAt: (0, import_fields4.timestamp)({
+    password: (0, import_fields5.password)({ validation: { isRequired: true } }),
+    createdAt: (0, import_fields5.timestamp)({
       defaultValue: { kind: "now" }
     })
   },
@@ -481,7 +510,8 @@ var User = (0, import_core4.list)({
 var lists = {
   User,
   Registrant,
-  School
+  School,
+  CachedStatistic
 };
 
 // keystone.ts
@@ -493,7 +523,7 @@ var {
   S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core5.config)({
+  (0, import_core6.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

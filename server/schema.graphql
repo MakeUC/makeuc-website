@@ -363,6 +363,52 @@ input SchoolCreateInput {
   createdAt: DateTime
 }
 
+type CachedStatistic {
+  id: ID!
+  number_of_project: Int
+  link_to_all_projects: String
+  year: Int
+}
+
+input CachedStatisticWhereUniqueInput {
+  id: ID
+  year: Int
+}
+
+input CachedStatisticWhereInput {
+  AND: [CachedStatisticWhereInput!]
+  OR: [CachedStatisticWhereInput!]
+  NOT: [CachedStatisticWhereInput!]
+  id: IDFilter
+  number_of_project: IntFilter
+  link_to_all_projects: StringFilter
+  year: IntFilter
+}
+
+input CachedStatisticOrderByInput {
+  id: OrderDirection
+  number_of_project: OrderDirection
+  link_to_all_projects: OrderDirection
+  year: OrderDirection
+}
+
+input CachedStatisticUpdateInput {
+  number_of_project: Int
+  link_to_all_projects: String
+  year: Int
+}
+
+input CachedStatisticUpdateArgs {
+  where: CachedStatisticWhereUniqueInput!
+  data: CachedStatisticUpdateInput!
+}
+
+input CachedStatisticCreateInput {
+  number_of_project: Int
+  link_to_all_projects: String
+  year: Int
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -387,6 +433,12 @@ type Mutation {
   updateSchools(data: [SchoolUpdateArgs!]!): [School]
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteSchools(where: [SchoolWhereUniqueInput!]!): [School]
+  createCachedStatistic(data: CachedStatisticCreateInput!): CachedStatistic
+  createCachedStatistics(data: [CachedStatisticCreateInput!]!): [CachedStatistic]
+  updateCachedStatistic(where: CachedStatisticWhereUniqueInput!, data: CachedStatisticUpdateInput!): CachedStatistic
+  updateCachedStatistics(data: [CachedStatisticUpdateArgs!]!): [CachedStatistic]
+  deleteCachedStatistic(where: CachedStatisticWhereUniqueInput!): CachedStatistic
+  deleteCachedStatistics(where: [CachedStatisticWhereUniqueInput!]!): [CachedStatistic]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -421,6 +473,9 @@ type Query {
   schools(where: SchoolWhereInput! = {}, orderBy: [SchoolOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: SchoolWhereUniqueInput): [School!]
   school(where: SchoolWhereUniqueInput!): School
   schoolsCount(where: SchoolWhereInput! = {}): Int
+  cachedStatistics(where: CachedStatisticWhereInput! = {}, orderBy: [CachedStatisticOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CachedStatisticWhereUniqueInput): [CachedStatistic!]
+  cachedStatistic(where: CachedStatisticWhereUniqueInput!): CachedStatistic
+  cachedStatisticsCount(where: CachedStatisticWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   statistics(year: Int!): String

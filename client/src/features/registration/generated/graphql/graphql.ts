@@ -28,6 +28,53 @@ export type BooleanFilter = {
   not?: InputMaybe<BooleanFilter>;
 };
 
+export type CachedStatistic = {
+  __typename?: 'CachedStatistic';
+  id: Scalars['ID']['output'];
+  link_to_all_projects?: Maybe<Scalars['String']['output']>;
+  number_of_project?: Maybe<Scalars['Int']['output']>;
+  year?: Maybe<Scalars['Int']['output']>;
+};
+
+export type CachedStatisticCreateInput = {
+  link_to_all_projects?: InputMaybe<Scalars['String']['input']>;
+  number_of_project?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CachedStatisticOrderByInput = {
+  id?: InputMaybe<OrderDirection>;
+  link_to_all_projects?: InputMaybe<OrderDirection>;
+  number_of_project?: InputMaybe<OrderDirection>;
+  year?: InputMaybe<OrderDirection>;
+};
+
+export type CachedStatisticUpdateArgs = {
+  data: CachedStatisticUpdateInput;
+  where: CachedStatisticWhereUniqueInput;
+};
+
+export type CachedStatisticUpdateInput = {
+  link_to_all_projects?: InputMaybe<Scalars['String']['input']>;
+  number_of_project?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CachedStatisticWhereInput = {
+  AND?: InputMaybe<Array<CachedStatisticWhereInput>>;
+  NOT?: InputMaybe<Array<CachedStatisticWhereInput>>;
+  OR?: InputMaybe<Array<CachedStatisticWhereInput>>;
+  id?: InputMaybe<IdFilter>;
+  link_to_all_projects?: InputMaybe<StringFilter>;
+  number_of_project?: InputMaybe<IntFilter>;
+  year?: InputMaybe<IntFilter>;
+};
+
+export type CachedStatisticWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type CreateInitialUserInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -213,6 +260,8 @@ export type KeystoneMeta = {
 export type Mutation = {
   __typename?: 'Mutation';
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
+  createCachedStatistic?: Maybe<CachedStatistic>;
+  createCachedStatistics?: Maybe<Array<Maybe<CachedStatistic>>>;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   createRegistrant?: Maybe<Registrant>;
   createRegistrants?: Maybe<Array<Maybe<Registrant>>>;
@@ -220,6 +269,8 @@ export type Mutation = {
   createSchools?: Maybe<Array<Maybe<School>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
+  deleteCachedStatistic?: Maybe<CachedStatistic>;
+  deleteCachedStatistics?: Maybe<Array<Maybe<CachedStatistic>>>;
   deleteRegistrant?: Maybe<Registrant>;
   deleteRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   deleteSchool?: Maybe<School>;
@@ -228,6 +279,8 @@ export type Mutation = {
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean']['output'];
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
+  updateCachedStatistic?: Maybe<CachedStatistic>;
+  updateCachedStatistics?: Maybe<Array<Maybe<CachedStatistic>>>;
   updateRegistrant?: Maybe<Registrant>;
   updateRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   updateSchool?: Maybe<School>;
@@ -241,6 +294,16 @@ export type Mutation = {
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationCreateCachedStatisticArgs = {
+  data: CachedStatisticCreateInput;
+};
+
+
+export type MutationCreateCachedStatisticsArgs = {
+  data: Array<CachedStatisticCreateInput>;
 };
 
 
@@ -279,6 +342,16 @@ export type MutationCreateUsersArgs = {
 };
 
 
+export type MutationDeleteCachedStatisticArgs = {
+  where: CachedStatisticWhereUniqueInput;
+};
+
+
+export type MutationDeleteCachedStatisticsArgs = {
+  where: Array<CachedStatisticWhereUniqueInput>;
+};
+
+
 export type MutationDeleteRegistrantArgs = {
   where: RegistrantWhereUniqueInput;
 };
@@ -306,6 +379,17 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
+};
+
+
+export type MutationUpdateCachedStatisticArgs = {
+  data: CachedStatisticUpdateInput;
+  where: CachedStatisticWhereUniqueInput;
+};
+
+
+export type MutationUpdateCachedStatisticsArgs = {
+  data: Array<CachedStatisticUpdateArgs>;
 };
 
 
@@ -373,6 +457,9 @@ export type PasswordState = {
 export type Query = {
   __typename?: 'Query';
   authenticatedItem?: Maybe<AuthenticatedItem>;
+  cachedStatistic?: Maybe<CachedStatistic>;
+  cachedStatistics?: Maybe<Array<CachedStatistic>>;
+  cachedStatisticsCount?: Maybe<Scalars['Int']['output']>;
   keystone: KeystoneMeta;
   registrant?: Maybe<Registrant>;
   registrants?: Maybe<Array<Registrant>>;
@@ -384,6 +471,25 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type QueryCachedStatisticArgs = {
+  where: CachedStatisticWhereUniqueInput;
+};
+
+
+export type QueryCachedStatisticsArgs = {
+  cursor?: InputMaybe<CachedStatisticWhereUniqueInput>;
+  orderBy?: Array<CachedStatisticOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: CachedStatisticWhereInput;
+};
+
+
+export type QueryCachedStatisticsCountArgs = {
+  where?: CachedStatisticWhereInput;
 };
 
 

@@ -6,6 +6,7 @@
 // - https://keystonejs.com/docs/config/lists
 import { Registrant } from "./registrant";
 import { School } from "./school";
+import { CachedStatistic } from "./statistic";
 import { User } from "./user";
 
 import type { Lists } from ".keystone/types";
@@ -15,4 +16,5 @@ export const lists = {
   User,
   Registrant,
   School,
+  CachedStatistic,
 } as Lists;

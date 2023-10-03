@@ -5,10 +5,24 @@ import { Loader } from "lucide-react";
 import { useMemo } from "react";
 import { z } from "zod";
 
-import { GetStatisticsDocument } from "~/generated/graphql/graphql";
+import { GetStatisticsDocument, GetCachedStatisticsDocument } from "~/generated/graphql/graphql";
+
+import { Button } from "../ui/button";
 
 import { Chart } from "./chart";
 
+
+export const cachedStatistics = z.object({
+  number_of_project: z.number(),
+  link_to_all_projects: z.string(),
+  year: z.number(),
+});
+
+export type CachedStatistics = z.infer<typeof cachedStatistics>;
+
+export interface CachedStatsProps {
+  year: number;
+}
 
 export const statistics = z.object({
   countRegistrants: z.number(),
@@ -30,6 +44,17 @@ export function Stats({ year }: StatsProps) {
     variables: { year },
   });
 
+  const { data: cachedStatistics } = useSuspenseQuery(GetCachedStatisticsDocument, {
+    variables: { year },
+  });
+
+  const cachedStatisticsJson = useMemo(() => {
+    if (!cachedStatistics?.cachedStatistics) return undefined;
+
+    return cachedStatistics.cachedStatistics[0];
+  }, [cachedStatistics]);
+
+
   const statisticsJson = useMemo(() => {
     if (!statisticsData?.statistics) return undefined;
 
@@ -44,15 +69,26 @@ export function Stats({ year }: StatsProps) {
     return result.data;
   }, [statisticsData]);
 
+
+
   if (error || !statisticsJson) {
     return <Loader className="animate-spin" />;
   }
 
   return (
     <div className="p-6">
-      <div className="flex flex-col gap-2 text-center">
-        <span className="text-4xl font-semibold">{statisticsJson.countRegistrants}</span>
-        <h3 className="text-lg text-muted-foreground">Total Registrants</h3>
+      <div className="flex my-8 flex-row text-center justify-center gap-[3rem]">
+
+      </div>
+      <div className="flex flex-row text-center justify-center gap-[3rem]">
+        <div className="flex flex-col gap-2 text-center">
+          <span className="text-4xl font-semibold">{statisticsJson.countRegistrants}</span>
+          <h3 className="text-lg text-muted-foreground">Total Registrants</h3>
+        </div>
+        <div className="flex flex-col gap-2 text-center">
+          <span className="text-4xl font-semibold">{cachedStatisticsJson?.number_of_project || 0}</span>
+          <h3 className="text-lg text-muted-foreground">Total Projects</h3>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[repeat(3,_1fr)] gap-4 my-8 p-2 justify-between">
@@ -72,6 +108,13 @@ export function Stats({ year }: StatsProps) {
       <div className="flex flex-col justify-between md:flex-row gap-8">
         <Chart data={statisticsJson.ethnicityBreakdown} title="Ethnicity" />
         <Chart data={statisticsJson.educationBreakdown} title="Education" />
+      </div>
+      <div className="flex my-10 flex-row justify-center">
+        <Button className="flex gap-2 mt-4" size="lg">
+          <a href={cachedStatisticsJson?.link_to_all_projects || ""}>
+            Links to All Projects
+          </a>
+        </Button>
       </div>
     </div>);
 }

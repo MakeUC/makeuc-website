@@ -69,3 +69,10 @@ model School {
   @@index([country])
   @@index([alias])
 }
+
+model CachedStatistic {
+  id                   String @id @default(cuid())
+  number_of_project    Int
+  link_to_all_projects String @default("")
+  year                 Int    @unique
+}

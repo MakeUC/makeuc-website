@@ -6,7 +6,7 @@ import { Config } from "~/constants/config";
 export const revalidate = Config.RevalidationFrequency;
 
 export default function StatsPage() {
-  const year = new Date().getFullYear() - 1;
+  const year = new Date().getFullYear();
 
   return (
     <div className="flex justify-center">
