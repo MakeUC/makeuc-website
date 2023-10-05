@@ -257,8 +257,7 @@ function sendRegistrantEmail(registrant) {
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`,
       regURL: `${REGISTRATION_URL}${registrant.id}`
-    },
-    asm: { groupId: 168180 }
+    }
   });
 }
 function sendRegistrantConfirmationEmail(registrant) {
@@ -269,8 +268,7 @@ function sendRegistrantConfirmationEmail(registrant) {
     templateId: "d-c944baee63bb4b868d3bd036663826d2",
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`
-    },
-    asm: { groupId: 168180 }
+    }
   });
 }
 var Registrant = (0, import_core.list)(addCompoundKey({
@@ -334,7 +332,15 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item)
         return;
-      await sendRegistrantEmail(item);
+      await sendRegistrantEmail(item).then((resp) => {
+        if (!resp[0]) {
+          return;
+        }
+        if (resp[0].statusCode === 202) {
+          return;
+        }
+        console.error(resp);
+      });
     }
   }
 }, ["email", "registrationYear"]));
