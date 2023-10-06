@@ -5,7 +5,8 @@ import GoogleCloudImage from "../assets/google-cloud.svg";
 import HiiImage from "../assets/hii.png";
 import IBMImage from "../assets/ibm.svg";
 import InfineraImage from "../assets/infinera.png";
-import northropGrummanImage from "../assets/northrop_grumman.png";
+import KineticVisionImage from "../assets/kinetic-vision.png";
+import NorthropGrummanImage from "../assets/northrop_grumman.png";
 import OverleafImage from "../assets/overleaf.png";
 import PinnacleImage from "../assets/pinnacle.svg";
 import PRHIImage from "../assets/prhi.png";
@@ -64,12 +65,17 @@ export const sponsorData: SponsorTier[] = [
       {
         name: "Northrop Grumman",
         url: "https://www.northropgrumman.com/careers/",
-        imageSrc: northropGrummanImage,
+        imageSrc: NorthropGrummanImage,
       },
       {
         name: "HII",
         url: "https://hii.com/",
         imageSrc: HiiImage,
+      },
+      {
+        name: "Kinetic Vision",
+        url: "https://kinetic-vision.com/",
+        imageSrc: KineticVisionImage,
       },
     ],
   },
