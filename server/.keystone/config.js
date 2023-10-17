@@ -197,9 +197,6 @@ var import_fields2 = require("@keystone-6/core/fields");
 function isAuthenticated(args) {
   return !!args.session;
 }
-function everyPredicate(...predicates) {
-  return (args) => predicates.every((predicate) => predicate(args));
-}
 function allOperations(predicate) {
   return {
     create: predicate,
@@ -479,20 +476,18 @@ var School = (0, import_core3.list)({
 
 // src/schema/statistic.ts
 var import_core4 = require("@keystone-6/core");
-var import_access5 = require("@keystone-6/core/access");
 var import_fields4 = require("@keystone-6/core/fields");
 var CachedStatistic = (0, import_core4.list)({
   access: {
     operation: {
-      ...allOperations(everyPredicate()),
-      create: import_access5.allowAll
+      ...allOperations(isAuthenticated)
     }
   },
   fields: {
-    number_of_project: (0, import_fields4.integer)({
+    numberOfProject: (0, import_fields4.integer)({
       validation: { isRequired: true }
     }),
-    link_to_all_projects: (0, import_fields4.text)({
+    linkToAllProjects: (0, import_fields4.text)({
       // Assuming the link is a URL, if not adjust accordingly.
       validation: { isRequired: true }
     }),

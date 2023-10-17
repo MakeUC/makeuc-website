@@ -365,8 +365,8 @@ input SchoolCreateInput {
 
 type CachedStatistic {
   id: ID!
-  number_of_project: Int
-  link_to_all_projects: String
+  numberOfProject: Int
+  linkToAllProjects: String
   year: Int
 }
 
@@ -380,21 +380,21 @@ input CachedStatisticWhereInput {
   OR: [CachedStatisticWhereInput!]
   NOT: [CachedStatisticWhereInput!]
   id: IDFilter
-  number_of_project: IntFilter
-  link_to_all_projects: StringFilter
+  numberOfProject: IntFilter
+  linkToAllProjects: StringFilter
   year: IntFilter
 }
 
 input CachedStatisticOrderByInput {
   id: OrderDirection
-  number_of_project: OrderDirection
-  link_to_all_projects: OrderDirection
+  numberOfProject: OrderDirection
+  linkToAllProjects: OrderDirection
   year: OrderDirection
 }
 
 input CachedStatisticUpdateInput {
-  number_of_project: Int
-  link_to_all_projects: String
+  numberOfProject: Int
+  linkToAllProjects: String
   year: Int
 }
 
@@ -404,8 +404,8 @@ input CachedStatisticUpdateArgs {
 }
 
 input CachedStatisticCreateInput {
-  number_of_project: Int
-  link_to_all_projects: String
+  numberOfProject: Int
+  linkToAllProjects: String
   year: Int
 }
 
