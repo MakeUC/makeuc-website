@@ -19,7 +19,6 @@ export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
       name: `${registrant.firstName} ${registrant.lastName}`,
       regURL: `${REGISTRATION_URL}${registrant.id}`,
     },
-    asm: { groupId: 168180 },
   });
 }
 
@@ -32,7 +31,6 @@ export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Ite
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`,
     },
-    asm: { groupId: 168180 },
   });
 }
 
@@ -97,7 +95,14 @@ export const Registrant = list(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item) return;
 
-      // await sendRegistrantEmail(item as Lists.Registrant.Item);
+      await sendRegistrantEmail(item as Lists.Registrant.Item)
+        .then(resp => {
+          if (!resp[0]) { return; }
+          if (resp[0].statusCode === 202) { return; }
+
+          // eslint-disable-next-line no-console
+          console.error(resp);
+        });
     },
   },
 }, ["email", "registrationYear"]));
