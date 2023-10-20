@@ -416,7 +416,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
   mutation: {
     seedSchoolIndiaData: import_core2.graphql.field({
       type: import_core2.graphql.Boolean,
-      async resolve(source, _, context) {
+      async resolve(_source, _, context) {
         if (!context.session)
           return null;
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
@@ -426,7 +426,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
     verifyRegistrant: import_core2.graphql.field({
       type: base.object("Registrant"),
       args: { id: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.ID) }) },
-      async resolve(source, { id }, context) {
+      async resolve(_source, { id }, context) {
         const foundRegistrant = await context.prisma.registrant.findFirst({
           where: { id, verified: { equals: false } }
         });
@@ -442,6 +442,20 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         }
         await sendRegistrantConfirmationEmail(registrant);
         return registrant;
+      }
+    }),
+    resendVerificationEmails: import_core2.graphql.field({
+      type: import_core2.graphql.list(import_core2.graphql.String),
+      async resolve(_source, _, context) {
+        if (!context.session)
+          return null;
+        const unverifiedRegistrants = await context.prisma.registrant.findMany({
+          where: { verified: { equals: false }, registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() } }
+        });
+        for (const registrant of unverifiedRegistrants) {
+          await sendRegistrantEmail(registrant);
+        }
+        return unverifiedRegistrants.map((registrant) => registrant.email);
       }
     })
   }
