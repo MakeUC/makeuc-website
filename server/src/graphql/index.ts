@@ -1,6 +1,6 @@
 import { graphql } from "@keystone-6/core";
 
-import { sendRegistrantConfirmationEmail } from "../schema/registrant";
+import { sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
@@ -51,7 +51,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
   mutation: {
     seedSchoolIndiaData: graphql.field({
       type: graphql.Boolean,
-      async resolve(source, _, context: Context) {
+      async resolve(_source, _, context: Context) {
         if (!context.session) return null;
 
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
@@ -61,7 +61,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     verifyRegistrant: graphql.field({
       type: base.object("Registrant"),
       args: { id: graphql.arg({ type: graphql.nonNull(graphql.ID) }) },
-      async resolve(source, { id }, context: Context) {
+      async resolve(_source, { id }, context: Context) {
         const foundRegistrant = await context.prisma.registrant.findFirst({
           where: { id, verified: { equals: false } },
         });
@@ -78,6 +78,24 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         await sendRegistrantConfirmationEmail(registrant);
 
         return registrant;
+      },
+    }),
+    resendVerificationEmails: graphql.field({
+      type: graphql.list(graphql.String),
+      async resolve(_source, _, context: Context) {
+        if (!context.session) return null;
+
+        // Get all of the registrants from the current year that are NOT verified
+        const unverifiedRegistrants = await context.prisma.registrant.findMany({
+          where: { verified: { equals: false }, registrationYear: { equals: new Date().getFullYear() } },
+        });
+
+        // Send emails for each unverified registrant
+        for (const registrant of unverifiedRegistrants) {
+          await sendRegistrantEmail(registrant);
+        }
+
+        return unverifiedRegistrants.map(registrant => registrant.email);
       },
     }),
   },
