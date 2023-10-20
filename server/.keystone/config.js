@@ -248,6 +248,18 @@ var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
 var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
 
 // src/schema/registrant.ts
+function sendRegistrantEmail(registrant) {
+  return import_mail.default.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    subject: `Confirm MakeUC ${(/* @__PURE__ */ new Date()).getFullYear()} Registration`,
+    templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
+    dynamicTemplateData: {
+      name: `${registrant.firstName} ${registrant.lastName}`,
+      regURL: `${REGISTRATION_URL}${registrant.id}`
+    }
+  });
+}
 function sendRegistrantConfirmationEmail(registrant) {
   return import_mail.default.send({
     from: FROM_ADDRESS,
@@ -256,8 +268,7 @@ function sendRegistrantConfirmationEmail(registrant) {
     templateId: "d-c944baee63bb4b868d3bd036663826d2",
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`
-    },
-    asm: { groupId: 168180 }
+    }
   });
 }
 var Registrant = (0, import_core.list)(addCompoundKey({
@@ -321,6 +332,15 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item)
         return;
+      await sendRegistrantEmail(item).then((resp) => {
+        if (!resp[0]) {
+          return;
+        }
+        if (resp[0].statusCode === 202) {
+          return;
+        }
+        console.error(resp);
+      });
     }
   }
 }, ["email", "registrationYear"]));
@@ -396,7 +416,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
   mutation: {
     seedSchoolIndiaData: import_core2.graphql.field({
       type: import_core2.graphql.Boolean,
-      async resolve(source, _, context) {
+      async resolve(_source, _, context) {
         if (!context.session)
           return null;
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
@@ -406,7 +426,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
     verifyRegistrant: import_core2.graphql.field({
       type: base.object("Registrant"),
       args: { id: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.ID) }) },
-      async resolve(source, { id }, context) {
+      async resolve(_source, { id }, context) {
         const foundRegistrant = await context.prisma.registrant.findFirst({
           where: { id, verified: { equals: false } }
         });
@@ -422,6 +442,20 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         }
         await sendRegistrantConfirmationEmail(registrant);
         return registrant;
+      }
+    }),
+    resendVerificationEmails: import_core2.graphql.field({
+      type: import_core2.graphql.list(import_core2.graphql.String),
+      async resolve(_source, _, context) {
+        if (!context.session)
+          return null;
+        const unverifiedRegistrants = await context.prisma.registrant.findMany({
+          where: { verified: { equals: false }, registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() } }
+        });
+        for (const registrant of unverifiedRegistrants) {
+          await sendRegistrantEmail(registrant);
+        }
+        return unverifiedRegistrants.map((registrant) => registrant.email);
       }
     })
   }

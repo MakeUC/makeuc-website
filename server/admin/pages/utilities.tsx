@@ -45,6 +45,13 @@ const importRegistrants: FormEventHandler<HTMLFormElement> = event => {
   });
 };
 
+async function sendVerificationEmails() {
+  await fetchGraphQL(gql`
+    mutation {
+      resendVerificationEmails
+    }
+`);
+}
 
 export default function UtilitiesPage() {
   return (
@@ -54,15 +61,21 @@ export default function UtilitiesPage() {
       <H3>Manual Seeding</H3>
       <br />
       <div style={{ display: "flex", gap: "1rem" }}>
-        <Button>Seed US Schools</Button>
         <Button onClick={seedIndiaSchools}>Seed India Schools</Button>
       </div>
+      <br />
       <H3>Import Registrants</H3>
       <br />
       <form onSubmit={importRegistrants}>
         <input type="file" name="file" />
         <Button type="submit" tone="positive">Import Registrants</Button>
       </form>
+      <br />
+      <H3>Send Verification Emails to Unverified Registrants for {new Date().getFullYear()}</H3>
+      <br />
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <Button onClick={sendVerificationEmails}>Send Verification Emails</Button>
+      </div>
     </PageContainer>
   );
 }

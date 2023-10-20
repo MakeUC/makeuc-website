@@ -392,6 +392,7 @@ type Mutation {
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
+  resendVerificationEmails: [String]
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
