@@ -23,6 +23,7 @@ const LINKS: NavigationLink[] = [
   { key: "about", href: "/about", children: "About" },
   { key: "tracks", href: "/tracks", children: "Tracks" },
   { key: "faq", href: "/faq", children: "FAQ" },
+  { key: "live", href: "/live-site", children: "Live Site" },
   // { key: "sponsors", href: "#", children: "Sponsors" },
 ];
 
