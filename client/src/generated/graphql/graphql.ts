@@ -56,6 +56,17 @@ export type FileFieldOutput = {
   url: Scalars['String']['output'];
 };
 
+export type FloatFilter = {
+  equals?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  not?: InputMaybe<FloatFilter>;
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+};
+
 export type IdFilter = {
   equals?: InputMaybe<Scalars['ID']['input']>;
   gt?: InputMaybe<Scalars['ID']['input']>;
@@ -87,6 +98,116 @@ export type IntNullableFilter = {
   lte?: InputMaybe<Scalars['Int']['input']>;
   not?: InputMaybe<IntNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type Judgement = {
+  __typename?: 'Judgement';
+  applicableTracks?: Maybe<Array<Track>>;
+  applicableTracksCount?: Maybe<Scalars['Int']['output']>;
+  conceptCaliber?: Maybe<Scalars['Int']['output']>;
+  demonstrationAbility?: Maybe<Scalars['Int']['output']>;
+  disqualifiedBy?: Maybe<User>;
+  disqualifyReason?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  implementationAttempt?: Maybe<Scalars['Int']['output']>;
+  judge?: Maybe<User>;
+  overallScore?: Maybe<Scalars['Float']['output']>;
+  presentationProfessionalism?: Maybe<Scalars['Int']['output']>;
+  project?: Maybe<Project>;
+};
+
+
+export type JudgementApplicableTracksArgs = {
+  cursor?: InputMaybe<TrackWhereUniqueInput>;
+  orderBy?: Array<TrackOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: TrackWhereInput;
+};
+
+
+export type JudgementApplicableTracksCountArgs = {
+  where?: TrackWhereInput;
+};
+
+export type JudgementCreateInput = {
+  applicableTracks?: InputMaybe<TrackRelateToManyForCreateInput>;
+  conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
+  demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
+  disqualifiedBy?: InputMaybe<UserRelateToOneForCreateInput>;
+  disqualifyReason?: InputMaybe<Scalars['String']['input']>;
+  implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
+  judge?: InputMaybe<UserRelateToOneForCreateInput>;
+  overallScore?: InputMaybe<Scalars['Float']['input']>;
+  presentationProfessionalism?: InputMaybe<Scalars['Int']['input']>;
+  project?: InputMaybe<ProjectRelateToOneForCreateInput>;
+};
+
+export type JudgementManyRelationFilter = {
+  every?: InputMaybe<JudgementWhereInput>;
+  none?: InputMaybe<JudgementWhereInput>;
+  some?: InputMaybe<JudgementWhereInput>;
+};
+
+export type JudgementOrderByInput = {
+  conceptCaliber?: InputMaybe<OrderDirection>;
+  demonstrationAbility?: InputMaybe<OrderDirection>;
+  disqualifyReason?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+  implementationAttempt?: InputMaybe<OrderDirection>;
+  overallScore?: InputMaybe<OrderDirection>;
+  presentationProfessionalism?: InputMaybe<OrderDirection>;
+};
+
+export type JudgementRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<JudgementWhereUniqueInput>>;
+  create?: InputMaybe<Array<JudgementCreateInput>>;
+};
+
+export type JudgementRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<JudgementWhereUniqueInput>>;
+  create?: InputMaybe<Array<JudgementCreateInput>>;
+  disconnect?: InputMaybe<Array<JudgementWhereUniqueInput>>;
+  set?: InputMaybe<Array<JudgementWhereUniqueInput>>;
+};
+
+export type JudgementUpdateArgs = {
+  data: JudgementUpdateInput;
+  where: JudgementWhereUniqueInput;
+};
+
+export type JudgementUpdateInput = {
+  applicableTracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
+  conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
+  demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
+  disqualifiedBy?: InputMaybe<UserRelateToOneForUpdateInput>;
+  disqualifyReason?: InputMaybe<Scalars['String']['input']>;
+  implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
+  judge?: InputMaybe<UserRelateToOneForUpdateInput>;
+  overallScore?: InputMaybe<Scalars['Float']['input']>;
+  presentationProfessionalism?: InputMaybe<Scalars['Int']['input']>;
+  project?: InputMaybe<ProjectRelateToOneForUpdateInput>;
+};
+
+export type JudgementWhereInput = {
+  AND?: InputMaybe<Array<JudgementWhereInput>>;
+  NOT?: InputMaybe<Array<JudgementWhereInput>>;
+  OR?: InputMaybe<Array<JudgementWhereInput>>;
+  applicableTracks?: InputMaybe<TrackManyRelationFilter>;
+  conceptCaliber?: InputMaybe<IntFilter>;
+  demonstrationAbility?: InputMaybe<IntFilter>;
+  disqualifiedBy?: InputMaybe<UserWhereInput>;
+  disqualifyReason?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IdFilter>;
+  implementationAttempt?: InputMaybe<IntFilter>;
+  judge?: InputMaybe<UserWhereInput>;
+  overallScore?: InputMaybe<FloatFilter>;
+  presentationProfessionalism?: InputMaybe<IntFilter>;
+  project?: InputMaybe<ProjectWhereInput>;
+};
+
+export type JudgementWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type KeystoneAdminMeta = {
@@ -214,25 +335,43 @@ export type Mutation = {
   __typename?: 'Mutation';
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
+  createJudgement?: Maybe<Judgement>;
+  createJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  createProject?: Maybe<Project>;
+  createProjects?: Maybe<Array<Maybe<Project>>>;
   createRegistrant?: Maybe<Registrant>;
   createRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   createSchool?: Maybe<School>;
   createSchools?: Maybe<Array<Maybe<School>>>;
+  createTrack?: Maybe<Track>;
+  createTracks?: Maybe<Array<Maybe<Track>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
+  deleteJudgement?: Maybe<Judgement>;
+  deleteJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  deleteProject?: Maybe<Project>;
+  deleteProjects?: Maybe<Array<Maybe<Project>>>;
   deleteRegistrant?: Maybe<Registrant>;
   deleteRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   deleteSchool?: Maybe<School>;
   deleteSchools?: Maybe<Array<Maybe<School>>>;
+  deleteTrack?: Maybe<Track>;
+  deleteTracks?: Maybe<Array<Maybe<Track>>>;
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean']['output'];
   resendVerificationEmails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
+  updateJudgement?: Maybe<Judgement>;
+  updateJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  updateProject?: Maybe<Project>;
+  updateProjects?: Maybe<Array<Maybe<Project>>>;
   updateRegistrant?: Maybe<Registrant>;
   updateRegistrants?: Maybe<Array<Maybe<Registrant>>>;
   updateSchool?: Maybe<School>;
   updateSchools?: Maybe<Array<Maybe<School>>>;
+  updateTrack?: Maybe<Track>;
+  updateTracks?: Maybe<Array<Maybe<Track>>>;
   updateUser?: Maybe<User>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
   verifyRegistrant?: Maybe<Registrant>;
@@ -247,6 +386,26 @@ export type MutationAuthenticateUserWithPasswordArgs = {
 
 export type MutationCreateInitialUserArgs = {
   data: CreateInitialUserInput;
+};
+
+
+export type MutationCreateJudgementArgs = {
+  data: JudgementCreateInput;
+};
+
+
+export type MutationCreateJudgementsArgs = {
+  data: Array<JudgementCreateInput>;
+};
+
+
+export type MutationCreateProjectArgs = {
+  data: ProjectCreateInput;
+};
+
+
+export type MutationCreateProjectsArgs = {
+  data: Array<ProjectCreateInput>;
 };
 
 
@@ -270,6 +429,16 @@ export type MutationCreateSchoolsArgs = {
 };
 
 
+export type MutationCreateTrackArgs = {
+  data: TrackCreateInput;
+};
+
+
+export type MutationCreateTracksArgs = {
+  data: Array<TrackCreateInput>;
+};
+
+
 export type MutationCreateUserArgs = {
   data: UserCreateInput;
 };
@@ -277,6 +446,26 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateUsersArgs = {
   data: Array<UserCreateInput>;
+};
+
+
+export type MutationDeleteJudgementArgs = {
+  where: JudgementWhereUniqueInput;
+};
+
+
+export type MutationDeleteJudgementsArgs = {
+  where: Array<JudgementWhereUniqueInput>;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  where: ProjectWhereUniqueInput;
+};
+
+
+export type MutationDeleteProjectsArgs = {
+  where: Array<ProjectWhereUniqueInput>;
 };
 
 
@@ -300,6 +489,16 @@ export type MutationDeleteSchoolsArgs = {
 };
 
 
+export type MutationDeleteTrackArgs = {
+  where: TrackWhereUniqueInput;
+};
+
+
+export type MutationDeleteTracksArgs = {
+  where: Array<TrackWhereUniqueInput>;
+};
+
+
 export type MutationDeleteUserArgs = {
   where: UserWhereUniqueInput;
 };
@@ -307,6 +506,28 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
+};
+
+
+export type MutationUpdateJudgementArgs = {
+  data: JudgementUpdateInput;
+  where: JudgementWhereUniqueInput;
+};
+
+
+export type MutationUpdateJudgementsArgs = {
+  data: Array<JudgementUpdateArgs>;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  data: ProjectUpdateInput;
+  where: ProjectWhereUniqueInput;
+};
+
+
+export type MutationUpdateProjectsArgs = {
+  data: Array<ProjectUpdateArgs>;
 };
 
 
@@ -329,6 +550,17 @@ export type MutationUpdateSchoolArgs = {
 
 export type MutationUpdateSchoolsArgs = {
   data: Array<SchoolUpdateArgs>;
+};
+
+
+export type MutationUpdateTrackArgs = {
+  data: TrackUpdateInput;
+  where: TrackWhereUniqueInput;
+};
+
+
+export type MutationUpdateTracksArgs = {
+  data: Array<TrackUpdateArgs>;
 };
 
 
@@ -371,10 +603,96 @@ export type PasswordState = {
   isSet: Scalars['Boolean']['output'];
 };
 
+export type Project = {
+  __typename?: 'Project';
+  id: Scalars['ID']['output'];
+  judgements?: Maybe<Array<Judgement>>;
+  judgementsCount?: Maybe<Scalars['Int']['output']>;
+  judgingGroup?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  year?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type ProjectJudgementsArgs = {
+  cursor?: InputMaybe<JudgementWhereUniqueInput>;
+  orderBy?: Array<JudgementOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: JudgementWhereInput;
+};
+
+
+export type ProjectJudgementsCountArgs = {
+  where?: JudgementWhereInput;
+};
+
+export type ProjectCreateInput = {
+  judgingGroup?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ProjectOrderByInput = {
+  id?: InputMaybe<OrderDirection>;
+  judgingGroup?: InputMaybe<OrderDirection>;
+  name?: InputMaybe<OrderDirection>;
+  url?: InputMaybe<OrderDirection>;
+  year?: InputMaybe<OrderDirection>;
+};
+
+export type ProjectRelateToOneForCreateInput = {
+  connect?: InputMaybe<ProjectWhereUniqueInput>;
+  create?: InputMaybe<ProjectCreateInput>;
+};
+
+export type ProjectRelateToOneForUpdateInput = {
+  connect?: InputMaybe<ProjectWhereUniqueInput>;
+  create?: InputMaybe<ProjectCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ProjectUpdateArgs = {
+  data: ProjectUpdateInput;
+  where: ProjectWhereUniqueInput;
+};
+
+export type ProjectUpdateInput = {
+  judgingGroup?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ProjectWhereInput = {
+  AND?: InputMaybe<Array<ProjectWhereInput>>;
+  NOT?: InputMaybe<Array<ProjectWhereInput>>;
+  OR?: InputMaybe<Array<ProjectWhereInput>>;
+  id?: InputMaybe<IdFilter>;
+  judgements?: InputMaybe<JudgementManyRelationFilter>;
+  judgingGroup?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+  year?: InputMaybe<IntFilter>;
+};
+
+export type ProjectWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   authenticatedItem?: Maybe<AuthenticatedItem>;
+  judgement?: Maybe<Judgement>;
+  judgements?: Maybe<Array<Judgement>>;
+  judgementsCount?: Maybe<Scalars['Int']['output']>;
   keystone: KeystoneMeta;
+  project?: Maybe<Project>;
+  projects?: Maybe<Array<Project>>;
+  projectsCount?: Maybe<Scalars['Int']['output']>;
   registrant?: Maybe<Registrant>;
   registrants?: Maybe<Array<Registrant>>;
   registrantsCount?: Maybe<Scalars['Int']['output']>;
@@ -382,9 +700,50 @@ export type Query = {
   schools?: Maybe<Array<School>>;
   schoolsCount?: Maybe<Scalars['Int']['output']>;
   statistics?: Maybe<Scalars['String']['output']>;
+  track?: Maybe<Track>;
+  tracks?: Maybe<Array<Track>>;
+  tracksCount?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type QueryJudgementArgs = {
+  where: JudgementWhereUniqueInput;
+};
+
+
+export type QueryJudgementsArgs = {
+  cursor?: InputMaybe<JudgementWhereUniqueInput>;
+  orderBy?: Array<JudgementOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: JudgementWhereInput;
+};
+
+
+export type QueryJudgementsCountArgs = {
+  where?: JudgementWhereInput;
+};
+
+
+export type QueryProjectArgs = {
+  where: ProjectWhereUniqueInput;
+};
+
+
+export type QueryProjectsArgs = {
+  cursor?: InputMaybe<ProjectWhereUniqueInput>;
+  orderBy?: Array<ProjectOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ProjectWhereInput;
+};
+
+
+export type QueryProjectsCountArgs = {
+  where?: ProjectWhereInput;
 };
 
 
@@ -431,6 +790,25 @@ export type QueryStatisticsArgs = {
 };
 
 
+export type QueryTrackArgs = {
+  where: TrackWhereUniqueInput;
+};
+
+
+export type QueryTracksArgs = {
+  cursor?: InputMaybe<TrackWhereUniqueInput>;
+  orderBy?: Array<TrackOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: TrackWhereInput;
+};
+
+
+export type QueryTracksCountArgs = {
+  where?: TrackWhereInput;
+};
+
+
 export type QueryUserArgs = {
   where: UserWhereUniqueInput;
 };
@@ -456,6 +834,7 @@ export enum QueryMode {
 
 export type Registrant = {
   __typename?: 'Registrant';
+  acceptPhotoRelease?: Maybe<Scalars['Boolean']['output']>;
   age?: Maybe<Scalars['Int']['output']>;
   country?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
@@ -468,6 +847,7 @@ export type Registrant = {
   gender?: Maybe<Scalars['String']['output']>;
   hackathonsAttended?: Maybe<Scalars['Int']['output']>;
   id: Scalars['ID']['output'];
+  invitedInPerson?: Maybe<Scalars['Boolean']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   major?: Maybe<Scalars['String']['output']>;
   mlhCodeOfConductAgreement?: Maybe<Scalars['Boolean']['output']>;
@@ -477,6 +857,7 @@ export type Registrant = {
   registrationYear?: Maybe<Scalars['Int']['output']>;
   resume?: Maybe<FileFieldOutput>;
   school?: Maybe<School>;
+  user?: Maybe<User>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
@@ -499,10 +880,17 @@ export type RegistrantCreateInput = {
   notes?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
-  verified?: InputMaybe<Scalars['Boolean']['input']>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+};
+
+export type RegistrantManyRelationFilter = {
+  every?: InputMaybe<RegistrantWhereInput>;
+  none?: InputMaybe<RegistrantWhereInput>;
+  some?: InputMaybe<RegistrantWhereInput>;
 };
 
 export type RegistrantOrderByInput = {
+  acceptPhotoRelease?: InputMaybe<OrderDirection>;
   age?: InputMaybe<OrderDirection>;
   country?: InputMaybe<OrderDirection>;
   createdAt?: InputMaybe<OrderDirection>;
@@ -515,6 +903,7 @@ export type RegistrantOrderByInput = {
   gender?: InputMaybe<OrderDirection>;
   hackathonsAttended?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
+  invitedInPerson?: InputMaybe<OrderDirection>;
   lastName?: InputMaybe<OrderDirection>;
   major?: InputMaybe<OrderDirection>;
   mlhCodeOfConductAgreement?: InputMaybe<OrderDirection>;
@@ -523,6 +912,18 @@ export type RegistrantOrderByInput = {
   notes?: InputMaybe<OrderDirection>;
   registrationYear?: InputMaybe<OrderDirection>;
   verified?: InputMaybe<OrderDirection>;
+};
+
+export type RegistrantRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<RegistrantWhereUniqueInput>>;
+  create?: InputMaybe<Array<RegistrantCreateInput>>;
+};
+
+export type RegistrantRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<RegistrantWhereUniqueInput>>;
+  create?: InputMaybe<Array<RegistrantCreateInput>>;
+  disconnect?: InputMaybe<Array<RegistrantWhereUniqueInput>>;
+  set?: InputMaybe<Array<RegistrantWhereUniqueInput>>;
 };
 
 export type RegistrantUpdateArgs = {
@@ -549,13 +950,14 @@ export type RegistrantUpdateInput = {
   notes?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
-  verified?: InputMaybe<Scalars['Boolean']['input']>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
 };
 
 export type RegistrantWhereInput = {
   AND?: InputMaybe<Array<RegistrantWhereInput>>;
   NOT?: InputMaybe<Array<RegistrantWhereInput>>;
   OR?: InputMaybe<Array<RegistrantWhereInput>>;
+  acceptPhotoRelease?: InputMaybe<BooleanFilter>;
   age?: InputMaybe<IntFilter>;
   country?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeNullableFilter>;
@@ -568,6 +970,7 @@ export type RegistrantWhereInput = {
   gender?: InputMaybe<StringFilter>;
   hackathonsAttended?: InputMaybe<IntNullableFilter>;
   id?: InputMaybe<IdFilter>;
+  invitedInPerson?: InputMaybe<BooleanFilter>;
   lastName?: InputMaybe<StringFilter>;
   major?: InputMaybe<StringFilter>;
   mlhCodeOfConductAgreement?: InputMaybe<BooleanFilter>;
@@ -576,6 +979,7 @@ export type RegistrantWhereInput = {
   notes?: InputMaybe<StringFilter>;
   registrationYear?: InputMaybe<IntNullableFilter>;
   school?: InputMaybe<SchoolWhereInput>;
+  user?: InputMaybe<UserWhereInput>;
   verified?: InputMaybe<BooleanFilter>;
 };
 
@@ -677,13 +1081,118 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Track = {
+  __typename?: 'Track';
+  id: Scalars['ID']['output'];
+  judgements?: Maybe<Array<Judgement>>;
+  judgementsCount?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type TrackJudgementsArgs = {
+  cursor?: InputMaybe<JudgementWhereUniqueInput>;
+  orderBy?: Array<JudgementOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: JudgementWhereInput;
+};
+
+
+export type TrackJudgementsCountArgs = {
+  where?: JudgementWhereInput;
+};
+
+export type TrackCreateInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TrackManyRelationFilter = {
+  every?: InputMaybe<TrackWhereInput>;
+  none?: InputMaybe<TrackWhereInput>;
+  some?: InputMaybe<TrackWhereInput>;
+};
+
+export type TrackOrderByInput = {
+  id?: InputMaybe<OrderDirection>;
+  name?: InputMaybe<OrderDirection>;
+};
+
+export type TrackRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<TrackWhereUniqueInput>>;
+  create?: InputMaybe<Array<TrackCreateInput>>;
+};
+
+export type TrackRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<TrackWhereUniqueInput>>;
+  create?: InputMaybe<Array<TrackCreateInput>>;
+  disconnect?: InputMaybe<Array<TrackWhereUniqueInput>>;
+  set?: InputMaybe<Array<TrackWhereUniqueInput>>;
+};
+
+export type TrackUpdateArgs = {
+  data: TrackUpdateInput;
+  where: TrackWhereUniqueInput;
+};
+
+export type TrackUpdateInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TrackWhereInput = {
+  AND?: InputMaybe<Array<TrackWhereInput>>;
+  NOT?: InputMaybe<Array<TrackWhereInput>>;
+  OR?: InputMaybe<Array<TrackWhereInput>>;
+  id?: InputMaybe<IdFilter>;
+  judgements?: InputMaybe<JudgementManyRelationFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type TrackWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type User = {
   __typename?: 'User';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
+  judgements?: Maybe<Array<Judgement>>;
+  judgementsCount?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   password?: Maybe<PasswordState>;
+  registrations?: Maybe<Array<Registrant>>;
+  registrationsCount?: Maybe<Scalars['Int']['output']>;
+  roles?: Maybe<UserRoleType>;
+};
+
+
+export type UserJudgementsArgs = {
+  cursor?: InputMaybe<JudgementWhereUniqueInput>;
+  orderBy?: Array<JudgementOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: JudgementWhereInput;
+};
+
+
+export type UserJudgementsCountArgs = {
+  where?: JudgementWhereInput;
+};
+
+
+export type UserRegistrationsArgs = {
+  cursor?: InputMaybe<RegistrantWhereUniqueInput>;
+  orderBy?: Array<RegistrantOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: Scalars['Int']['input'];
+  where?: RegistrantWhereInput;
+};
+
+
+export type UserRegistrationsCountArgs = {
+  where?: RegistrantWhereInput;
 };
 
 export type UserAuthenticationWithPasswordFailure = {
@@ -702,8 +1211,11 @@ export type UserAuthenticationWithPasswordSuccess = {
 export type UserCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  judgements?: InputMaybe<JudgementRelateToManyForCreateInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  registrations?: InputMaybe<RegistrantRelateToManyForCreateInput>;
+  roles?: InputMaybe<UserRoleType>;
 };
 
 export type UserOrderByInput = {
@@ -711,6 +1223,32 @@ export type UserOrderByInput = {
   email?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   name?: InputMaybe<OrderDirection>;
+  roles?: InputMaybe<OrderDirection>;
+};
+
+export type UserRelateToOneForCreateInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  create?: InputMaybe<UserCreateInput>;
+};
+
+export type UserRelateToOneForUpdateInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  create?: InputMaybe<UserCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export enum UserRoleType {
+  Admin = 'admin',
+  Default = 'default',
+  Judge = 'judge',
+  Organizer = 'organizer'
+}
+
+export type UserRoleTypeNullableFilter = {
+  equals?: InputMaybe<UserRoleType>;
+  in?: InputMaybe<Array<UserRoleType>>;
+  not?: InputMaybe<UserRoleTypeNullableFilter>;
+  notIn?: InputMaybe<Array<UserRoleType>>;
 };
 
 export type UserUpdateArgs = {
@@ -721,8 +1259,11 @@ export type UserUpdateArgs = {
 export type UserUpdateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  judgements?: InputMaybe<JudgementRelateToManyForUpdateInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  registrations?: InputMaybe<RegistrantRelateToManyForUpdateInput>;
+  roles?: InputMaybe<UserRoleType>;
 };
 
 export type UserWhereInput = {
@@ -732,7 +1273,10 @@ export type UserWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>;
   email?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
+  judgements?: InputMaybe<JudgementManyRelationFilter>;
   name?: InputMaybe<StringFilter>;
+  registrations?: InputMaybe<RegistrantManyRelationFilter>;
+  roles?: InputMaybe<UserRoleTypeNullableFilter>;
 };
 
 export type UserWhereUniqueInput = {
