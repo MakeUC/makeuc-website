@@ -71,13 +71,6 @@ export default async function HomePage() {
           </div> */}
         </div>
       </ViewportSection>
-
-      <ViewportSection className="flex items-center justify-center py-8 bg-muted">
-        <div className="px-8 w-full max-w-5xl">
-          <h2 className="text-3xl font-bold tracking-wider text-center mb-8">Live Site</h2>
-          <Faq />
-        </div>
-      </ViewportSection>
     </main>
   );
 }
