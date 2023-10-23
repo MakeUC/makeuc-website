@@ -25,6 +25,21 @@ const msToTime = (ms: number): TimeLeft => {
   return { days, hours, minutes, seconds };
 };
 
+export const ProgressLeft = (): number => {
+  const now = new Date();
+  const etaToStart = startTime.getTime() - now.getTime();
+
+  if (etaToStart < 0) {
+    // Has started, so check against end
+    const etaToEnd = endTime.getTime() - now.getTime();
+
+    // if (etaToEnd < 0) return undefined; // Marks the end
+
+    return etaToEnd;
+  }
+  return etaToStart;
+};
+
 const getTimeLeft = (): TimeLeft | undefined => {
   const now = new Date();
   const etaToStart = startTime.getTime() - now.getTime();

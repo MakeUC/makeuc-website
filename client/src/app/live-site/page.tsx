@@ -1,8 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import Logo from "~/assets/logo.png";
+import { Button } from "~/components/ui/button";
 import { Timer } from "~/features/live-site/components/countdown";
-// import { hackerSchedule } from "~/features/live-site/components/schedule-grid";
+import { HackerScheduleTable, WorkshopScheduleTable } from "~/features/live-site/constants/schedule";
 
 
 export const metadata = {
@@ -12,9 +14,7 @@ export const metadata = {
 export default async function LiveSite() {
   return (
     <main>
-      <hr className="border border-muted-foreground" />
-      <br />
-      <div className="flex flex-1 justify-center items-center md:-translate-y-[35px]">
+      <section className="relative flex justify-center min-h-[calc(100vh-70px)]">
         <div className="flex items-center">
           <div className="flex-grow">
             <Timer />
@@ -23,12 +23,28 @@ export default async function LiveSite() {
             <Image src={Logo} alt="MakeUC Butterfly Logo" width={400} />
           </div>
         </div>
-        <div className="flex items-center">
-          <div className="flex-grow">
-            {/* <hackerSchedule /> */}
-          </ div>
+      </section>
+      <section className="flex items-center justify-evenly py-8 bg-muted">
+        <Link href="https://discord.gg/g2T8QAhaME" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
+        </Link>
+        <Link href="https://makeuc-2023.devpost.com/" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">Devpost</Button>
+        </Link>
+        <Link href="https://youtube.com/playlist?list=PLMOg6ZY3DC6PgVmJ9jsGWqQ9-hI0kAhqu&feature=shared" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">YouTube</Button>
+        </Link>
+      </section>
+      <section className="flex items-center justify-evenly py-8">
+        <div className="flex-grow">
+          <HackerScheduleTable />
         </ div>
-      </div>
+      </section>
+      <section className="flex items-center justify-evenly py-8 bg-muted">
+        <div className="flex-grow">
+          <WorkshopScheduleTable />
+        </ div>
+      </section>
     </main>
   );
 }
