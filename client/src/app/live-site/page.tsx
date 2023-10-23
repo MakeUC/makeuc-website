@@ -1,26 +1,34 @@
-import { PageTitle } from "~/components/general/typography";
+import Image from "next/image";
+
+import Logo from "~/assets/logo.png";
 import { Timer } from "~/features/live-site/components/countdown";
-/* import { hackerScheduleGridPlaceholder } from "~/features/live-site/components/schedule-grid";
-*/
+// import { hackerSchedule } from "~/features/live-site/components/schedule-grid";
+
 
 export const metadata = {
   title: "Live Site",
 };
 
-export default function LiveSite() {
+export default async function LiveSite() {
   return (
-    <div className="flex justify-center">
-      <div className="px-8 w-full max-w-5xl">
-        <PageTitle>Live Site</PageTitle>
-        <hr className="border border-muted-foreground" />
-        <div className="mt-4">
-          <Timer />
+    <main>
+      <hr className="border border-muted-foreground" />
+      <br />
+      <div className="flex flex-1 justify-center items-center md:-translate-y-[35px]">
+        <div className="flex items-center">
+          <div className="flex-grow">
+            <Timer />
+          </div> 
+          <div>
+            <Image src={Logo} alt="MakeUC Butterfly Logo" width={400} />
+          </div>
         </div>
-        <hr className="border border-muted-foreground" />
-        <div className="mt-4">
-          {/* <hackerScheduleGridPlaceholder />{} */}
-        </div>
+        <div className="flex items-center">
+          <div className="flex-grow">
+            {/* <hackerSchedule /> */}
+          </ div>
+        </ div>
       </div>
-    </div>
+    </main>
   );
 }
