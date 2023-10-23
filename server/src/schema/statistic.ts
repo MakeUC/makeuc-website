@@ -8,6 +8,7 @@ export const CachedStatistic = list({
   access: {
     operation: {
       ...allOperations(isAuthenticated), 
+      query: () => true,
     },
   },
   fields: {
