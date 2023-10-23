@@ -58,8 +58,8 @@ export function Stats({ year }: StatsProps) {
     }
     
     // The cachedStatistics
-    const parsedCachedStatistics = statisticsData?.cachedStatistics["0"];
-  
+    const parsedCachedStatistics = statisticsData?.cachedStatistics["0"] || {};
+
   
     // If both data pieces are successfully parsed, merge them
     const mergedData = {

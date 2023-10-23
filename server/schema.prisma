@@ -13,12 +13,34 @@ generator client {
   previewFeatures = ["postgresqlExtensions"]
 }
 
-model User {
-  id        String    @id @default(cuid())
-  name      String    @default("")
-  email     String    @unique @default("")
-  password  String
-  createdAt DateTime? @default(now())
+model Judgement {
+  id                          String   @id @default(cuid())
+  conceptCaliber              Int
+  implementationAttempt       Int
+  demonstrationAbility        Int
+  presentationProfessionalism Int
+  overallScore                Float
+  applicableTracks            Track[]  @relation("Judgement_applicableTracks")
+  disqualifyReason            String   @default("")
+  disqualifiedBy              User?    @relation("Judgement_disqualifiedBy", fields: [disqualifiedById], references: [id])
+  disqualifiedById            String?  @map("disqualifiedBy")
+  judge                       User?    @relation("Judgement_judge", fields: [judgeId], references: [id])
+  judgeId                     String?  @map("judge")
+  project                     Project? @relation("Judgement_project", fields: [projectId], references: [id])
+  projectId                   String?  @map("project")
+
+  @@index([disqualifiedById])
+  @@index([judgeId])
+  @@index([projectId])
+}
+
+model Project {
+  id           String      @id @default(cuid())
+  url          String      @unique @default("")
+  name         String      @default("")
+  judgingGroup Int
+  year         Int
+  judgements   Judgement[] @relation("Judgement_project")
 }
 
 model Registrant {
@@ -45,11 +67,16 @@ model Registrant {
   registrationYear                 Int?      @default(2023)
   createdAt                        DateTime? @default(now())
   verified                         Boolean   @default(false)
+  acceptPhotoRelease               Boolean   @default(false)
+  invitedInPerson                  Boolean   @default(false)
+  user                             User?     @relation("Registrant_user", fields: [userId], references: [id])
+  userId                           String?   @map("user")
   emailRegistrationYearCompoundKey String    @unique @default("")
 
   @@index([email])
   @@index([schoolId])
   @@index([registrationYear])
+  @@index([userId])
 }
 
 model School {
@@ -75,4 +102,29 @@ model CachedStatistic {
   numberOfProject   Int
   linkToAllProjects String @default("")
   year              Int    @unique
+}
+
+model Track {
+  id         String      @id @default(cuid())
+  name       String      @unique @default("")
+  judgements Judgement[] @relation("Judgement_applicableTracks")
+}
+
+model User {
+  id                            String        @id @default(cuid())
+  name                          String        @default("")
+  email                         String        @unique @default("")
+  password                      String
+  createdAt                     DateTime?     @default(now())
+  roles                         UserRoleType? @default(default)
+  registrations                 Registrant[]  @relation("Registrant_user")
+  judgements                    Judgement[]   @relation("Judgement_judge")
+  from_Judgement_disqualifiedBy Judgement[]   @relation("Judgement_disqualifiedBy")
+}
+
+enum UserRoleType {
+  admin
+  organizer
+  judge
+  default
 }
