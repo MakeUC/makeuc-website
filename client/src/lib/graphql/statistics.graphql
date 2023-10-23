@@ -1,8 +1,7 @@
-query GetStatisticsAndCachedStatistics($year: Int!) {
+query GetStatistics($year: Int!) {
   statistics(year: $year)
   cachedStatistics(where: { year: { equals: $year } }) {
-    number_of_project
-    link_to_all_projects
-    year
+    numberOfProject
+    linkToAllProjects
   }
 }

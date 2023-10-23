@@ -5,7 +5,7 @@ import { Loader } from "lucide-react";
 import { useMemo } from "react";
 import { z } from "zod";
 
-import { GetStatisticsDocument, GetCachedStatisticsDocument } from "~/generated/graphql/graphql";
+import { GetStatisticsDocument } from "~/generated/graphql/graphql";
 
 import { Button } from "../ui/button";
 
@@ -40,35 +40,35 @@ export interface StatsProps {
 }
 
 export function Stats({ year }: StatsProps) {
-  const { data: statisticsData, error } = useSuspenseQuery(GetStatisticsDocument, {
+  const { data: statisticsData , error } = useSuspenseQuery(GetStatisticsDocument, {
     variables: { year },
   });
-
-  const { data: cachedStatistics } = useSuspenseQuery(GetCachedStatisticsDocument, {
-    variables: { year },
-  });
-
-  const cachedStatisticsJson = useMemo(() => {
-    if (!cachedStatistics?.cachedStatistics) return undefined;
-
-    return cachedStatistics.cachedStatistics[0];
-  }, [cachedStatistics]);
-
 
   const statisticsJson = useMemo(() => {
-    if (!statisticsData?.statistics) return undefined;
-
-    const result = statistics.safeParse(JSON.parse(statisticsData?.statistics));
-
-    if (!result.success) {
-      // eslint-disable-next-line no-console
-      console.error(result.error);
+    if (!statisticsData?.statistics || !statisticsData?.cachedStatistics) {
       return undefined;
     }
-
-    return result.data;
-  }, [statisticsData]);
-
+  
+    // Parse the main statistics data
+    const parsedStatistics = statistics.safeParse(JSON.parse(statisticsData.statistics));
+  
+    if (!parsedStatistics.success) {
+      // eslint-disable-next-line no-console
+      return undefined;
+    }
+    
+    // The cachedStatistics
+    const parsedCachedStatistics = statisticsData?.cachedStatistics["0"];
+  
+  
+    // If both data pieces are successfully parsed, merge them
+    const mergedData = {
+      ...parsedStatistics.data,        
+      ...parsedCachedStatistics, 
+    };
+  
+    return mergedData;
+  }, [statisticsData]); 
 
 
   if (error || !statisticsJson) {
@@ -86,7 +86,7 @@ export function Stats({ year }: StatsProps) {
           <h3 className="text-lg text-muted-foreground">Total Registrants</h3>
         </div>
         <div className="flex flex-col gap-2 text-center">
-          <span className="text-4xl font-semibold">{cachedStatisticsJson?.number_of_project || 0}</span>
+          <span className="text-4xl font-semibold">{statisticsJson?.numberOfProject || 0}</span>
           <h3 className="text-lg text-muted-foreground">Total Projects</h3>
         </div>
       </div>
@@ -111,7 +111,7 @@ export function Stats({ year }: StatsProps) {
       </div>
       <div className="flex my-10 flex-row justify-center">
         <Button className="flex gap-2 mt-4" size="lg">
-          <a href={cachedStatisticsJson?.link_to_all_projects || ""}>
+          <a href={statisticsJson?.linkToAllProjects || ""}>
             Links to All Projects
           </a>
         </Button>

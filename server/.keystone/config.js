@@ -480,7 +480,8 @@ var import_fields4 = require("@keystone-6/core/fields");
 var CachedStatistic = (0, import_core4.list)({
   access: {
     operation: {
-      ...allOperations(isAuthenticated)
+      ...allOperations(isAuthenticated),
+      query: () => true
     }
   },
   fields: {

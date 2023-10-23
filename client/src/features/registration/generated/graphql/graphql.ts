@@ -31,21 +31,21 @@ export type BooleanFilter = {
 export type CachedStatistic = {
   __typename?: 'CachedStatistic';
   id: Scalars['ID']['output'];
-  link_to_all_projects?: Maybe<Scalars['String']['output']>;
-  number_of_project?: Maybe<Scalars['Int']['output']>;
+  linkToAllProjects?: Maybe<Scalars['String']['output']>;
+  numberOfProject?: Maybe<Scalars['Int']['output']>;
   year?: Maybe<Scalars['Int']['output']>;
 };
 
 export type CachedStatisticCreateInput = {
-  link_to_all_projects?: InputMaybe<Scalars['String']['input']>;
-  number_of_project?: InputMaybe<Scalars['Int']['input']>;
+  linkToAllProjects?: InputMaybe<Scalars['String']['input']>;
+  numberOfProject?: InputMaybe<Scalars['Int']['input']>;
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CachedStatisticOrderByInput = {
   id?: InputMaybe<OrderDirection>;
-  link_to_all_projects?: InputMaybe<OrderDirection>;
-  number_of_project?: InputMaybe<OrderDirection>;
+  linkToAllProjects?: InputMaybe<OrderDirection>;
+  numberOfProject?: InputMaybe<OrderDirection>;
   year?: InputMaybe<OrderDirection>;
 };
 
@@ -55,8 +55,8 @@ export type CachedStatisticUpdateArgs = {
 };
 
 export type CachedStatisticUpdateInput = {
-  link_to_all_projects?: InputMaybe<Scalars['String']['input']>;
-  number_of_project?: InputMaybe<Scalars['Int']['input']>;
+  linkToAllProjects?: InputMaybe<Scalars['String']['input']>;
+  numberOfProject?: InputMaybe<Scalars['Int']['input']>;
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -65,8 +65,8 @@ export type CachedStatisticWhereInput = {
   NOT?: InputMaybe<Array<CachedStatisticWhereInput>>;
   OR?: InputMaybe<Array<CachedStatisticWhereInput>>;
   id?: InputMaybe<IdFilter>;
-  link_to_all_projects?: InputMaybe<StringFilter>;
-  number_of_project?: InputMaybe<IntFilter>;
+  linkToAllProjects?: InputMaybe<StringFilter>;
+  numberOfProject?: InputMaybe<IntFilter>;
   year?: InputMaybe<IntFilter>;
 };
 
