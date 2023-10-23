@@ -50,12 +50,12 @@ export const workshopData: EventInfo[] = [
 
 function ScheduleGrid({ name, location, location_virt, start, end }: EventInfo) {
   return (
-    <TableRow className="border-b border-separate transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0">{name}</TableCell>
-      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0">{location}</TableCell>
-      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0">{location_virt}</TableCell>
-      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0">{start}</TableCell>
-      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0">{end}</TableCell>
+    <TableRow className="border-b border-separate transition-colors bg-secondary">
+      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0 border-white border-2">{name}</TableCell>
+      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0 border-white border-2">{location}</TableCell>
+      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0 border-white border-2">{location_virt}</TableCell>
+      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0 border-white border-2">{start}</TableCell>
+      <TableCell className="p-4 align-middle [&:has([role=checkbox])]:pr-0 border-white border-2">{end}</TableCell>
     </TableRow>
   );
 }
@@ -74,14 +74,14 @@ export interface ScheduleGridProps {
 
 export function HackerScheduleTable() {
   return (
-    <Table className="flex items-center justify-evenly border-20-red">
+    <Table className="flex items-center justify-evenly">
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-          <TableCell className="text-center font-semibold">Event</TableCell>
-          <TableCell className="text-center font-semibold">In-Person Location</TableCell>
-          <TableCell className="text-center font-semibold">Virtual Location</TableCell>
-          <TableCell className="text-center font-semibold">Start Time</TableCell>
-          <TableCell className="text-center font-semibold">End Time</TableCell>
+        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary rounded">
+          <TableCell className="text-center font-semibold border-1 border-white">Event</TableCell>
+          <TableCell className="text-center font-semibold border-1 border-white">In-Person Location</TableCell>
+          <TableCell className="text-center font-semibold border-1 border-white">Virtual Location</TableCell>
+          <TableCell className="text-center font-semibold border-1 border-white">Start Time</TableCell>
+          <TableCell className="text-center font-semibold border-1 border-white">End Time</TableCell>
         </TableRow>
         <ScheduleRow scheduleEvent={scheduleData}/>
       </TableBody>
@@ -93,7 +93,7 @@ export function WorkshopScheduleTable() {
   return (
     <Table className="flex items-center justify-evenly">
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Event</TableCell>
           <TableCell className="text-center font-semibold">In-Person Location</TableCell>
           <TableCell className="text-center font-semibold">Virtual Location</TableCell>
