@@ -198,6 +198,9 @@ type Project {
   year: Int
   judgements(where: JudgementWhereInput! = {}, orderBy: [JudgementOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JudgementWhereUniqueInput): [Judgement!]
   judgementsCount(where: JudgementWhereInput! = {}): Int
+  countJudgements: Int
+  score: Float
+  disqualified: Boolean
 }
 
 input ProjectWhereUniqueInput {

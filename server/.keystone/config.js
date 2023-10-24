@@ -514,7 +514,8 @@ var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
 var Project = (0, import_core4.list)({
   access: {
-    operation: allOperations(isAuthenticated)
+    // operation: allOperations(isAuthenticated),
+    operation: allOperations(() => true)
   },
   fields: {
     url: (0, import_fields4.text)({
@@ -534,6 +535,40 @@ var Project = (0, import_core4.list)({
       ref: "Judgement.project",
       many: true,
       graphql: { omit: { create: true, update: true } }
+    }),
+    countJudgements: (0, import_fields4.virtual)({
+      field: import_core4.graphql.field({
+        type: import_core4.graphql.Int,
+        async resolve(item, _, context) {
+          return await context.prisma.judgement.count({
+            where: { projectId: { equals: item.id.toString() } }
+          });
+        }
+      })
+    }),
+    score: (0, import_fields4.virtual)({
+      field: import_core4.graphql.field({
+        type: import_core4.graphql.Float,
+        async resolve(item, _, context) {
+          return (await context.prisma.judgement.aggregate({
+            _avg: { overallScore: true },
+            where: { projectId: item.id.toString() }
+          }))._avg.overallScore ?? 0;
+        }
+      })
+    }),
+    disqualified: (0, import_fields4.virtual)({
+      field: import_core4.graphql.field({
+        type: import_core4.graphql.Boolean,
+        async resolve(item, _, context) {
+          return await context.prisma.judgement.count({
+            where: {
+              projectId: item.id.toString(),
+              disqualifiedById: { not: null }
+            }
+          }) !== 0;
+        }
+      })
     })
   }
 });

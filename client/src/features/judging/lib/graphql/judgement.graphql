@@ -1,0 +1,5 @@
+mutation SubmitJudgement($data: JudgementCreateInput!) {
+  createJudgement(data: $data) {
+    id
+  }
+}

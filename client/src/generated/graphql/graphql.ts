@@ -605,11 +605,14 @@ export type PasswordState = {
 
 export type Project = {
   __typename?: 'Project';
+  countJudgements?: Maybe<Scalars['Int']['output']>;
+  disqualified?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['ID']['output'];
   judgements?: Maybe<Array<Judgement>>;
   judgementsCount?: Maybe<Scalars['Int']['output']>;
   judgingGroup?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
   url?: Maybe<Scalars['String']['output']>;
   year?: Maybe<Scalars['Int']['output']>;
 };
