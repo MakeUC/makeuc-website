@@ -24,6 +24,7 @@ export default async function LiveSite() {
           </div>
         </div>
       </section>
+      <h1 className="flex items-center justify-evenly py-8 bg-muted font-bold text-3xl">Helpful Links</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <Link href="https://discord.gg/g2T8QAhaME" className="items-center">
           <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
@@ -35,11 +36,13 @@ export default async function LiveSite() {
           <Button className="flex gap-2 mt-4" size="lg">YouTube</Button>
         </Link>
       </section>
+      <h1 className="flex items-center justify-evenly py-8 font-bold text-3xl">Hacker Schedule</h1>
       <section className="flex items-center justify-evenly py-8">
         <div className="flex-grow">
           <HackerScheduleTable />
         </ div>
       </section>
+      <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">Workshop Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <div className="flex-grow">
           <WorkshopScheduleTable />
