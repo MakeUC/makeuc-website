@@ -24,7 +24,7 @@ export function SponsorResources() {
             to reduce preventable harm from medical errors.
             </h3>
             <br />
-            <Link className="underline text-primary" href={"https://www.patientsafetytech.com/"}>Patient Saftey Technology</Link>
+            <Link className="underline text-primary" href={"https://www.patientsafetytech.com/"}>Patient Safety Technology</Link>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="Taskade">
