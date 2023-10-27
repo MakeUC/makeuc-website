@@ -8,6 +8,7 @@ import { Judgement } from "./judgment";
 import { Project } from "./project";
 import { Registrant } from "./registrant";
 import { School } from "./school";
+import { CachedStatistic } from "./statistic";
 import { Track } from "./track";
 import { User } from "./user";
 
@@ -19,6 +20,7 @@ export const lists = {
   Project,
   Registrant,
   School,
+  CachedStatistic,
   Track,
-  User,
+  User, 
 } as Lists;

@@ -97,6 +97,13 @@ model School {
   @@index([alias])
 }
 
+model CachedStatistic {
+  id                String @id @default(cuid())
+  numberOfProject   Int
+  linkToAllProjects String @default("")
+  year              Int    @unique
+}
+
 model Track {
   id         String      @id @default(cuid())
   name       String      @unique @default("")

@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core8 = require("@keystone-6/core");
+var import_core9 = require("@keystone-6/core");
 
 // src/auth/index.ts
 var import_auth = require("@keystone-6/auth");
@@ -565,20 +565,45 @@ var School = (0, import_core5.list)({
   }
 });
 
-// src/schema/track.ts
+// src/schema/statistic.ts
 var import_core6 = require("@keystone-6/core");
 var import_fields6 = require("@keystone-6/core/fields");
-var Track = (0, import_core6.list)({
+var CachedStatistic = (0, import_core6.list)({
+  access: {
+    operation: {
+      ...allOperations(isAuthenticated),
+      query: () => true
+    }
+  },
+  fields: {
+    numberOfProject: (0, import_fields6.integer)({
+      validation: { isRequired: true }
+    }),
+    linkToAllProjects: (0, import_fields6.text)({
+      // Assuming the link is a URL, if not adjust accordingly.
+      validation: { isRequired: true }
+    }),
+    year: (0, import_fields6.integer)({
+      validation: { isRequired: true },
+      isIndexed: "unique"
+    })
+  }
+});
+
+// src/schema/track.ts
+var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
+var Track = (0, import_core7.list)({
   access: {
     operation: allOperations(isAuthenticated)
   },
   fields: {
-    name: (0, import_fields6.text)({
+    name: (0, import_fields7.text)({
       isIndexed: "unique",
       validation: { isRequired: true },
       isFilterable: true
     }),
-    judgements: (0, import_fields6.relationship)({
+    judgements: (0, import_fields7.relationship)({
       ref: "Judgement.applicableTracks",
       many: true,
       graphql: { omit: { create: true, update: true } }
@@ -587,21 +612,21 @@ var Track = (0, import_core6.list)({
 });
 
 // src/schema/user.ts
-var import_core7 = require("@keystone-6/core");
-var import_fields7 = require("@keystone-6/core/fields");
-var User = (0, import_core7.list)({
+var import_core8 = require("@keystone-6/core");
+var import_fields8 = require("@keystone-6/core/fields");
+var User = (0, import_core8.list)({
   access: {
     operation: allOperations(isAuthenticated)
   },
   fields: {
-    name: (0, import_fields7.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields7.text)({
+    name: (0, import_fields8.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields8.text)({
       validation: { isRequired: true },
       isIndexed: "unique"
     }),
-    password: (0, import_fields7.password)({ validation: { isRequired: true } }),
-    createdAt: (0, import_fields7.timestamp)({ defaultValue: { kind: "now" } }),
-    roles: (0, import_fields7.select)({
+    password: (0, import_fields8.password)({ validation: { isRequired: true } }),
+    createdAt: (0, import_fields8.timestamp)({ defaultValue: { kind: "now" } }),
+    roles: (0, import_fields8.select)({
       type: "enum",
       defaultValue: "default",
       options: [
@@ -611,11 +636,11 @@ var User = (0, import_core7.list)({
         { label: "Default", value: "default" }
       ]
     }),
-    registrations: (0, import_fields7.relationship)({
+    registrations: (0, import_fields8.relationship)({
       ref: "Registrant.user",
       many: true
     }),
-    judgements: (0, import_fields7.relationship)({
+    judgements: (0, import_fields8.relationship)({
       ref: "Judgement.judge",
       many: true
     })
@@ -631,6 +656,7 @@ var lists = {
   Project,
   Registrant,
   School,
+  CachedStatistic,
   Track,
   User
 };
@@ -644,7 +670,7 @@ var {
   S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core8.config)({
+  (0, import_core9.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

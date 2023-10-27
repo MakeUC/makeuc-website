@@ -506,6 +506,52 @@ input SchoolCreateInput {
   createdAt: DateTime
 }
 
+type CachedStatistic {
+  id: ID!
+  numberOfProject: Int
+  linkToAllProjects: String
+  year: Int
+}
+
+input CachedStatisticWhereUniqueInput {
+  id: ID
+  year: Int
+}
+
+input CachedStatisticWhereInput {
+  AND: [CachedStatisticWhereInput!]
+  OR: [CachedStatisticWhereInput!]
+  NOT: [CachedStatisticWhereInput!]
+  id: IDFilter
+  numberOfProject: IntFilter
+  linkToAllProjects: StringFilter
+  year: IntFilter
+}
+
+input CachedStatisticOrderByInput {
+  id: OrderDirection
+  numberOfProject: OrderDirection
+  linkToAllProjects: OrderDirection
+  year: OrderDirection
+}
+
+input CachedStatisticUpdateInput {
+  numberOfProject: Int
+  linkToAllProjects: String
+  year: Int
+}
+
+input CachedStatisticUpdateArgs {
+  where: CachedStatisticWhereUniqueInput!
+  data: CachedStatisticUpdateInput!
+}
+
+input CachedStatisticCreateInput {
+  numberOfProject: Int
+  linkToAllProjects: String
+  year: Int
+}
+
 type Track {
   id: ID!
   name: String
@@ -687,6 +733,12 @@ type Mutation {
   updateSchools(data: [SchoolUpdateArgs!]!): [School]
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteSchools(where: [SchoolWhereUniqueInput!]!): [School]
+  createCachedStatistic(data: CachedStatisticCreateInput!): CachedStatistic
+  createCachedStatistics(data: [CachedStatisticCreateInput!]!): [CachedStatistic]
+  updateCachedStatistic(where: CachedStatisticWhereUniqueInput!, data: CachedStatisticUpdateInput!): CachedStatistic
+  updateCachedStatistics(data: [CachedStatisticUpdateArgs!]!): [CachedStatistic]
+  deleteCachedStatistic(where: CachedStatisticWhereUniqueInput!): CachedStatistic
+  deleteCachedStatistics(where: [CachedStatisticWhereUniqueInput!]!): [CachedStatistic]
   createTrack(data: TrackCreateInput!): Track
   createTracks(data: [TrackCreateInput!]!): [Track]
   updateTrack(where: TrackWhereUniqueInput!, data: TrackUpdateInput!): Track
@@ -737,6 +789,9 @@ type Query {
   schools(where: SchoolWhereInput! = {}, orderBy: [SchoolOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: SchoolWhereUniqueInput): [School!]
   school(where: SchoolWhereUniqueInput!): School
   schoolsCount(where: SchoolWhereInput! = {}): Int
+  cachedStatistics(where: CachedStatisticWhereInput! = {}, orderBy: [CachedStatisticOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CachedStatisticWhereUniqueInput): [CachedStatistic!]
+  cachedStatistic(where: CachedStatisticWhereUniqueInput!): CachedStatistic
+  cachedStatisticsCount(where: CachedStatisticWhereInput! = {}): Int
   tracks(where: TrackWhereInput! = {}, orderBy: [TrackOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TrackWhereUniqueInput): [Track!]
   track(where: TrackWhereUniqueInput!): Track
   tracksCount(where: TrackWhereInput! = {}): Int
