@@ -44,7 +44,7 @@ export function MobileNavbar({ className, links }: MobileNavbarProps) {
       {
         isMenuOpen &&
         <div className={cn("fixed flex flex-col items-center top-0 left-0 w-screen h-screen bg-background overflow-y-auto gap-6 p-6", className)}>
-          <button className="self-end" onClick={() => setIsMenuOpen(false)}><X /></button>
+          <button className="self-end mr-7" onClick={() => setIsMenuOpen(false)}><X /></button>
           <Link href="/" className="flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
             <Image src={LogoPng} alt="MakeUC Logo" width="128" height="128" />
           </Link>
