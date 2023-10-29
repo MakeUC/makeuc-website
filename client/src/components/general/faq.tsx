@@ -13,7 +13,7 @@ interface FAQEntry {
 
 const FAQ: Array<FAQEntry> = [
   {
-    card: "WHAT IS A HACKATHON",
+    card: "WHAT IS A HACKATHON?",
     dropDown: "A hackathon is an event where student developers use their passion for technology to create a project in 24 hours. It is a chance to collaborate and create something unique such as an app, robot, or website! Hackers will think outside of the box and hopefully learn something new along the way in our engaging environment!",
   },
   {

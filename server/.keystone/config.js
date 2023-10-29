@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core5 = require("@keystone-6/core");
+var import_core8 = require("@keystone-6/core");
 
 // src/auth/index.ts
 var import_auth = require("@keystone-6/auth");
@@ -323,7 +323,13 @@ var Registrant = (0, import_core.list)(addCompoundKey({
     createdAt: (0, import_fields2.timestamp)({
       defaultValue: { kind: "now" }
     }),
-    verified: (0, import_fields2.checkbox)({ defaultValue: false })
+    verified: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    acceptPhotoRelease: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    invitedInPerson: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    user: (0, import_fields2.relationship)({
+      ref: "User.registrations",
+      many: false
+    })
   },
   graphql: {
     maxTake: 50
@@ -416,7 +422,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
   mutation: {
     seedSchoolIndiaData: import_core2.graphql.field({
       type: import_core2.graphql.Boolean,
-      async resolve(source, _, context) {
+      async resolve(_source, _, context) {
         if (!context.session)
           return null;
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
@@ -426,7 +432,7 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
     verifyRegistrant: import_core2.graphql.field({
       type: base.object("Registrant"),
       args: { id: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.ID) }) },
-      async resolve(source, { id }, context) {
+      async resolve(_source, { id }, context) {
         const foundRegistrant = await context.prisma.registrant.findFirst({
           where: { id, verified: { equals: false } }
         });
@@ -443,29 +449,114 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         await sendRegistrantConfirmationEmail(registrant);
         return registrant;
       }
+    }),
+    resendVerificationEmails: import_core2.graphql.field({
+      type: import_core2.graphql.list(import_core2.graphql.String),
+      async resolve(_source, _, context) {
+        if (!context.session)
+          return null;
+        const unverifiedRegistrants = await context.prisma.registrant.findMany({
+          where: { verified: { equals: false }, registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() } }
+        });
+        for (const registrant of unverifiedRegistrants) {
+          await sendRegistrantEmail(registrant);
+        }
+        return unverifiedRegistrants.map((registrant) => registrant.email);
+      }
     })
   }
 }));
 
-// src/schema/school.ts
+// src/schema/judgment.ts
 var import_core3 = require("@keystone-6/core");
-var import_access3 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
-var School = (0, import_core3.list)({
+var Judgement = (0, import_core3.list)({
+  access: {
+    operation: allOperations(isAuthenticated)
+  },
+  fields: {
+    conceptCaliber: (0, import_fields3.integer)({
+      validation: { isRequired: true }
+    }),
+    implementationAttempt: (0, import_fields3.integer)({
+      validation: { isRequired: true }
+    }),
+    demonstrationAbility: (0, import_fields3.integer)({
+      validation: { isRequired: true }
+    }),
+    presentationProfessionalism: (0, import_fields3.integer)({
+      validation: { isRequired: true }
+    }),
+    overallScore: (0, import_fields3.float)({
+      validation: { isRequired: true }
+    }),
+    applicableTracks: (0, import_fields3.relationship)({
+      ref: "Track.judgements",
+      many: true
+    }),
+    disqualifyReason: (0, import_fields3.text)({
+      isFilterable: true
+    }),
+    disqualifiedBy: (0, import_fields3.relationship)({
+      ref: "User"
+    }),
+    judge: (0, import_fields3.relationship)({
+      ref: "User.judgements"
+    }),
+    project: (0, import_fields3.relationship)({
+      ref: "Project.judgements"
+    })
+  }
+});
+
+// src/schema/project.ts
+var import_core4 = require("@keystone-6/core");
+var import_fields4 = require("@keystone-6/core/fields");
+var Project = (0, import_core4.list)({
+  access: {
+    operation: allOperations(isAuthenticated)
+  },
+  fields: {
+    url: (0, import_fields4.text)({
+      isIndexed: "unique",
+      validation: { isRequired: true }
+    }),
+    name: (0, import_fields4.text)({
+      validation: { isRequired: true }
+    }),
+    judgingGroup: (0, import_fields4.integer)({
+      validation: { isRequired: true }
+    }),
+    year: (0, import_fields4.integer)({
+      validation: { isRequired: true }
+    }),
+    judgements: (0, import_fields4.relationship)({
+      ref: "Judgement.project",
+      many: true,
+      graphql: { omit: { create: true, update: true } }
+    })
+  }
+});
+
+// src/schema/school.ts
+var import_core5 = require("@keystone-6/core");
+var import_access5 = require("@keystone-6/core/access");
+var import_fields5 = require("@keystone-6/core/fields");
+var School = (0, import_core5.list)({
   access: {
     operation: {
       ...allOperations(isAuthenticated),
-      query: import_access3.allowAll
+      query: import_access5.allowAll
     }
   },
   fields: {
-    name: (0, import_fields3.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    city: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
-    state: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
-    county: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
-    country: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
-    alias: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
-    createdAt: (0, import_fields3.timestamp)({
+    name: (0, import_fields5.text)({ isIndexed: "unique", validation: { isRequired: true } }),
+    city: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
+    state: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
+    county: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
+    country: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
+    alias: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
+    createdAt: (0, import_fields5.timestamp)({
       defaultValue: { kind: "now" }
     })
   },
@@ -474,22 +565,59 @@ var School = (0, import_core3.list)({
   }
 });
 
-// src/schema/user.ts
-var import_core4 = require("@keystone-6/core");
-var import_fields4 = require("@keystone-6/core/fields");
-var User = (0, import_core4.list)({
+// src/schema/track.ts
+var import_core6 = require("@keystone-6/core");
+var import_fields6 = require("@keystone-6/core/fields");
+var Track = (0, import_core6.list)({
   access: {
     operation: allOperations(isAuthenticated)
   },
   fields: {
-    name: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields4.text)({
+    name: (0, import_fields6.text)({
+      isIndexed: "unique",
+      validation: { isRequired: true },
+      isFilterable: true
+    }),
+    judgements: (0, import_fields6.relationship)({
+      ref: "Judgement.applicableTracks",
+      many: true,
+      graphql: { omit: { create: true, update: true } }
+    })
+  }
+});
+
+// src/schema/user.ts
+var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
+var User = (0, import_core7.list)({
+  access: {
+    operation: allOperations(isAuthenticated)
+  },
+  fields: {
+    name: (0, import_fields7.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields7.text)({
       validation: { isRequired: true },
       isIndexed: "unique"
     }),
-    password: (0, import_fields4.password)({ validation: { isRequired: true } }),
-    createdAt: (0, import_fields4.timestamp)({
-      defaultValue: { kind: "now" }
+    password: (0, import_fields7.password)({ validation: { isRequired: true } }),
+    createdAt: (0, import_fields7.timestamp)({ defaultValue: { kind: "now" } }),
+    roles: (0, import_fields7.select)({
+      type: "enum",
+      defaultValue: "default",
+      options: [
+        { label: "Admin", value: "admin" },
+        { label: "Organizer", value: "organizer" },
+        { label: "Judge", value: "judge" },
+        { label: "Default", value: "default" }
+      ]
+    }),
+    registrations: (0, import_fields7.relationship)({
+      ref: "Registrant.user",
+      many: true
+    }),
+    judgements: (0, import_fields7.relationship)({
+      ref: "Judgement.judge",
+      many: true
     })
   },
   graphql: {
@@ -499,9 +627,12 @@ var User = (0, import_core4.list)({
 
 // src/schema/index.ts
 var lists = {
-  User,
+  Judgement,
+  Project,
   Registrant,
-  School
+  School,
+  Track,
+  User
 };
 
 // keystone.ts
@@ -513,7 +644,7 @@ var {
   S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core5.config)({
+  (0, import_core8.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

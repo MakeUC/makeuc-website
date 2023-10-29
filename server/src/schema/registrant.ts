@@ -86,7 +86,14 @@ export const Registrant = list(addCompoundKey({
     createdAt: timestamp({
       defaultValue: { kind: "now" },
     }),
-    verified: checkbox({ defaultValue: false }),
+    verified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    acceptPhotoRelease: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    invitedInPerson: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+
+    user: relationship({
+      ref: "User.registrations",
+      many: false,
+    }),
   },
   graphql: {
     maxTake: 50,
