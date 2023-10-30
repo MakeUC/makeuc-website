@@ -50,8 +50,8 @@ export default withAuth(
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
-        origin: "*",
-        allowedHeaders: "*",
+        origin: ["http://localhost:3000", "http://localhost:8000", "https://api.makeuc.io", "https://makeuc.io"],
+        allowedHeaders: ["apollo-require-preflight", "content-type"],
         credentials: true,
         methods: "*",
       },

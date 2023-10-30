@@ -1,5 +1,11 @@
-import { createAuth } from "@keystone-6/auth";
+// import { createAuth } from "@keystone-6/auth";
 import { statelessSessions } from "@keystone-6/core/session";
+import { OAuth2Strategy as GoogleOAuth2Strategy } from "passport-google-oauth";
+
+import { createPassportAuth } from "./passport";
+
+import type { KeystonePassportUserType } from "./passport";
+import type { TypeInfo } from ".keystone/types";
 
 
 // for a stateless session, a SESSION_SECRET should always be provided
@@ -9,14 +15,33 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
 
-export const { withAuth } = createAuth({
+export const { withAuth } = createPassportAuth<TypeInfo["lists"]["User"]>({
   listKey: "User",
-  identityField: "email",
-  sessionData: "name createdAt",
-  secretField: "password",
-  initFirstItem: {
-    fields: ["name", "email", "password"],
-  },
+  strategies: [
+    new GoogleOAuth2Strategy({
+      callbackURL: "/auth/strategy/google/redirect",
+      clientID: "416240724110-6rrsvb73mcms2b3nasjf62ec7qajh1cf.apps.googleusercontent.com",
+      clientSecret: "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",
+    }, (_accessToken, _refreshToken, profile, cb) => {
+      const id = profile.id;
+      const email = profile.emails?.[0]?.value;
+
+      if (!email) { return cb(new Error("Email not found from Google strategy.")); }
+
+      const user: KeystonePassportUserType = {
+        passportDataId: id,
+        email,
+      };
+
+      const name = profile.name;
+      if (name) {
+        user.name = `${name.givenName} ${name.familyName}`;
+      }
+
+      cb(null, user);
+    }),
+  ],
+  loginSuccessRedirectUrl: process.env.FRONTEND_LOGIN_SUCCESS_URL,
 });
 
 // statelessSessions uses cookies for session tracking
