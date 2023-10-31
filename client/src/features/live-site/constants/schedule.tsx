@@ -53,6 +53,13 @@ export const workshopData: EventInfo[] = [
   createData("[Tata Colsultancy Services] TBD", "Esports Lab", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MTk5NzdlYmUtYmI0NS00MzEzLWJmOGQtZTEyNTI1NTljZjU4%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 4 - 03:30 PM", "Nov 4 - 04:00 PM"),
 ];
 
+export const transportData: EventInfo[] = [
+  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 4 - 08:30 AM", "Nov 4 - 11:00 AM"),
+  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 4 - 11:00 PM", "Nov 5 - 01:00 AM"),
+  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 5 - 06:00 AM", "Nov 5 - 07:00 AM"),
+  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 5 - 06:00 PM", "Nov 5 - 07:00 PM"),
+];
+
 function ScheduleGrid({ name, location, location_virt, start, end }: EventInfo) {
   return (
     <TableRow className="border-b border-separate transition-colors bg-secondary">
@@ -106,6 +113,23 @@ export function WorkshopScheduleTable() {
           <TableCell className="text-center font-semibold">End Time</TableCell>
         </TableRow>
         <ScheduleRow scheduleEvent={workshopData} />
+      </TableBody>
+    </Table>
+  );
+}
+
+export function TransportScheduleTable() {
+  return (
+    <Table className="flex items-center justify-evenly">
+      <TableBody>
+        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
+          <TableCell className="text-center font-semibold">Purpose</TableCell>
+          <TableCell className="text-center font-semibold">Pick-Up Location</TableCell>
+          <TableCell className="text-center font-semibold">Drop-Off Location</TableCell>
+          <TableCell className="text-center font-semibold">Start Time</TableCell>
+          <TableCell className="text-center font-semibold">End Time</TableCell>
+        </TableRow>
+        <ScheduleRow scheduleEvent={transportData} />
       </TableBody>
     </Table>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Logo from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
 import { Timer } from "~/features/live-site/components/countdown";
-import { HackerScheduleTable, WorkshopScheduleTable } from "~/features/live-site/constants/schedule";
+import { HackerScheduleTable, WorkshopScheduleTable, TransportScheduleTable } from "~/features/live-site/constants/schedule";
 
 
 export const metadata = {
@@ -49,6 +49,12 @@ export default async function LiveSite() {
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <div className="flex-grow">
           <WorkshopScheduleTable />
+        </ div>
+      </section>
+      <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">UC Shuttle Schedule</h1>
+      <section className="flex items-center justify-evenly py-8 bg-muted">
+        <div className="flex-grow">
+          <TransportScheduleTable />
         </ div>
       </section>
     </main>
