@@ -90,6 +90,8 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
                       create: {
                         name: user.name ?? user.email,
                         email: user.email,
+                        // TODO: don't hardcode roles
+                        roles: ["admin"],
                       },
                       where: {
                         email: user.email,
@@ -120,9 +122,9 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
           );
         });
 
-        app.post("/auth/logout", async (req, res) => {
+        app.get("/auth/logout", async (req, res) => {
           const fullContext = await context.withRequest(req, res);
-          fullContext.sessionStrategy?.end({ context });
+          await fullContext.sessionStrategy?.end({ context: fullContext });
           res.json({ success: true });
         });
       },

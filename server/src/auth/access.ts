@@ -13,7 +13,7 @@ export interface Session extends KeystonePassportUserType {
 }
 
 interface AccessArgs {
-  context: Context;
+  context: Context<Session>;
   session?: TypeInfo<Session>["session"];
   listKey: keyof TypeInfo<Session>["lists"];
   operation: AccessOperation;
@@ -28,7 +28,7 @@ export function isAuthenticated(args: AccessArgs) {
 export function hasRoleOneOf(...roles: UserRoleType[]) {
   return (args: AccessArgs) => {
     const session = args.session;
-    if (!session) return false;
+    if (!session || !session.item) return false;
 
     return session.item.roles.some(role => roles.includes(role));
   };

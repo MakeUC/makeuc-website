@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // import { createAuth } from "@keystone-6/auth";
 import { statelessSessions } from "@keystone-6/core/session";
 import { OAuth2Strategy as GoogleOAuth2Strategy } from "passport-google-oauth";
@@ -15,13 +16,16 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
 
+const googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID!;
+const googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET!;
+
 export const { withAuth } = createPassportAuth<TypeInfo["lists"]["User"]>({
   listKey: "User",
   strategies: [
     new GoogleOAuth2Strategy({
       callbackURL: "/auth/strategy/google/redirect",
-      clientID: "416240724110-6rrsvb73mcms2b3nasjf62ec7qajh1cf.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientID: googleId,
+      clientSecret: googleSecret,
     }, (_accessToken, _refreshToken, profile, cb) => {
       const id = profile.id;
       const email = profile.emails?.[0]?.value;

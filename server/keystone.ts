@@ -47,6 +47,14 @@ export default withAuth(
         forcePathStyle: true,
       },
     },
+    ui: {
+      isAccessAllowed: context => {
+        const session = context.session;
+        if (!session || !session.item) return false;
+
+        return session.item.roles.some((role: string) => role === "admin");
+      },
+    },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {

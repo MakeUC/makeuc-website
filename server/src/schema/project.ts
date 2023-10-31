@@ -10,8 +10,7 @@ export const Project = list({
   access: {
     operation: {
       ...allOperations(hasRoleOneOf("admin")),
-      // TODO: Enable this
-      // query: hasRoleOneOf("admin", "organizer", "judge"),
+      query: allOperations(hasRoleOneOf("admin", "organizer", "judge"))["query"],
     },
   },
   fields: {

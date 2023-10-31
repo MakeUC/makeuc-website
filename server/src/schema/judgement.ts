@@ -1,13 +1,16 @@
 import { list } from "@keystone-6/core";
 import { float, integer, relationship, text } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
 
 
 export const Judgement = list(addCompoundKey({
   access: {
-    operation: allOperations(isAuthenticated),
+    operation: {
+      ...allOperations(hasRoleOneOf("admin", "organizer", "judge")),
+      delete: allOperations(hasRoleOneOf("admin"))["delete"],
+    },
   },
   fields: {
     conceptCaliber: integer({

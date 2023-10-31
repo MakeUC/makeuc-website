@@ -1,12 +1,12 @@
 import { list } from "@keystone-6/core";
 import { relationship, multiselect, text, timestamp } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 
 
 export const User = list({
   access: {
-    operation: allOperations(isAuthenticated),
+    operation: allOperations(hasRoleOneOf("admin")),
   },
   fields: {
     name: text({ validation: { isRequired: true } }),

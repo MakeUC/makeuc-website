@@ -162,7 +162,9 @@ function createPassportAuth({
                     connectOrCreate: {
                       create: {
                         name: user.name ?? user.email,
-                        email: user.email
+                        email: user.email,
+                        // TODO: don't hardcode roles
+                        roles: ["admin"]
                       },
                       where: {
                         email: user.email
@@ -190,9 +192,9 @@ function createPassportAuth({
             }
           );
         });
-        app.post("/auth/logout", async (req, res) => {
+        app.get("/auth/logout", async (req, res) => {
           const fullContext = await context.withRequest(req, res);
-          fullContext.sessionStrategy?.end({ context });
+          await fullContext.sessionStrategy?.end({ context: fullContext });
           res.json({ success: true });
         });
       }
@@ -207,13 +209,15 @@ var sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
+var googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID;
+var googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET;
 var { withAuth } = createPassportAuth({
   listKey: "User",
   strategies: [
     new import_passport_google_oauth.OAuth2Strategy({
       callbackURL: "/auth/strategy/google/redirect",
-      clientID: "416240724110-6rrsvb73mcms2b3nasjf62ec7qajh1cf.apps.googleusercontent.com",
-      clientSecret: "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"
+      clientID: googleId,
+      clientSecret: googleSecret
     }, (_accessToken, _refreshToken, profile, cb) => {
       const id = profile.id;
       const email = profile.emails?.[0]?.value;
@@ -376,13 +380,10 @@ var import_access2 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
 
 // src/auth/access.ts
-function isAuthenticated(args) {
-  return !!args.session;
-}
 function hasRoleOneOf(...roles) {
   return (args) => {
     const session2 = args.session;
-    if (!session2)
+    if (!session2 || !session2.item)
       return false;
     return session2.item.roles.some((role) => roles.includes(role));
   };
@@ -438,7 +439,8 @@ function sendRegistrantConfirmationEmail(registrant) {
 var Registrant = (0, import_core2.list)(addCompoundKey({
   access: {
     operation: {
-      ...allOperations2(isAuthenticated),
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer"))["query"],
       create: import_access2.allowAll
     }
   },
@@ -679,7 +681,10 @@ var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
 var Judgement = (0, import_core4.list)(addCompoundKey({
   access: {
-    operation: allOperations2(isAuthenticated)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin", "organizer", "judge")),
+      delete: allOperations2(hasRoleOneOf("admin"))["delete"]
+    }
   },
   fields: {
     conceptCaliber: (0, import_fields4.integer)({
@@ -733,9 +738,8 @@ var import_fields5 = require("@keystone-6/core/fields");
 var Project = (0, import_core5.list)({
   access: {
     operation: {
-      ...allOperations2(hasRoleOneOf("admin"))
-      // TODO: Enable this
-      // query: hasRoleOneOf("admin", "organizer", "judge"),
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer", "judge"))["query"]
     }
   },
   fields: {
@@ -801,7 +805,7 @@ var import_fields6 = require("@keystone-6/core/fields");
 var School = (0, import_core6.list)({
   access: {
     operation: {
-      ...allOperations2(isAuthenticated),
+      ...allOperations2(hasRoleOneOf("admin")),
       query: import_access6.allowAll
     }
   },
@@ -826,7 +830,10 @@ var import_core7 = require("@keystone-6/core");
 var import_fields7 = require("@keystone-6/core/fields");
 var Track = (0, import_core7.list)({
   access: {
-    operation: allOperations2(isAuthenticated)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer", "judge"))["query"]
+    }
   },
   fields: {
     name: (0, import_fields7.text)({
@@ -847,7 +854,7 @@ var import_core8 = require("@keystone-6/core");
 var import_fields8 = require("@keystone-6/core/fields");
 var User = (0, import_core8.list)({
   access: {
-    operation: allOperations2(isAuthenticated)
+    operation: allOperations2(hasRoleOneOf("admin"))
   },
   fields: {
     name: (0, import_fields8.text)({ validation: { isRequired: true } }),
@@ -926,6 +933,14 @@ var keystone_default = withAuth(
         signed: { expiry: 5e3 },
         endpoint: s3Url,
         forcePathStyle: true
+      }
+    },
+    ui: {
+      isAccessAllowed: (context) => {
+        const session2 = context.session;
+        if (!session2 || !session2.item)
+          return false;
+        return session2.item.roles.some((role) => role === "admin");
       }
     },
     server: {
