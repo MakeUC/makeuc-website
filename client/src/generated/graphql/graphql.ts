@@ -103,6 +103,7 @@ export type Judgement = {
   id: Scalars['ID']['output'];
   implementationAttempt?: Maybe<Scalars['Int']['output']>;
   judge?: Maybe<User>;
+  judgeProjectCompoundKey?: Maybe<Scalars['String']['output']>;
   overallScore?: Maybe<Scalars['Float']['output']>;
   presentationProfessionalism?: Maybe<Scalars['Int']['output']>;
   project?: Maybe<Project>;
@@ -126,6 +127,7 @@ export type JudgementCreateInput = {
   applicableTracks?: InputMaybe<TrackRelateToManyForCreateInput>;
   conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
   demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
+  disqualifiedBy?: InputMaybe<UserRelateToOneForCreateInput>;
   disqualifyReason?: InputMaybe<Scalars['String']['input']>;
   implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
   judge?: InputMaybe<UserRelateToOneForCreateInput>;
@@ -146,6 +148,7 @@ export type JudgementOrderByInput = {
   disqualifyReason?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   implementationAttempt?: InputMaybe<OrderDirection>;
+  judgeProjectCompoundKey?: InputMaybe<OrderDirection>;
   overallScore?: InputMaybe<OrderDirection>;
   presentationProfessionalism?: InputMaybe<OrderDirection>;
 };
@@ -171,6 +174,7 @@ export type JudgementUpdateInput = {
   applicableTracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
   conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
   demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
+  disqualifiedBy?: InputMaybe<UserRelateToOneForUpdateInput>;
   disqualifyReason?: InputMaybe<Scalars['String']['input']>;
   implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
   judge?: InputMaybe<UserRelateToOneForUpdateInput>;
@@ -191,6 +195,7 @@ export type JudgementWhereInput = {
   id?: InputMaybe<IdFilter>;
   implementationAttempt?: InputMaybe<IntFilter>;
   judge?: InputMaybe<UserWhereInput>;
+  judgeProjectCompoundKey?: InputMaybe<StringFilter>;
   overallScore?: InputMaybe<FloatFilter>;
   presentationProfessionalism?: InputMaybe<IntFilter>;
   project?: InputMaybe<ProjectWhereInput>;
@@ -198,6 +203,7 @@ export type JudgementWhereInput = {
 
 export type JudgementWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
+  judgeProjectCompoundKey?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type KeystoneAdminMeta = {
