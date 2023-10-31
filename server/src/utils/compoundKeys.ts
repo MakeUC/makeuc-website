@@ -41,7 +41,7 @@ export function addCompoundKey<Config extends ListConfig<BaseListTypeInfo>>(
     isIndexed: "unique",
     ui: {
       createView: { fieldMode: "hidden" },
-      // itemView: { fieldMode: "hidden" },
+      itemView: { fieldMode: "hidden" },
       listView: { fieldMode: "hidden" },
     },
     graphql: { omit: { create: true, update: true } },

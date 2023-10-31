@@ -40,7 +40,6 @@ export function ProjectTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        {/* TODO: Make functional */}
         <DropdownMenuItem onClick={() => window.open(devpostUrl, "_blank")}>View Devpost</DropdownMenuItem>
         <DropdownMenuItem onClick={() => makeJudgement?.(row.original)}>Make Judgement</DropdownMenuItem>
         <DropdownMenuSeparator />

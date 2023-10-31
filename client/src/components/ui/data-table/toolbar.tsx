@@ -5,9 +5,6 @@ import { XIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { InputRaw } from "~/components/ui/inputs/input";
 
-// import { priorities, statuses } from "../data/data";
-
-// import { DataTableFacetedFilter } from "./faceted-filter";
 // TODO: Incorporate Table View Options
 // import { DataTableViewOptions } from "./view-options";
 
