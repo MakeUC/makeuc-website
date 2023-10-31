@@ -79,17 +79,12 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
             async (req, res) => {
               const user = KeystonePassportUser.parse(req.user);
 
-              const fullContext = await context.withRequest(req, res);
-              await fullContext.sessionStrategy?.start({
-                context: fullContext,
-                data: { ...user, strategy },
-              });
-
-              await fullContext.prisma.passportStrategyStorage.upsert({
+              const item = await context.prisma.passportStrategyStorage.upsert({
                 create: {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   strategyName: strategy.name,
                   data: user.passportDataId,
+                  // TODO: Don't hardcode user
                   user: {
                     connectOrCreate: {
                       create: {
@@ -107,7 +102,19 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
                 where: {
                   strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`,
                 },
+                select: {
+                  // TODO: Don't hardcode user
+                  user: true,
+                },
               });
+
+              const fullContext = await context.withRequest(req, res);
+              await fullContext.sessionStrategy?.start({
+                context: fullContext,
+                // TODO: Don't hardcode user
+                data: { ...user, strategy: strategy.name, item: item.user },
+              });
+
               res.redirect(loginSuccessRedirectUrl);
             }
           );

@@ -14,10 +14,12 @@ type Judgement {
   disqualifiedBy: User
   judge: User
   project: Project
+  judgeProjectCompoundKey: String
 }
 
 input JudgementWhereUniqueInput {
   id: ID
+  judgeProjectCompoundKey: String
 }
 
 input JudgementWhereInput {
@@ -35,6 +37,7 @@ input JudgementWhereInput {
   disqualifiedBy: UserWhereInput
   judge: UserWhereInput
   project: ProjectWhereInput
+  judgeProjectCompoundKey: StringFilter
 }
 
 input IDFilter {
@@ -118,6 +121,7 @@ input JudgementOrderByInput {
   presentationProfessionalism: OrderDirection
   overallScore: OrderDirection
   disqualifyReason: OrderDirection
+  judgeProjectCompoundKey: OrderDirection
 }
 
 enum OrderDirection {
@@ -752,6 +756,7 @@ type Mutation {
   deletePassportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
   deletePassportStrategyStorages(where: [PassportStrategyStorageWhereUniqueInput!]!): [PassportStrategyStorage]
   endSession: Boolean!
+  disqualifyProject(projectId: ID, reason: String): Judgement
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
   resendVerificationEmails: [String]

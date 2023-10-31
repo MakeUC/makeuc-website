@@ -28,6 +28,7 @@ model Judgement {
   judgeId                     String?  @map("judge")
   project                     Project? @relation("Judgement_project", fields: [projectId], references: [id])
   projectId                   String?  @map("project")
+  judgeProjectCompoundKey     String   @unique @default("")
 
   @@index([disqualifiedById])
   @@index([judgeId])

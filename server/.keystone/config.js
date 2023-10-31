@@ -44,11 +44,27 @@ var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
 var import_fields2 = require("@keystone-6/core/fields");
 var import_passport = __toESM(require("passport"));
-var import_zod = require("zod");
+var import_zod2 = require("zod");
 
 // src/utils/compoundKeys.ts
 var import_fields = require("@keystone-6/core/fields");
 var import_lodash = require("lodash");
+var import_zod = require("zod");
+var connectRelationshipSchema = import_zod.z.object({
+  connect: import_zod.z.object({
+    id: import_zod.z.string()
+  })
+});
+function prepareValueForKey(value) {
+  if (typeof value !== "object" && typeof value !== "function" && typeof value !== "undefined")
+    return value.toString();
+  if (typeof value === "undefined")
+    return "";
+  const connectRelationshipParsed = connectRelationshipSchema.safeParse(value);
+  if (connectRelationshipParsed.success)
+    return connectRelationshipParsed.data.connect.id;
+  throw new Error(`Unable to prepare value for compound key: ${value}`);
+}
 function addCompoundKey(listConfig, fieldNames) {
   const fieldName = (0, import_lodash.camelCase)(`${fieldNames.join(" ")} CompoundKey`);
   let newListConfig = { ...listConfig };
@@ -56,7 +72,7 @@ function addCompoundKey(listConfig, fieldNames) {
     isIndexed: "unique",
     ui: {
       createView: { fieldMode: "hidden" },
-      itemView: { fieldMode: "hidden" },
+      // itemView: { fieldMode: "hidden" },
       listView: { fieldMode: "hidden" }
     },
     graphql: { omit: { create: true, update: true } }
@@ -65,7 +81,6 @@ function addCompoundKey(listConfig, fieldNames) {
   const oldResolveInput = hooks.resolveInput;
   hooks.resolveInput = async (args) => {
     let resolvedData = args.resolvedData;
-    resolvedData[fieldName] = fieldNames.map((field) => resolvedData[field] || args.item?.[field]).join("-");
     if (typeof oldResolveInput !== "function") {
       if (args.operation === "create" && oldResolveInput?.create)
         resolvedData = await oldResolveInput.create({ ...args, resolvedData });
@@ -74,6 +89,7 @@ function addCompoundKey(listConfig, fieldNames) {
     } else if (oldResolveInput) {
       resolvedData = await oldResolveInput({ ...args, resolvedData });
     }
+    resolvedData[fieldName] = fieldNames.map((field) => prepareValueForKey(resolvedData[field] || args.item?.[field])).join("-");
     return resolvedData;
   };
   newListConfig.hooks = hooks;
@@ -81,10 +97,10 @@ function addCompoundKey(listConfig, fieldNames) {
 }
 
 // src/auth/passport.ts
-var KeystonePassportUser = import_zod.z.object({
-  email: import_zod.z.string().email(),
-  name: import_zod.z.string().optional(),
-  passportDataId: import_zod.z.string()
+var KeystonePassportUser = import_zod2.z.object({
+  email: import_zod2.z.string().email(),
+  name: import_zod2.z.string().optional(),
+  passportDataId: import_zod2.z.string()
 });
 function isRequiredStrategy(strategy) {
   if (strategy.name) {
@@ -136,16 +152,12 @@ function createPassportAuth({
             import_passport.default.authenticate(strategy, { session: false }),
             async (req, res) => {
               const user = KeystonePassportUser.parse(req.user);
-              const fullContext = await context.withRequest(req, res);
-              await fullContext.sessionStrategy?.start({
-                context: fullContext,
-                data: { ...user, strategy }
-              });
-              await fullContext.prisma.passportStrategyStorage.upsert({
+              const item = await context.prisma.passportStrategyStorage.upsert({
                 create: {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   strategyName: strategy.name,
                   data: user.passportDataId,
+                  // TODO: Don't hardcode user
                   user: {
                     connectOrCreate: {
                       create: {
@@ -162,7 +174,17 @@ function createPassportAuth({
                 update: {},
                 where: {
                   strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`
+                },
+                select: {
+                  // TODO: Don't hardcode user
+                  user: true
                 }
+              });
+              const fullContext = await context.withRequest(req, res);
+              await fullContext.sessionStrategy?.start({
+                context: fullContext,
+                // TODO: Don't hardcode user
+                data: { ...user, strategy: strategy.name, item: item.user }
               });
               res.redirect(loginSuccessRedirectUrl);
             }
@@ -224,29 +246,29 @@ var import_express2 = require("express");
 // src/express/api/utilities.ts
 var import_express = require("express");
 var import_express_fileupload = __toESM(require("express-fileupload"));
-var import_zod2 = require("zod");
-var registrantJsonFile = import_zod2.z.array(import_zod2.z.object({
-  mlhCodeOfConductAgreement: import_zod2.z.literal(true),
-  mlhPrivacyPolicyAgreement: import_zod2.z.literal(true),
-  mlhEmailAgreement: import_zod2.z.boolean().optional(),
-  registrationYear: import_zod2.z.number().int().optional(),
-  firstName: import_zod2.z.string(),
-  lastName: import_zod2.z.string(),
-  email: import_zod2.z.string(),
-  phone: import_zod2.z.string(),
-  school: import_zod2.z.string(),
-  country: import_zod2.z.string(),
-  degree: import_zod2.z.string(),
-  major: import_zod2.z.string(),
-  expectedGraduationYear: import_zod2.z.number().int(),
-  hackathonsAttended: import_zod2.z.number().int(),
-  ethnicity: import_zod2.z.string(),
-  age: import_zod2.z.number().int(),
-  gender: import_zod2.z.string(),
-  notes: import_zod2.z.string().optional(),
-  createdAt: import_zod2.z.string().datetime(),
-  resumeUrl: import_zod2.z.string().optional(),
-  verified: import_zod2.z.boolean().optional()
+var import_zod3 = require("zod");
+var registrantJsonFile = import_zod3.z.array(import_zod3.z.object({
+  mlhCodeOfConductAgreement: import_zod3.z.literal(true),
+  mlhPrivacyPolicyAgreement: import_zod3.z.literal(true),
+  mlhEmailAgreement: import_zod3.z.boolean().optional(),
+  registrationYear: import_zod3.z.number().int().optional(),
+  firstName: import_zod3.z.string(),
+  lastName: import_zod3.z.string(),
+  email: import_zod3.z.string(),
+  phone: import_zod3.z.string(),
+  school: import_zod3.z.string(),
+  country: import_zod3.z.string(),
+  degree: import_zod3.z.string(),
+  major: import_zod3.z.string(),
+  expectedGraduationYear: import_zod3.z.number().int(),
+  hackathonsAttended: import_zod3.z.number().int(),
+  ethnicity: import_zod3.z.string(),
+  age: import_zod3.z.number().int(),
+  gender: import_zod3.z.string(),
+  notes: import_zod3.z.string().optional(),
+  createdAt: import_zod3.z.string().datetime(),
+  resumeUrl: import_zod3.z.string().optional(),
+  verified: import_zod3.z.boolean().optional()
 }));
 var utilitiesRouter = (0, import_express.Router)();
 utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.default)(), async (req, res) => {
@@ -549,6 +571,31 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
     })
   },
   mutation: {
+    disqualifyProject: import_core3.graphql.field({
+      type: base.object("Judgement"),
+      args: {
+        projectId: import_core3.graphql.arg({ type: import_core3.graphql.ID }),
+        reason: import_core3.graphql.arg({ type: import_core3.graphql.String })
+      },
+      resolve(_source, { projectId, reason }, context) {
+        const userId = context.session.item.id;
+        if (!userId)
+          throw new Error("Missing userId when disqualifying project");
+        return context.db.Judgement.createOne({
+          data: {
+            project: { connect: { id: projectId } },
+            disqualifiedBy: { connect: { id: userId } },
+            disqualifyReason: reason,
+            judge: { connect: { id: userId } },
+            overallScore: 0,
+            conceptCaliber: 0,
+            demonstrationAbility: 0,
+            implementationAttempt: 0,
+            presentationProfessionalism: 0
+          }
+        });
+      }
+    }),
     seedSchoolIndiaData: import_core3.graphql.field({
       type: import_core3.graphql.Boolean,
       async resolve(_source, _, context) {
@@ -596,10 +643,10 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
   }
 }));
 
-// src/schema/judgment.ts
+// src/schema/judgement.ts
 var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
-var Judgement = (0, import_core4.list)({
+var Judgement = (0, import_core4.list)(addCompoundKey({
   access: {
     operation: allOperations2(isAuthenticated)
   },
@@ -635,8 +682,19 @@ var Judgement = (0, import_core4.list)({
     project: (0, import_fields4.relationship)({
       ref: "Project.judgements"
     })
+  },
+  hooks: {
+    resolveInput({ context, resolvedData, operation }) {
+      if (operation !== "create") {
+        return resolvedData;
+      }
+      if (!context.session?.item.id) {
+        throw new Error("Unknown session itemId.");
+      }
+      return { ...resolvedData, judge: { connect: { id: context.session.item.id } } };
+    }
   }
-});
+}, ["judge", "project"]));
 
 // src/schema/project.ts
 var import_core5 = require("@keystone-6/core");

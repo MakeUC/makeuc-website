@@ -52,6 +52,31 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     }),
   },
   mutation: {
+    disqualifyProject: graphql.field({
+      type: base.object("Judgement"),
+      args: {
+        projectId: graphql.arg({ type: graphql.ID }),
+        reason: graphql.arg({ type: graphql.String }),
+      },
+      resolve(_source, { projectId, reason }, context: Context) {
+        const userId = context.session.item.id;
+        if (!userId) throw new Error("Missing userId when disqualifying project");
+
+        return context.db.Judgement.createOne({
+          data: {
+            project: { connect: { id: projectId } },
+            disqualifiedBy: { connect: { id: userId } },
+            disqualifyReason: reason,
+            judge: { connect: { id: userId } },
+            overallScore: 0,
+            conceptCaliber: 0,
+            demonstrationAbility: 0,
+            implementationAttempt: 0,
+            presentationProfessionalism: 0,
+          },
+        });
+      },
+    }),
     seedSchoolIndiaData: graphql.field({
       type: graphql.Boolean,
       async resolve(_source, _, context: Context) {

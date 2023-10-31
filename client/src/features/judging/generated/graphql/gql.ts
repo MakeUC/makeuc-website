@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}": types.SubmitJudgementDocument,
+    "mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}\n\nmutation DisqualifyProject($projectId: ID!, $reason: String!) {\n  disqualifyProject(projectId: $projectId, reason: $reason) {\n    id\n  }\n}": types.SubmitJudgementDocument,
     "query GetProjects($where: ProjectWhereInput! = {}, $skip: Int! = 0, $take: Int = 20, $orderBy: [ProjectOrderByInput!]! = [], $cursor: ProjectWhereUniqueInput) {\n  projects(\n    where: $where\n    skip: $skip\n    take: $take\n    orderBy: $orderBy\n    cursor: $cursor\n  ) {\n    id\n    url\n    name\n    countJudgements\n    judgingGroup\n    year\n    score\n    disqualified\n  }\n  projectsCount(where: $where)\n}": types.GetProjectsDocument,
 };
 
@@ -34,7 +34,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}"): (typeof documents)["mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}"];
+export function graphql(source: "mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}\n\nmutation DisqualifyProject($projectId: ID!, $reason: String!) {\n  disqualifyProject(projectId: $projectId, reason: $reason) {\n    id\n  }\n}"): (typeof documents)["mutation SubmitJudgement($data: JudgementCreateInput!) {\n  createJudgement(data: $data) {\n    id\n  }\n}\n\nmutation DisqualifyProject($projectId: ID!, $reason: String!) {\n  disqualifyProject(projectId: $projectId, reason: $reason) {\n    id\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

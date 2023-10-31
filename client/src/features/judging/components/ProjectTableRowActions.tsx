@@ -16,11 +16,17 @@ import type { Row } from "@tanstack/react-table";
 
 
 interface ProjectTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: Row<TData>;
+  devpostUrl: string;
+  makeJudgement?: (row: TData) => void;
+  disqualifyProject?: (row: TData) => void;
 }
 
 export function ProjectTableRowActions<TData>({
   row,
+  devpostUrl,
+  makeJudgement,
+  disqualifyProject,
 }: ProjectTableRowActionsProps<TData>) {
   return (
     <DropdownMenu>
@@ -35,10 +41,10 @@ export function ProjectTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         {/* TODO: Make functional */}
-        <DropdownMenuItem onClick={() => console.log(row)}>View Devpost</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => console.log(row)}>Make Judgement</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => window.open(devpostUrl, "_blank")}>View Devpost</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => makeJudgement?.(row.original)}>Make Judgement</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => console.log(row)} className="focus:bg-destructive focus:text-destructive-foreground">Disqualify</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => disqualifyProject?.(row.original)} className="focus:bg-destructive focus:text-destructive-foreground">Disqualify</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -21,17 +21,9 @@ export type Scalars = {
   Upload: { input: any; output: any; }
 };
 
-export type AuthenticatedItem = User;
-
 export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
   not?: InputMaybe<BooleanFilter>;
-};
-
-export type CreateInitialUserInput = {
-  email?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DateTimeNullableFilter = {
@@ -134,7 +126,6 @@ export type JudgementCreateInput = {
   applicableTracks?: InputMaybe<TrackRelateToManyForCreateInput>;
   conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
   demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
-  disqualifiedBy?: InputMaybe<UserRelateToOneForCreateInput>;
   disqualifyReason?: InputMaybe<Scalars['String']['input']>;
   implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
   judge?: InputMaybe<UserRelateToOneForCreateInput>;
@@ -180,7 +171,6 @@ export type JudgementUpdateInput = {
   applicableTracks?: InputMaybe<TrackRelateToManyForUpdateInput>;
   conceptCaliber?: InputMaybe<Scalars['Int']['input']>;
   demonstrationAbility?: InputMaybe<Scalars['Int']['input']>;
-  disqualifiedBy?: InputMaybe<UserRelateToOneForUpdateInput>;
   disqualifyReason?: InputMaybe<Scalars['String']['input']>;
   implementationAttempt?: InputMaybe<Scalars['Int']['input']>;
   judge?: InputMaybe<UserRelateToOneForUpdateInput>;
@@ -333,10 +323,10 @@ export type KeystoneMeta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
-  createInitialUser: UserAuthenticationWithPasswordSuccess;
   createJudgement?: Maybe<Judgement>;
   createJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  createPassportStrategyStorage?: Maybe<PassportStrategyStorage>;
+  createPassportStrategyStorages?: Maybe<Array<Maybe<PassportStrategyStorage>>>;
   createProject?: Maybe<Project>;
   createProjects?: Maybe<Array<Maybe<Project>>>;
   createRegistrant?: Maybe<Registrant>;
@@ -349,6 +339,8 @@ export type Mutation = {
   createUsers?: Maybe<Array<Maybe<User>>>;
   deleteJudgement?: Maybe<Judgement>;
   deleteJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  deletePassportStrategyStorage?: Maybe<PassportStrategyStorage>;
+  deletePassportStrategyStorages?: Maybe<Array<Maybe<PassportStrategyStorage>>>;
   deleteProject?: Maybe<Project>;
   deleteProjects?: Maybe<Array<Maybe<Project>>>;
   deleteRegistrant?: Maybe<Registrant>;
@@ -359,11 +351,14 @@ export type Mutation = {
   deleteTracks?: Maybe<Array<Maybe<Track>>>;
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
+  disqualifyProject?: Maybe<Judgement>;
   endSession: Scalars['Boolean']['output'];
   resendVerificationEmails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
   updateJudgement?: Maybe<Judgement>;
   updateJudgements?: Maybe<Array<Maybe<Judgement>>>;
+  updatePassportStrategyStorage?: Maybe<PassportStrategyStorage>;
+  updatePassportStrategyStorages?: Maybe<Array<Maybe<PassportStrategyStorage>>>;
   updateProject?: Maybe<Project>;
   updateProjects?: Maybe<Array<Maybe<Project>>>;
   updateRegistrant?: Maybe<Registrant>;
@@ -378,17 +373,6 @@ export type Mutation = {
 };
 
 
-export type MutationAuthenticateUserWithPasswordArgs = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-};
-
-
-export type MutationCreateInitialUserArgs = {
-  data: CreateInitialUserInput;
-};
-
-
 export type MutationCreateJudgementArgs = {
   data: JudgementCreateInput;
 };
@@ -396,6 +380,16 @@ export type MutationCreateJudgementArgs = {
 
 export type MutationCreateJudgementsArgs = {
   data: Array<JudgementCreateInput>;
+};
+
+
+export type MutationCreatePassportStrategyStorageArgs = {
+  data: PassportStrategyStorageCreateInput;
+};
+
+
+export type MutationCreatePassportStrategyStoragesArgs = {
+  data: Array<PassportStrategyStorageCreateInput>;
 };
 
 
@@ -459,6 +453,16 @@ export type MutationDeleteJudgementsArgs = {
 };
 
 
+export type MutationDeletePassportStrategyStorageArgs = {
+  where: PassportStrategyStorageWhereUniqueInput;
+};
+
+
+export type MutationDeletePassportStrategyStoragesArgs = {
+  where: Array<PassportStrategyStorageWhereUniqueInput>;
+};
+
+
 export type MutationDeleteProjectArgs = {
   where: ProjectWhereUniqueInput;
 };
@@ -509,6 +513,12 @@ export type MutationDeleteUsersArgs = {
 };
 
 
+export type MutationDisqualifyProjectArgs = {
+  projectId?: InputMaybe<Scalars['ID']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationUpdateJudgementArgs = {
   data: JudgementUpdateInput;
   where: JudgementWhereUniqueInput;
@@ -517,6 +527,17 @@ export type MutationUpdateJudgementArgs = {
 
 export type MutationUpdateJudgementsArgs = {
   data: Array<JudgementUpdateArgs>;
+};
+
+
+export type MutationUpdatePassportStrategyStorageArgs = {
+  data: PassportStrategyStorageUpdateInput;
+  where: PassportStrategyStorageWhereUniqueInput;
+};
+
+
+export type MutationUpdatePassportStrategyStoragesArgs = {
+  data: Array<PassportStrategyStorageUpdateArgs>;
 };
 
 
@@ -598,9 +619,64 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
-export type PasswordState = {
-  __typename?: 'PasswordState';
-  isSet: Scalars['Boolean']['output'];
+export type PassportStrategyStorage = {
+  __typename?: 'PassportStrategyStorage';
+  data?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  strategyName?: Maybe<PassportStrategyStorageStrategyNameType>;
+  strategyNameDataCompoundKey?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+};
+
+export type PassportStrategyStorageCreateInput = {
+  data?: InputMaybe<Scalars['String']['input']>;
+  strategyName?: InputMaybe<PassportStrategyStorageStrategyNameType>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+};
+
+export type PassportStrategyStorageOrderByInput = {
+  data?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+  strategyName?: InputMaybe<OrderDirection>;
+  strategyNameDataCompoundKey?: InputMaybe<OrderDirection>;
+};
+
+export enum PassportStrategyStorageStrategyNameType {
+  Google = 'google'
+}
+
+export type PassportStrategyStorageStrategyNameTypeNullableFilter = {
+  equals?: InputMaybe<PassportStrategyStorageStrategyNameType>;
+  in?: InputMaybe<Array<PassportStrategyStorageStrategyNameType>>;
+  not?: InputMaybe<PassportStrategyStorageStrategyNameTypeNullableFilter>;
+  notIn?: InputMaybe<Array<PassportStrategyStorageStrategyNameType>>;
+};
+
+export type PassportStrategyStorageUpdateArgs = {
+  data: PassportStrategyStorageUpdateInput;
+  where: PassportStrategyStorageWhereUniqueInput;
+};
+
+export type PassportStrategyStorageUpdateInput = {
+  data?: InputMaybe<Scalars['String']['input']>;
+  strategyName?: InputMaybe<PassportStrategyStorageStrategyNameType>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
+};
+
+export type PassportStrategyStorageWhereInput = {
+  AND?: InputMaybe<Array<PassportStrategyStorageWhereInput>>;
+  NOT?: InputMaybe<Array<PassportStrategyStorageWhereInput>>;
+  OR?: InputMaybe<Array<PassportStrategyStorageWhereInput>>;
+  data?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IdFilter>;
+  strategyName?: InputMaybe<PassportStrategyStorageStrategyNameTypeNullableFilter>;
+  strategyNameDataCompoundKey?: InputMaybe<StringFilter>;
+  user?: InputMaybe<UserWhereInput>;
+};
+
+export type PassportStrategyStorageWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  strategyNameDataCompoundKey?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Project = {
@@ -688,11 +764,13 @@ export type ProjectWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query';
-  authenticatedItem?: Maybe<AuthenticatedItem>;
   judgement?: Maybe<Judgement>;
   judgements?: Maybe<Array<Judgement>>;
   judgementsCount?: Maybe<Scalars['Int']['output']>;
   keystone: KeystoneMeta;
+  passportStrategyStorage?: Maybe<PassportStrategyStorage>;
+  passportStrategyStorages?: Maybe<Array<PassportStrategyStorage>>;
+  passportStrategyStoragesCount?: Maybe<Scalars['Int']['output']>;
   project?: Maybe<Project>;
   projects?: Maybe<Array<Project>>;
   projectsCount?: Maybe<Scalars['Int']['output']>;
@@ -728,6 +806,25 @@ export type QueryJudgementsArgs = {
 
 export type QueryJudgementsCountArgs = {
   where?: JudgementWhereInput;
+};
+
+
+export type QueryPassportStrategyStorageArgs = {
+  where: PassportStrategyStorageWhereUniqueInput;
+};
+
+
+export type QueryPassportStrategyStoragesArgs = {
+  cursor?: InputMaybe<PassportStrategyStorageWhereUniqueInput>;
+  orderBy?: Array<PassportStrategyStorageOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: PassportStrategyStorageWhereInput;
+};
+
+
+export type QueryPassportStrategyStoragesCountArgs = {
+  where?: PassportStrategyStorageWhereInput;
 };
 
 
@@ -1164,10 +1261,9 @@ export type User = {
   judgements?: Maybe<Array<Judgement>>;
   judgementsCount?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  password?: Maybe<PasswordState>;
   registrations?: Maybe<Array<Registrant>>;
   registrationsCount?: Maybe<Scalars['Int']['output']>;
-  roles?: Maybe<UserRoleType>;
+  roles?: Maybe<Array<UserRoleType>>;
 };
 
 
@@ -1198,27 +1294,13 @@ export type UserRegistrationsCountArgs = {
   where?: RegistrantWhereInput;
 };
 
-export type UserAuthenticationWithPasswordFailure = {
-  __typename?: 'UserAuthenticationWithPasswordFailure';
-  message: Scalars['String']['output'];
-};
-
-export type UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordFailure | UserAuthenticationWithPasswordSuccess;
-
-export type UserAuthenticationWithPasswordSuccess = {
-  __typename?: 'UserAuthenticationWithPasswordSuccess';
-  item: User;
-  sessionToken: Scalars['String']['output'];
-};
-
 export type UserCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   judgements?: InputMaybe<JudgementRelateToManyForCreateInput>;
   name?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
   registrations?: InputMaybe<RegistrantRelateToManyForCreateInput>;
-  roles?: InputMaybe<UserRoleType>;
+  roles?: InputMaybe<Array<UserRoleType>>;
 };
 
 export type UserOrderByInput = {
@@ -1226,7 +1308,6 @@ export type UserOrderByInput = {
   email?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   name?: InputMaybe<OrderDirection>;
-  roles?: InputMaybe<OrderDirection>;
 };
 
 export type UserRelateToOneForCreateInput = {
@@ -1247,13 +1328,6 @@ export enum UserRoleType {
   Organizer = 'organizer'
 }
 
-export type UserRoleTypeNullableFilter = {
-  equals?: InputMaybe<UserRoleType>;
-  in?: InputMaybe<Array<UserRoleType>>;
-  not?: InputMaybe<UserRoleTypeNullableFilter>;
-  notIn?: InputMaybe<Array<UserRoleType>>;
-};
-
 export type UserUpdateArgs = {
   data: UserUpdateInput;
   where: UserWhereUniqueInput;
@@ -1264,9 +1338,8 @@ export type UserUpdateInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   judgements?: InputMaybe<JudgementRelateToManyForUpdateInput>;
   name?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
   registrations?: InputMaybe<RegistrantRelateToManyForUpdateInput>;
-  roles?: InputMaybe<UserRoleType>;
+  roles?: InputMaybe<Array<UserRoleType>>;
 };
 
 export type UserWhereInput = {
@@ -1279,7 +1352,6 @@ export type UserWhereInput = {
   judgements?: InputMaybe<JudgementManyRelationFilter>;
   name?: InputMaybe<StringFilter>;
   registrations?: InputMaybe<RegistrantManyRelationFilter>;
-  roles?: InputMaybe<UserRoleTypeNullableFilter>;
 };
 
 export type UserWhereUniqueInput = {
