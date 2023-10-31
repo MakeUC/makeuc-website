@@ -29,6 +29,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@discordjs/rest", "npm:2.0.1"],\
+            ["@prisma/client", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.5.2"],\
             ["@types/node", "npm:20.8.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.62.0"],\
             ["@typescript-eslint/parser", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.62.0"],\
@@ -39,6 +40,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-import-resolver-typescript", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:3.6.1"],\
             ["eslint-plugin-import", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:2.28.1"],\
             ["lint-staged", "npm:13.3.0"],\
+            ["prisma", "npm:5.5.2"],\
             ["ts-node", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:10.9.1"],\
             ["tsup", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:7.2.0"],\
             ["tsx", "npm:3.14.0"],\
@@ -562,6 +564,47 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@pkgjs-parseargs-npm-0.11.0-cd2a3fe948-6ad6a00fc4.zip/node_modules/@pkgjs/parseargs/",\
           "packageDependencies": [\
             ["@pkgjs/parseargs", "npm:0.11.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@prisma/client", [\
+        ["npm:5.5.2", {\
+          "packageLocation": "./.yarn/unplugged/@prisma-client-virtual-17ee9c9270/node_modules/@prisma/client/",\
+          "packageDependencies": [\
+            ["@prisma/client", "npm:5.5.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.5.2", {\
+          "packageLocation": "./.yarn/unplugged/@prisma-client-virtual-17ee9c9270/node_modules/@prisma/client/",\
+          "packageDependencies": [\
+            ["@prisma/client", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.5.2"],\
+            ["@prisma/engines-version", "npm:5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a"],\
+            ["@types/prisma", null],\
+            ["prisma", "npm:5.5.2"]\
+          ],\
+          "packagePeers": [\
+            "@types/prisma",\
+            "prisma"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@prisma/engines", [\
+        ["npm:5.5.2", {\
+          "packageLocation": "./.yarn/unplugged/@prisma-engines-npm-5.5.2-d2d8233521/node_modules/@prisma/engines/",\
+          "packageDependencies": [\
+            ["@prisma/engines", "npm:5.5.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@prisma/engines-version", [\
+        ["npm:5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a", {\
+          "packageLocation": "./.yarn/cache/@prisma-engines-version-npm-5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a-ddffdc03d7-bd0a1dd20f.zip/node_modules/@prisma/engines-version/",\
+          "packageDependencies": [\
+            ["@prisma/engines-version", "npm:5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1654,6 +1697,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["discord_bot", "workspace:."],\
             ["@discordjs/rest", "npm:2.0.1"],\
+            ["@prisma/client", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.5.2"],\
             ["@types/node", "npm:20.8.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.62.0"],\
             ["@typescript-eslint/parser", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:5.62.0"],\
@@ -1664,6 +1708,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-import-resolver-typescript", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:3.6.1"],\
             ["eslint-plugin-import", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:2.28.1"],\
             ["lint-staged", "npm:13.3.0"],\
+            ["prisma", "npm:5.5.2"],\
             ["ts-node", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:10.9.1"],\
             ["tsup", "virtual:905afd0bfd72b574f485a841ca82583935bf6151c5903e15473e055595438ba21631636b639275fd03136e5ceff11e774b3a392017e480a7f4ba67c71d9175d6#npm:7.2.0"],\
             ["tsx", "npm:3.14.0"],\
@@ -3933,6 +3978,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prelude-ls-npm-1.2.1-3e4d272a55-cd192ec0d0.zip/node_modules/prelude-ls/",\
           "packageDependencies": [\
             ["prelude-ls", "npm:1.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["prisma", [\
+        ["npm:5.5.2", {\
+          "packageLocation": "./.yarn/unplugged/prisma-npm-5.5.2-c3f375fb97/node_modules/prisma/",\
+          "packageDependencies": [\
+            ["prisma", "npm:5.5.2"],\
+            ["@prisma/engines", "npm:5.5.2"]\
           ],\
           "linkType": "HARD"\
         }]\
