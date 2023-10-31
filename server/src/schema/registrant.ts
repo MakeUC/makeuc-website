@@ -9,6 +9,15 @@ import { FROM_ADDRESS, REGISTRATION_URL, sendgrid } from "../utils/sendgrid";
 import type { Lists } from ".keystone/types";
 
 
+export function sendEmailToRegistrant(registrant: Lists.Registrant.Item, sendgridTemplateId: string) {
+  return sendgrid.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    templateId: sendgridTemplateId,
+    dynamicTemplateData: Object.fromEntries(Object.entries(registrant).map(([key, value]) => [key, value?.toString() ?? ""])),
+  });
+}
+
 export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
   return sendgrid.send({
     from: FROM_ADDRESS,
@@ -94,9 +103,6 @@ export const Registrant = list(addCompoundKey({
       ref: "User.registrations",
       many: false,
     }),
-  },
-  graphql: {
-    maxTake: 50,
   },
   hooks: {
     async afterOperation({ operation, item }) {

@@ -248,6 +248,14 @@ var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
 var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
 
 // src/schema/registrant.ts
+function sendEmailToRegistrant(registrant, sendgridTemplateId) {
+  return import_mail.default.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    templateId: sendgridTemplateId,
+    dynamicTemplateData: Object.fromEntries(Object.entries(registrant).map(([key, value]) => [key, value?.toString() ?? ""]))
+  });
+}
 function sendRegistrantEmail(registrant) {
   return import_mail.default.send({
     from: FROM_ADDRESS,
@@ -330,9 +338,6 @@ var Registrant = (0, import_core.list)(addCompoundKey({
       ref: "User.registrations",
       many: false
     })
-  },
-  graphql: {
-    maxTake: 50
   },
   hooks: {
     async afterOperation({ operation, item }) {
@@ -462,6 +467,25 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
           await sendRegistrantEmail(registrant);
         }
         return unverifiedRegistrants.map((registrant) => registrant.email);
+      }
+    }),
+    massSendRegistrantEmail: import_core2.graphql.field({
+      type: import_core2.graphql.nonNull(import_core2.graphql.list(import_core2.graphql.String)),
+      args: {
+        sendGridId: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.String) }),
+        where: import_core2.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+      },
+      async resolve(_source, { sendGridId, where }, context) {
+        console.log("Here");
+        const registrants = await context.sudo().db.Registrant.findMany({
+          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
+        });
+        console.log("Here2", registrants);
+        for (const registrant of registrants) {
+          await sendEmailToRegistrant(registrant, sendGridId);
+        }
+        console.log("Here3");
+        return registrants.map((registrant) => registrant.email);
       }
     })
   }

@@ -360,6 +360,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean']['output'];
+  massSendRegistrantEmail: Array<Maybe<Scalars['String']['output']>>;
   resendVerificationEmails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
   updateJudgement?: Maybe<Judgement>;
@@ -506,6 +507,12 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
+};
+
+
+export type MutationMassSendRegistrantEmailArgs = {
+  sendGridId: Scalars['String']['input'];
+  where?: InputMaybe<RegistrantWhereInput>;
 };
 
 
@@ -756,7 +763,7 @@ export type QueryRegistrantsArgs = {
   cursor?: InputMaybe<RegistrantWhereUniqueInput>;
   orderBy?: Array<RegistrantOrderByInput>;
   skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
   where?: RegistrantWhereInput;
 };
 
@@ -1186,7 +1193,7 @@ export type UserRegistrationsArgs = {
   cursor?: InputMaybe<RegistrantWhereUniqueInput>;
   orderBy?: Array<RegistrantOrderByInput>;
   skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
   where?: RegistrantWhereInput;
 };
 
