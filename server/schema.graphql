@@ -558,7 +558,7 @@ type User {
   email: String
   createdAt: DateTime
   roles: [UserRoleType!]
-  registrations(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
+  registrations(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
   registrationsCount(where: RegistrantWhereInput! = {}): Int
   judgements(where: JudgementWhereInput! = {}, orderBy: [JudgementOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JudgementWhereUniqueInput): [Judgement!]
   judgementsCount(where: JudgementWhereInput! = {}): Int
@@ -760,6 +760,7 @@ type Mutation {
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
   resendVerificationEmails: [String]
+  massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput): [String]!
 }
 
 type Query {
@@ -769,7 +770,7 @@ type Query {
   projects(where: ProjectWhereInput! = {}, orderBy: [ProjectOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProjectWhereUniqueInput): [Project!]
   project(where: ProjectWhereUniqueInput!): Project
   projectsCount(where: ProjectWhereInput! = {}): Int
-  registrants(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
+  registrants(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
   registrant(where: RegistrantWhereUniqueInput!): Registrant
   registrantsCount(where: RegistrantWhereInput! = {}): Int
   schools(where: SchoolWhereInput! = {}, orderBy: [SchoolOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: SchoolWhereUniqueInput): [School!]

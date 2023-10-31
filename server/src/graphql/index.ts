@@ -1,6 +1,6 @@
 import { graphql } from "@keystone-6/core";
 
-import { sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
+import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
@@ -124,6 +124,28 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         }
 
         return unverifiedRegistrants.map(registrant => registrant.email);
+      },
+    }),
+    massSendRegistrantEmail: graphql.field({
+      type: graphql.nonNull(graphql.list(graphql.String)),
+      args: {
+        sendGridId: graphql.arg({ type: graphql.nonNull(graphql.String) }),
+        where: graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+      },
+      async resolve(_source, { sendGridId, where }, context: Context) {
+        if (!context.session) return [];
+
+        // Get all of the registrants from the current year that are NOT verified
+        const registrants = await context.sudo().db.Registrant.findMany({
+          where: { registrationYear: { equals: new Date().getFullYear() }, ...where },
+        });
+
+        // Send emails for each unverified registrant
+        for (const registrant of registrants) {
+          await sendEmailToRegistrant(registrant, sendGridId);
+        }
+
+        return registrants.map(registrant => registrant.email);
       },
     }),
   },

@@ -404,6 +404,14 @@ var FROM_ADDRESS = process.env.SENDGRID_FROM_ADDRESS;
 var REGISTRATION_URL = process.env.CONFIRM_REGISTRATION_URL;
 
 // src/schema/registrant.ts
+function sendEmailToRegistrant(registrant, sendgridTemplateId) {
+  return import_mail.default.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    templateId: sendgridTemplateId,
+    dynamicTemplateData: Object.fromEntries(Object.entries(registrant).map(([key, value]) => [key, value?.toString() ?? ""]))
+  });
+}
 function sendRegistrantEmail(registrant) {
   return import_mail.default.send({
     from: FROM_ADDRESS,
@@ -486,9 +494,6 @@ var Registrant = (0, import_core2.list)(addCompoundKey({
       ref: "User.registrations",
       many: false
     })
-  },
-  graphql: {
-    maxTake: 50
   },
   hooks: {
     async afterOperation({ operation, item }) {
@@ -646,6 +651,24 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
           await sendRegistrantEmail(registrant);
         }
         return unverifiedRegistrants.map((registrant) => registrant.email);
+      }
+    }),
+    massSendRegistrantEmail: import_core3.graphql.field({
+      type: import_core3.graphql.nonNull(import_core3.graphql.list(import_core3.graphql.String)),
+      args: {
+        sendGridId: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.String) }),
+        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+      },
+      async resolve(_source, { sendGridId, where }, context) {
+        if (!context.session)
+          return [];
+        const registrants = await context.sudo().db.Registrant.findMany({
+          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
+        });
+        for (const registrant of registrants) {
+          await sendEmailToRegistrant(registrant, sendGridId);
+        }
+        return registrants.map((registrant) => registrant.email);
       }
     })
   }

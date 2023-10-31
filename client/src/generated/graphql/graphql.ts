@@ -9,7 +9,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string | number; output: string; }
+  ID: { input: string; output: string; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -359,6 +359,7 @@ export type Mutation = {
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   disqualifyProject?: Maybe<Judgement>;
   endSession: Scalars['Boolean']['output'];
+  massSendRegistrantEmail: Array<Maybe<Scalars['String']['output']>>;
   resendVerificationEmails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
   updateJudgement?: Maybe<Judgement>;
@@ -522,6 +523,12 @@ export type MutationDeleteUsersArgs = {
 export type MutationDisqualifyProjectArgs = {
   projectId?: InputMaybe<Scalars['ID']['input']>;
   reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationMassSendRegistrantEmailArgs = {
+  sendGridId: Scalars['String']['input'];
+  where?: InputMaybe<RegistrantWhereInput>;
 };
 
 
@@ -862,7 +869,7 @@ export type QueryRegistrantsArgs = {
   cursor?: InputMaybe<RegistrantWhereUniqueInput>;
   orderBy?: Array<RegistrantOrderByInput>;
   skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
   where?: RegistrantWhereInput;
 };
 
@@ -1291,7 +1298,7 @@ export type UserRegistrationsArgs = {
   cursor?: InputMaybe<RegistrantWhereUniqueInput>;
   orderBy?: Array<RegistrantOrderByInput>;
   skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
   where?: RegistrantWhereInput;
 };
 
