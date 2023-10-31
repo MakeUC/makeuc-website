@@ -379,6 +379,14 @@ var import_fields3 = require("@keystone-6/core/fields");
 function isAuthenticated(args) {
   return !!args.session;
 }
+function hasRoleOneOf(...roles) {
+  return (args) => {
+    const session2 = args.session;
+    if (!session2)
+      return false;
+    return session2.item.roles.some((role) => roles.includes(role));
+  };
+}
 function allOperations2(predicate) {
   return {
     create: predicate,
@@ -701,8 +709,11 @@ var import_core5 = require("@keystone-6/core");
 var import_fields5 = require("@keystone-6/core/fields");
 var Project = (0, import_core5.list)({
   access: {
-    // operation: allOperations(isAuthenticated),
-    operation: allOperations2(() => true)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin"))
+      // TODO: Enable this
+      // query: hasRoleOneOf("admin", "organizer", "judge"),
+    }
   },
   fields: {
     url: (0, import_fields5.text)({

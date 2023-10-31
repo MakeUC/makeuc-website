@@ -1,15 +1,18 @@
 import { graphql, list } from "@keystone-6/core";
 import { integer, relationship, text, virtual } from "@keystone-6/core/fields";
 
-import { allOperations } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 
 import type { Context } from ".keystone/types";
 
 
 export const Project = list({
   access: {
-    // operation: allOperations(isAuthenticated),
-    operation: allOperations(() => true),
+    operation: {
+      ...allOperations(hasRoleOneOf("admin")),
+      // TODO: Enable this
+      // query: hasRoleOneOf("admin", "organizer", "judge"),
+    },
   },
   fields: {
     url: text({
