@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Loader } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -35,13 +36,15 @@ import type {
 
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[],
+  data: TData[],
+  isLoading?: boolean,
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -119,7 +122,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {isLoading ? <div className="flex justify-center gap-2"><Loader className="animate-spin" /> Loading...</div> : "No results."}
                 </TableCell>
               </TableRow>
             )}

@@ -17,7 +17,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 
 export function ProjectsTable() {
-  const { data } = useQuery(GetProjectsDocument);
+  const { data, loading } = useQuery(GetProjectsDocument);
 
   const [projectForJudgement, setProjectForJudgement] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
   const [projectForDisqualification, setProjectForDisqualification] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
@@ -63,6 +63,7 @@ export function ProjectsTable() {
       <DataTable
         columns={columns}
         data={data?.projects ?? []}
+        isLoading={loading}
       />
 
       {
