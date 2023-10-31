@@ -476,15 +476,14 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         where: import_core2.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
       },
       async resolve(_source, { sendGridId, where }, context) {
-        console.log("Here");
+        if (!context.session)
+          return [];
         const registrants = await context.sudo().db.Registrant.findMany({
           where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
         });
-        console.log("Here2", registrants);
         for (const registrant of registrants) {
           await sendEmailToRegistrant(registrant, sendGridId);
         }
-        console.log("Here3");
         return registrants.map((registrant) => registrant.email);
       }
     })
