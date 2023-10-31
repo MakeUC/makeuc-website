@@ -9,9 +9,9 @@ export const metadata = {
 export default function RegistrationPage() {
   return (
     <div className="flex justify-center">
-      <div className="px-8 w-full max-w-5xl">
+      <div className="px-8 w-full max-w-5xl flex flex-col items-center">
         <PageTitle>Sign In</PageTitle>
-        <SignInForm strategies={["google"]} />
+        <SignInForm strategies={["google", "microsoft"]} />
       </div>
     </div>
   );
