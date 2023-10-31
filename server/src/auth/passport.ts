@@ -18,15 +18,25 @@ export const KeystonePassportUser = z.object({
 
 export type KeystonePassportUserType = z.infer<typeof KeystonePassportUser>;
 
-function isRequiredStrategy(strategy: Strategy): strategy is Required<Strategy> {
-  if (strategy.name) { return true; }
+export interface CreatePassportAuthStrategy {
+  strategy: Strategy,
+  loginOptions?: passport.AuthenticateOptions,
+  disabled?: boolean,
+}
+
+interface CreatePassportAuthStrategyFull extends Omit<CreatePassportAuthStrategy, "strategy"> {
+  strategy: Required<Strategy>,
+}
+
+function isRequiredStrategy(strategy: CreatePassportAuthStrategy): strategy is CreatePassportAuthStrategyFull {
+  if (strategy.strategy.name) { return true; }
 
   throw new Error("Strategy is missing a name.");
 }
 
 export interface CreatePassportAuthProps<ListTypeInfo extends BaseListTypeInfo> {
   listKey: ListTypeInfo["key"],
-  strategies: Strategy[],
+  strategies: CreatePassportAuthStrategy[],
   loginSuccessRedirectUrl?: string,
 }
 
@@ -44,7 +54,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
     fields: {
       user: relationship({ ref: listKey, many: false }),
       strategyName: select({
-        type: "enum", options: strategies.map(strategy => ({ label: strategy.name, value: strategy.name })),
+        type: "enum", options: strategies.map(strat => ({ label: strat.strategy.name, value: strat.strategy.name })),
         validation: { isRequired: true },
         isIndexed: true,
       }),
@@ -69,20 +79,21 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
       extendExpressApp(app, context) {
         extendExpressApp?.(app, context);
 
-        strategies.forEach(strategy => {
-          if (!strategy.name) throw new Error("Strategy is missing a name.");
-          app.get(`/auth/strategy/${strategy.name}/login`, passport.authenticate(strategy, {
-            scope: ["email", "profile"],
-          }));
-          app.get(`/auth/strategy/${strategy.name}/redirect`,
-            passport.authenticate(strategy, { session: false }),
+        strategies.forEach(strat => {
+          if (!strat.strategy.name) throw new Error("Strategy is missing a name.");
+          // eslint-disable-next-line no-console
+          if (strat.disabled) return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
+
+          app.get(`/auth/strategy/${strat.strategy.name}/login`, passport.authenticate(strat.strategy, strat.loginOptions ?? {}));
+          app.get(`/auth/strategy/${strat.strategy.name}/redirect`,
+            passport.authenticate(strat.strategy, { session: false }),
             async (req, res) => {
               const user = KeystonePassportUser.parse(req.user);
 
               const item = await context.prisma.passportStrategyStorage.upsert({
                 create: {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  strategyName: strategy.name,
+                  strategyName: strat.strategy.name,
                   data: user.passportDataId,
                   // TODO: Don't hardcode user
                   user: {
@@ -91,18 +102,18 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
                         name: user.name ?? user.email,
                         email: user.email,
                         // TODO: don't hardcode roles
-                        roles: ["admin"],
+                        roles: (await context.prisma.passportStrategyStorage.count()) > 0 ? undefined : ["admin"],
                       },
                       where: {
                         email: user.email,
                       },
                     },
                   },
-                  strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`,
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`,
                 },
                 update: {},
                 where: {
-                  strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`,
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`,
                 },
                 select: {
                   // TODO: Don't hardcode user
@@ -114,7 +125,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
               await fullContext.sessionStrategy?.start({
                 context: fullContext,
                 // TODO: Don't hardcode user
-                data: { ...user, strategy: strategy.name, item: item.user },
+                data: { ...user, strategy: strat.strategy.name, item: item.user },
               });
 
               res.redirect(loginSuccessRedirectUrl);

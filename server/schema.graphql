@@ -658,6 +658,7 @@ type PassportStrategyStorage {
 
 enum PassportStrategyStorageStrategyNameType {
   google
+  microsoft
 }
 
 input PassportStrategyStorageWhereUniqueInput {

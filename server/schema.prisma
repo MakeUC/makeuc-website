@@ -131,4 +131,5 @@ model PassportStrategyStorage {
 
 enum PassportStrategyStorageStrategyNameType {
   google
+  microsoft
 }

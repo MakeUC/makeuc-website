@@ -655,7 +655,8 @@ export type PassportStrategyStorageOrderByInput = {
 };
 
 export enum PassportStrategyStorageStrategyNameType {
-  Google = 'google'
+  Google = 'google',
+  Microsoft = 'microsoft'
 }
 
 export type PassportStrategyStorageStrategyNameTypeNullableFilter = {

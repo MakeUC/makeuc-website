@@ -38,6 +38,8 @@ var import_core9 = require("@keystone-6/core");
 // src/auth/index.ts
 var import_session = require("@keystone-6/core/session");
 var import_passport_google_oauth = require("passport-google-oauth");
+var import_passport_microsoft = require("passport-microsoft");
+var import_zod3 = require("zod");
 
 // src/auth/passport.ts
 var import_core = require("@keystone-6/core");
@@ -103,7 +105,7 @@ var KeystonePassportUser = import_zod2.z.object({
   passportDataId: import_zod2.z.string()
 });
 function isRequiredStrategy(strategy) {
-  if (strategy.name) {
+  if (strategy.strategy.name) {
     return true;
   }
   throw new Error("Strategy is missing a name.");
@@ -123,7 +125,7 @@ function createPassportAuth({
       user: (0, import_fields2.relationship)({ ref: listKey, many: false }),
       strategyName: (0, import_fields2.select)({
         type: "enum",
-        options: strategies.map((strategy) => ({ label: strategy.name, value: strategy.name })),
+        options: strategies.map((strat) => ({ label: strat.strategy.name, value: strat.strategy.name })),
         validation: { isRequired: true },
         isIndexed: true
       }),
@@ -141,21 +143,21 @@ function createPassportAuth({
       ...config2.server,
       extendExpressApp(app, context) {
         extendExpressApp2?.(app, context);
-        strategies.forEach((strategy) => {
-          if (!strategy.name)
+        strategies.forEach((strat) => {
+          if (!strat.strategy.name)
             throw new Error("Strategy is missing a name.");
-          app.get(`/auth/strategy/${strategy.name}/login`, import_passport.default.authenticate(strategy, {
-            scope: ["email", "profile"]
-          }));
+          if (strat.disabled)
+            return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
+          app.get(`/auth/strategy/${strat.strategy.name}/login`, import_passport.default.authenticate(strat.strategy, strat.loginOptions ?? {}));
           app.get(
-            `/auth/strategy/${strategy.name}/redirect`,
-            import_passport.default.authenticate(strategy, { session: false }),
+            `/auth/strategy/${strat.strategy.name}/redirect`,
+            import_passport.default.authenticate(strat.strategy, { session: false }),
             async (req, res) => {
               const user = KeystonePassportUser.parse(req.user);
               const item = await context.prisma.passportStrategyStorage.upsert({
                 create: {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  strategyName: strategy.name,
+                  strategyName: strat.strategy.name,
                   data: user.passportDataId,
                   // TODO: Don't hardcode user
                   user: {
@@ -164,18 +166,18 @@ function createPassportAuth({
                         name: user.name ?? user.email,
                         email: user.email,
                         // TODO: don't hardcode roles
-                        roles: ["admin"]
+                        roles: await context.prisma.passportStrategyStorage.count() > 0 ? void 0 : ["admin"]
                       },
                       where: {
                         email: user.email
                       }
                     }
                   },
-                  strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`
                 },
                 update: {},
                 where: {
-                  strategyNameDataCompoundKey: `${strategy.name}-${user.passportDataId}`
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`
                 },
                 select: {
                   // TODO: Don't hardcode user
@@ -186,7 +188,7 @@ function createPassportAuth({
               await fullContext.sessionStrategy?.start({
                 context: fullContext,
                 // TODO: Don't hardcode user
-                data: { ...user, strategy: strategy.name, item: item.user }
+                data: { ...user, strategy: strat.strategy.name, item: item.user }
               });
               res.redirect(loginSuccessRedirectUrl);
             }
@@ -211,29 +213,78 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
 }
 var googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID;
 var googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET;
+var microsoftClientId = process.env.PASSPORT_STRATEGY_MICROSOFT_CLIENTID;
+var microsoftClientSecret = process.env.PASSPORT_STRATEGY_MICROSOFT_CLIENTSECRET;
+var microsoftProfileSchema = import_zod3.z.object({
+  provider: import_zod3.z.literal("microsoft"),
+  name: import_zod3.z.object({
+    familyName: import_zod3.z.string().optional(),
+    givenName: import_zod3.z.string().optional()
+  }).optional(),
+  id: import_zod3.z.string().uuid(),
+  emails: import_zod3.z.array(import_zod3.z.object({
+    type: import_zod3.z.string(),
+    value: import_zod3.z.string()
+  }))
+});
 var { withAuth } = createPassportAuth({
   listKey: "User",
   strategies: [
-    new import_passport_google_oauth.OAuth2Strategy({
-      callbackURL: "/auth/strategy/google/redirect",
-      clientID: googleId,
-      clientSecret: googleSecret
-    }, (_accessToken, _refreshToken, profile, cb) => {
-      const id = profile.id;
-      const email = profile.emails?.[0]?.value;
-      if (!email) {
-        return cb(new Error("Email not found from Google strategy."));
+    {
+      disabled: !googleId || !googleSecret,
+      strategy: new import_passport_google_oauth.OAuth2Strategy({
+        callbackURL: "/auth/strategy/google/redirect",
+        clientID: googleId || "1",
+        clientSecret: googleSecret || "1"
+      }, (_accessToken, _refreshToken, profile, cb) => {
+        const id = profile.id;
+        const email = profile.emails?.[0]?.value;
+        if (!email) {
+          return cb(new Error("Email not found from Google strategy."));
+        }
+        const user = {
+          passportDataId: id,
+          email
+        };
+        const name = profile.name;
+        if (name) {
+          user.name = `${name.givenName} ${name.familyName}`;
+        }
+        cb(null, user);
+      }),
+      loginOptions: {
+        scope: ["email", "profile"]
       }
-      const user = {
-        passportDataId: id,
-        email
-      };
-      const name = profile.name;
-      if (name) {
-        user.name = `${name.givenName} ${name.familyName}`;
-      }
-      cb(null, user);
-    })
+    },
+    {
+      disabled: !microsoftClientId || !microsoftClientSecret,
+      strategy: new import_passport_microsoft.Strategy({
+        clientID: microsoftClientId || "1",
+        clientSecret: microsoftClientSecret || "1",
+        callbackURL: "/auth/strategy/microsoft/redirect",
+        scope: ["openid", "email", "user.read"]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }, (_accessToken, _refreshToken, profile, cb) => {
+        const microsoftProfile = microsoftProfileSchema.safeParse(profile);
+        if (!microsoftProfile.success) {
+          return cb(new Error(`Invalid profile: ${profile}`), null);
+        }
+        const id = microsoftProfile.data.id;
+        const email = microsoftProfile.data.emails?.[0]?.value;
+        if (!email) {
+          return cb(new Error("Email not found from Microsoft strategy."));
+        }
+        const user = {
+          passportDataId: id,
+          email
+        };
+        const name = microsoftProfile.data.name;
+        if (name) {
+          user.name = `${name.givenName} ${name.familyName}`;
+        }
+        cb(null, user);
+      })
+    }
   ],
   loginSuccessRedirectUrl: process.env.FRONTEND_LOGIN_SUCCESS_URL
 });
@@ -250,29 +301,29 @@ var import_express2 = require("express");
 // src/express/api/utilities.ts
 var import_express = require("express");
 var import_express_fileupload = __toESM(require("express-fileupload"));
-var import_zod3 = require("zod");
-var registrantJsonFile = import_zod3.z.array(import_zod3.z.object({
-  mlhCodeOfConductAgreement: import_zod3.z.literal(true),
-  mlhPrivacyPolicyAgreement: import_zod3.z.literal(true),
-  mlhEmailAgreement: import_zod3.z.boolean().optional(),
-  registrationYear: import_zod3.z.number().int().optional(),
-  firstName: import_zod3.z.string(),
-  lastName: import_zod3.z.string(),
-  email: import_zod3.z.string(),
-  phone: import_zod3.z.string(),
-  school: import_zod3.z.string(),
-  country: import_zod3.z.string(),
-  degree: import_zod3.z.string(),
-  major: import_zod3.z.string(),
-  expectedGraduationYear: import_zod3.z.number().int(),
-  hackathonsAttended: import_zod3.z.number().int(),
-  ethnicity: import_zod3.z.string(),
-  age: import_zod3.z.number().int(),
-  gender: import_zod3.z.string(),
-  notes: import_zod3.z.string().optional(),
-  createdAt: import_zod3.z.string().datetime(),
-  resumeUrl: import_zod3.z.string().optional(),
-  verified: import_zod3.z.boolean().optional()
+var import_zod4 = require("zod");
+var registrantJsonFile = import_zod4.z.array(import_zod4.z.object({
+  mlhCodeOfConductAgreement: import_zod4.z.literal(true),
+  mlhPrivacyPolicyAgreement: import_zod4.z.literal(true),
+  mlhEmailAgreement: import_zod4.z.boolean().optional(),
+  registrationYear: import_zod4.z.number().int().optional(),
+  firstName: import_zod4.z.string(),
+  lastName: import_zod4.z.string(),
+  email: import_zod4.z.string(),
+  phone: import_zod4.z.string(),
+  school: import_zod4.z.string(),
+  country: import_zod4.z.string(),
+  degree: import_zod4.z.string(),
+  major: import_zod4.z.string(),
+  expectedGraduationYear: import_zod4.z.number().int(),
+  hackathonsAttended: import_zod4.z.number().int(),
+  ethnicity: import_zod4.z.string(),
+  age: import_zod4.z.number().int(),
+  gender: import_zod4.z.string(),
+  notes: import_zod4.z.string().optional(),
+  createdAt: import_zod4.z.string().datetime(),
+  resumeUrl: import_zod4.z.string().optional(),
+  verified: import_zod4.z.boolean().optional()
 }));
 var utilitiesRouter = (0, import_express.Router)();
 utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.default)(), async (req, res) => {
