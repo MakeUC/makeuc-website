@@ -119,7 +119,7 @@ function createPassportAuth({
   const PassportStrategyStorage = (0, import_core.list)(addCompoundKey({
     access: {
       // TODO: Correspond to user-specific permissions
-      operation: (0, import_access.allOperations)(() => true)
+      operation: (0, import_access.allOperations)(() => false)
     },
     fields: {
       user: (0, import_fields2.relationship)({ ref: listKey, many: false }),

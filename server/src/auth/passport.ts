@@ -49,7 +49,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
   const PassportStrategyStorage = list(addCompoundKey({
     access: {
       // TODO: Correspond to user-specific permissions
-      operation: allOperations(() => true),
+      operation: allOperations(() => false),
     },
     fields: {
       user: relationship({ ref: listKey, many: false }),
