@@ -1,0 +1,11 @@
+mutation SubmitJudgement($data: JudgementCreateInput!) {
+  createJudgement(data: $data) {
+    id
+  }
+}
+
+mutation DisqualifyProject($projectId: ID!, $reason: String!) {
+  disqualifyProject(projectId: $projectId, reason: $reason) {
+    id
+  }
+}

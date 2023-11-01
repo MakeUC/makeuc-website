@@ -2,7 +2,7 @@ import { list } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
 import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
 import { FROM_ADDRESS, REGISTRATION_URL, sendgrid } from "../utils/sendgrid";
 
@@ -46,7 +46,8 @@ export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Ite
 export const Registrant = list(addCompoundKey({
   access: {
     operation: {
-      ...allOperations(isAuthenticated),
+      ...allOperations(hasRoleOneOf("admin")),
+      query: allOperations(hasRoleOneOf("admin", "organizer"))["query"],
       create: allowAll,
     },
   },

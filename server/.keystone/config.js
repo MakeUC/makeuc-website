@@ -33,23 +33,260 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core8 = require("@keystone-6/core");
+var import_core9 = require("@keystone-6/core");
 
 // src/auth/index.ts
-var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
+var import_passport_google_oauth = require("passport-google-oauth");
+var import_passport_microsoft = require("passport-microsoft");
+var import_zod3 = require("zod");
+
+// src/auth/passport.ts
+var import_core = require("@keystone-6/core");
+var import_access = require("@keystone-6/core/access");
+var import_fields2 = require("@keystone-6/core/fields");
+var import_passport = __toESM(require("passport"));
+var import_zod2 = require("zod");
+
+// src/utils/compoundKeys.ts
+var import_fields = require("@keystone-6/core/fields");
+var import_lodash = require("lodash");
+var import_zod = require("zod");
+var connectRelationshipSchema = import_zod.z.object({
+  connect: import_zod.z.object({
+    id: import_zod.z.string()
+  })
+});
+function prepareValueForKey(value) {
+  if (typeof value !== "object" && typeof value !== "function" && typeof value !== "undefined")
+    return value.toString();
+  if (typeof value === "undefined")
+    return "";
+  const connectRelationshipParsed = connectRelationshipSchema.safeParse(value);
+  if (connectRelationshipParsed.success)
+    return connectRelationshipParsed.data.connect.id;
+  throw new Error(`Unable to prepare value for compound key: ${value}`);
+}
+function addCompoundKey(listConfig, fieldNames) {
+  const fieldName = (0, import_lodash.camelCase)(`${fieldNames.join(" ")} CompoundKey`);
+  let newListConfig = { ...listConfig };
+  newListConfig.fields[fieldName] = (0, import_fields.text)({
+    isIndexed: "unique",
+    ui: {
+      createView: { fieldMode: "hidden" },
+      itemView: { fieldMode: "hidden" },
+      listView: { fieldMode: "hidden" }
+    },
+    graphql: { omit: { create: true, update: true } }
+  });
+  let hooks = newListConfig.hooks ?? {};
+  const oldResolveInput = hooks.resolveInput;
+  hooks.resolveInput = async (args) => {
+    let resolvedData = args.resolvedData;
+    if (typeof oldResolveInput !== "function") {
+      if (args.operation === "create" && oldResolveInput?.create)
+        resolvedData = await oldResolveInput.create({ ...args, resolvedData });
+      else if (args.operation === "update" && oldResolveInput?.update)
+        resolvedData = await oldResolveInput.update({ ...args, resolvedData });
+    } else if (oldResolveInput) {
+      resolvedData = await oldResolveInput({ ...args, resolvedData });
+    }
+    resolvedData[fieldName] = fieldNames.map((field) => prepareValueForKey(resolvedData[field] || args.item?.[field])).join("-");
+    return resolvedData;
+  };
+  newListConfig.hooks = hooks;
+  return newListConfig;
+}
+
+// src/auth/passport.ts
+var KeystonePassportUser = import_zod2.z.object({
+  email: import_zod2.z.string().email(),
+  name: import_zod2.z.string().optional(),
+  passportDataId: import_zod2.z.string()
+});
+function isRequiredStrategy(strategy) {
+  if (strategy.strategy.name) {
+    return true;
+  }
+  throw new Error("Strategy is missing a name.");
+}
+function createPassportAuth({
+  listKey,
+  strategies: _strategies,
+  loginSuccessRedirectUrl = "http://localhost:3000/dashboard"
+}) {
+  const strategies = _strategies.filter(isRequiredStrategy);
+  const PassportStrategyStorage = (0, import_core.list)(addCompoundKey({
+    access: {
+      // TODO: Correspond to user-specific permissions
+      operation: (0, import_access.allOperations)(() => true)
+    },
+    fields: {
+      user: (0, import_fields2.relationship)({ ref: listKey, many: false }),
+      strategyName: (0, import_fields2.select)({
+        type: "enum",
+        options: strategies.map((strat) => ({ label: strat.strategy.name, value: strat.strategy.name })),
+        validation: { isRequired: true },
+        isIndexed: true
+      }),
+      data: (0, import_fields2.text)({ validation: { isRequired: true }, isIndexed: true })
+    }
+  }, ["strategyName", "data"]));
+  function withAuth2(config2) {
+    const modifiedConfig = { ...config2 };
+    modifiedConfig.lists = {
+      ...config2.lists,
+      PassportStrategyStorage
+    };
+    const extendExpressApp2 = config2.server?.extendExpressApp;
+    modifiedConfig.server = {
+      ...config2.server,
+      extendExpressApp(app, context) {
+        extendExpressApp2?.(app, context);
+        strategies.forEach((strat) => {
+          if (!strat.strategy.name)
+            throw new Error("Strategy is missing a name.");
+          if (strat.disabled)
+            return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
+          app.get(`/auth/strategy/${strat.strategy.name}/login`, import_passport.default.authenticate(strat.strategy, strat.loginOptions ?? {}));
+          app.get(
+            `/auth/strategy/${strat.strategy.name}/redirect`,
+            import_passport.default.authenticate(strat.strategy, { session: false }),
+            async (req, res) => {
+              const user = KeystonePassportUser.parse(req.user);
+              const item = await context.prisma.passportStrategyStorage.upsert({
+                create: {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  strategyName: strat.strategy.name,
+                  data: user.passportDataId,
+                  // TODO: Don't hardcode user
+                  user: {
+                    connectOrCreate: {
+                      create: {
+                        name: user.name ?? user.email,
+                        email: user.email,
+                        // TODO: don't hardcode roles
+                        roles: await context.prisma.passportStrategyStorage.count() > 0 ? void 0 : ["admin"]
+                      },
+                      where: {
+                        email: user.email
+                      }
+                    }
+                  },
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`
+                },
+                update: {},
+                where: {
+                  strategyNameDataCompoundKey: `${strat.strategy.name}-${user.passportDataId}`
+                },
+                select: {
+                  // TODO: Don't hardcode user
+                  user: true
+                }
+              });
+              const fullContext = await context.withRequest(req, res);
+              await fullContext.sessionStrategy?.start({
+                context: fullContext,
+                // TODO: Don't hardcode user
+                data: { ...user, strategy: strat.strategy.name, item: item.user }
+              });
+              res.redirect(loginSuccessRedirectUrl);
+            }
+          );
+        });
+        app.get("/auth/logout", async (req, res) => {
+          const fullContext = await context.withRequest(req, res);
+          await fullContext.sessionStrategy?.end({ context: fullContext });
+          res.json({ success: true });
+        });
+      }
+    };
+    return modifiedConfig;
+  }
+  return { withAuth: withAuth2 };
+}
+
+// src/auth/index.ts
 var sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
-var { withAuth } = (0, import_auth.createAuth)({
+var googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID;
+var googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET;
+var microsoftClientId = process.env.PASSPORT_STRATEGY_MICROSOFT_CLIENTID;
+var microsoftClientSecret = process.env.PASSPORT_STRATEGY_MICROSOFT_CLIENTSECRET;
+var microsoftProfileSchema = import_zod3.z.object({
+  provider: import_zod3.z.literal("microsoft"),
+  name: import_zod3.z.object({
+    familyName: import_zod3.z.string().optional(),
+    givenName: import_zod3.z.string().optional()
+  }).optional(),
+  id: import_zod3.z.string().uuid(),
+  emails: import_zod3.z.array(import_zod3.z.object({
+    type: import_zod3.z.string(),
+    value: import_zod3.z.string()
+  }))
+});
+var { withAuth } = createPassportAuth({
   listKey: "User",
-  identityField: "email",
-  sessionData: "name createdAt",
-  secretField: "password",
-  initFirstItem: {
-    fields: ["name", "email", "password"]
-  }
+  strategies: [
+    {
+      disabled: !googleId || !googleSecret,
+      strategy: new import_passport_google_oauth.OAuth2Strategy({
+        callbackURL: "/auth/strategy/google/redirect",
+        clientID: googleId || "1",
+        clientSecret: googleSecret || "1"
+      }, (_accessToken, _refreshToken, profile, cb) => {
+        const id = profile.id;
+        const email = profile.emails?.[0]?.value;
+        if (!email) {
+          return cb(new Error("Email not found from Google strategy."));
+        }
+        const user = {
+          passportDataId: id,
+          email
+        };
+        const name = profile.name;
+        if (name) {
+          user.name = `${name.givenName} ${name.familyName}`;
+        }
+        cb(null, user);
+      }),
+      loginOptions: {
+        scope: ["email", "profile"]
+      }
+    },
+    {
+      disabled: !microsoftClientId || !microsoftClientSecret,
+      strategy: new import_passport_microsoft.Strategy({
+        clientID: microsoftClientId || "1",
+        clientSecret: microsoftClientSecret || "1",
+        callbackURL: "/auth/strategy/microsoft/redirect",
+        scope: ["openid", "email", "user.read"]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }, (_accessToken, _refreshToken, profile, cb) => {
+        const microsoftProfile = microsoftProfileSchema.safeParse(profile);
+        if (!microsoftProfile.success) {
+          return cb(new Error(`Invalid profile: ${profile}`), null);
+        }
+        const id = microsoftProfile.data.id;
+        const email = microsoftProfile.data.emails?.[0]?.value;
+        if (!email) {
+          return cb(new Error("Email not found from Microsoft strategy."));
+        }
+        const user = {
+          passportDataId: id,
+          email
+        };
+        const name = microsoftProfile.data.name;
+        if (name) {
+          user.name = `${name.givenName} ${name.familyName}`;
+        }
+        cb(null, user);
+      })
+    }
+  ],
+  loginSuccessRedirectUrl: process.env.FRONTEND_LOGIN_SUCCESS_URL
 });
 var sessionMaxAge = 60 * 60 * 24 * 30;
 var session = (0, import_session.statelessSessions)({
@@ -64,29 +301,29 @@ var import_express2 = require("express");
 // src/express/api/utilities.ts
 var import_express = require("express");
 var import_express_fileupload = __toESM(require("express-fileupload"));
-var import_zod = require("zod");
-var registrantJsonFile = import_zod.z.array(import_zod.z.object({
-  mlhCodeOfConductAgreement: import_zod.z.literal(true),
-  mlhPrivacyPolicyAgreement: import_zod.z.literal(true),
-  mlhEmailAgreement: import_zod.z.boolean().optional(),
-  registrationYear: import_zod.z.number().int().optional(),
-  firstName: import_zod.z.string(),
-  lastName: import_zod.z.string(),
-  email: import_zod.z.string(),
-  phone: import_zod.z.string(),
-  school: import_zod.z.string(),
-  country: import_zod.z.string(),
-  degree: import_zod.z.string(),
-  major: import_zod.z.string(),
-  expectedGraduationYear: import_zod.z.number().int(),
-  hackathonsAttended: import_zod.z.number().int(),
-  ethnicity: import_zod.z.string(),
-  age: import_zod.z.number().int(),
-  gender: import_zod.z.string(),
-  notes: import_zod.z.string().optional(),
-  createdAt: import_zod.z.string().datetime(),
-  resumeUrl: import_zod.z.string().optional(),
-  verified: import_zod.z.boolean().optional()
+var import_zod4 = require("zod");
+var registrantJsonFile = import_zod4.z.array(import_zod4.z.object({
+  mlhCodeOfConductAgreement: import_zod4.z.literal(true),
+  mlhPrivacyPolicyAgreement: import_zod4.z.literal(true),
+  mlhEmailAgreement: import_zod4.z.boolean().optional(),
+  registrationYear: import_zod4.z.number().int().optional(),
+  firstName: import_zod4.z.string(),
+  lastName: import_zod4.z.string(),
+  email: import_zod4.z.string(),
+  phone: import_zod4.z.string(),
+  school: import_zod4.z.string(),
+  country: import_zod4.z.string(),
+  degree: import_zod4.z.string(),
+  major: import_zod4.z.string(),
+  expectedGraduationYear: import_zod4.z.number().int(),
+  hackathonsAttended: import_zod4.z.number().int(),
+  ethnicity: import_zod4.z.string(),
+  age: import_zod4.z.number().int(),
+  gender: import_zod4.z.string(),
+  notes: import_zod4.z.string().optional(),
+  createdAt: import_zod4.z.string().datetime(),
+  resumeUrl: import_zod4.z.string().optional(),
+  verified: import_zod4.z.boolean().optional()
 }));
 var utilitiesRouter = (0, import_express.Router)();
 utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.default)(), async (req, res) => {
@@ -186,58 +423,29 @@ function extendExpressApp(app, context) {
 }
 
 // src/graphql/index.ts
-var import_core2 = require("@keystone-6/core");
+var import_core3 = require("@keystone-6/core");
 
 // src/schema/registrant.ts
-var import_core = require("@keystone-6/core");
-var import_access = require("@keystone-6/core/access");
-var import_fields2 = require("@keystone-6/core/fields");
+var import_core2 = require("@keystone-6/core");
+var import_access2 = require("@keystone-6/core/access");
+var import_fields3 = require("@keystone-6/core/fields");
 
 // src/auth/access.ts
-function isAuthenticated(args) {
-  return !!args.session;
+function hasRoleOneOf(...roles) {
+  return (args) => {
+    const session2 = args.session;
+    if (!session2 || !session2.item)
+      return false;
+    return session2.item.roles.some((role) => roles.includes(role));
+  };
 }
-function allOperations(predicate) {
+function allOperations2(predicate) {
   return {
     create: predicate,
     query: predicate,
     update: predicate,
     delete: predicate
   };
-}
-
-// src/utils/compoundKeys.ts
-var import_fields = require("@keystone-6/core/fields");
-var import_lodash = require("lodash");
-function addCompoundKey(listConfig, fieldNames) {
-  const fieldName = (0, import_lodash.camelCase)(`${fieldNames.join(" ")} CompoundKey`);
-  let newListConfig = { ...listConfig };
-  newListConfig.fields[fieldName] = (0, import_fields.text)({
-    isIndexed: "unique",
-    ui: {
-      createView: { fieldMode: "hidden" },
-      itemView: { fieldMode: "hidden" },
-      listView: { fieldMode: "hidden" }
-    },
-    graphql: { omit: { create: true, update: true } }
-  });
-  let hooks = newListConfig.hooks ?? {};
-  const oldResolveInput = hooks.resolveInput;
-  hooks.resolveInput = async (args) => {
-    let resolvedData = args.resolvedData;
-    resolvedData[fieldName] = fieldNames.map((field) => resolvedData[field] || args.item?.[field]).join("-");
-    if (typeof oldResolveInput !== "function") {
-      if (args.operation === "create" && oldResolveInput?.create)
-        resolvedData = await oldResolveInput.create({ ...args, resolvedData });
-      else if (args.operation === "update" && oldResolveInput?.update)
-        resolvedData = await oldResolveInput.update({ ...args, resolvedData });
-    } else if (oldResolveInput) {
-      resolvedData = await oldResolveInput({ ...args, resolvedData });
-    }
-    return resolvedData;
-  };
-  newListConfig.hooks = hooks;
-  return newListConfig;
 }
 
 // src/utils/sendgrid.ts
@@ -279,23 +487,24 @@ function sendRegistrantConfirmationEmail(registrant) {
     }
   });
 }
-var Registrant = (0, import_core.list)(addCompoundKey({
+var Registrant = (0, import_core2.list)(addCompoundKey({
   access: {
     operation: {
-      ...allOperations(isAuthenticated),
-      create: import_access.allowAll
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer"))["query"],
+      create: import_access2.allowAll
     }
   },
   fields: {
-    firstName: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    lastName: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields2.text)({ isIndexed: true, validation: { isRequired: true } }),
-    age: (0, import_fields2.integer)({ validation: { isRequired: true } }),
-    gender: (0, import_fields2.select)({
+    firstName: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    lastName: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields3.text)({ isIndexed: true, validation: { isRequired: true } }),
+    age: (0, import_fields3.integer)({ validation: { isRequired: true } }),
+    gender: (0, import_fields3.select)({
       options: ["Male", "Female", "Other", "Prefer not to answer"],
       validation: { isRequired: true }
     }),
-    ethnicity: (0, import_fields2.select)({
+    ethnicity: (0, import_fields3.select)({
       options: [
         "Asian",
         "White",
@@ -308,33 +517,33 @@ var Registrant = (0, import_core.list)(addCompoundKey({
       ],
       validation: { isRequired: true }
     }),
-    school: (0, import_fields2.relationship)({ ref: "School", many: false }),
-    major: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    degree: (0, import_fields2.select)({
+    school: (0, import_fields3.relationship)({ ref: "School", many: false }),
+    major: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    degree: (0, import_fields3.select)({
       options: ["High School", "Associate's", "Bachelor's", "Master's", "Doctorate", "Other"],
       validation: { isRequired: true }
     }),
-    country: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    expectedGraduationYear: (0, import_fields2.integer)({ validation: { isRequired: true } }),
-    resume: (0, import_fields2.file)({ storage: "resume_storage" }),
-    hackathonsAttended: (0, import_fields2.integer)(),
-    notes: (0, import_fields2.text)(),
-    mlhCodeOfConductAgreement: (0, import_fields2.checkbox)(),
-    mlhPrivacyPolicyAgreement: (0, import_fields2.checkbox)(),
-    mlhEmailAgreement: (0, import_fields2.checkbox)(),
-    registrationYear: (0, import_fields2.integer)({
+    country: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    expectedGraduationYear: (0, import_fields3.integer)({ validation: { isRequired: true } }),
+    resume: (0, import_fields3.file)({ storage: "resume_storage" }),
+    hackathonsAttended: (0, import_fields3.integer)(),
+    notes: (0, import_fields3.text)(),
+    mlhCodeOfConductAgreement: (0, import_fields3.checkbox)(),
+    mlhPrivacyPolicyAgreement: (0, import_fields3.checkbox)(),
+    mlhEmailAgreement: (0, import_fields3.checkbox)(),
+    registrationYear: (0, import_fields3.integer)({
       isIndexed: true,
       defaultValue: (/* @__PURE__ */ new Date()).getFullYear(),
       ui: { createView: { fieldMode: "hidden" } },
       graphql: { omit: { create: true, update: true } }
     }),
-    createdAt: (0, import_fields2.timestamp)({
+    createdAt: (0, import_fields3.timestamp)({
       defaultValue: { kind: "now" }
     }),
-    verified: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
-    acceptPhotoRelease: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
-    invitedInPerson: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
-    user: (0, import_fields2.relationship)({
+    verified: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    acceptPhotoRelease: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    invitedInPerson: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    user: (0, import_fields3.relationship)({
       ref: "User.registrations",
       many: false
     })
@@ -382,14 +591,17 @@ async function getSchoolIndiaData() {
 }
 
 // src/graphql/index.ts
-var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
+var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
   query: {
     // Fill in statistics
-    statistics: import_core2.graphql.field({
-      type: import_core2.graphql.String,
+    statistics: import_core3.graphql.field({
+      type: import_core3.graphql.String,
       //Undefined --> Change in the future
-      args: { year: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.Int) }) },
+      args: { year: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.Int) }) },
       async resolve(source, { year }, context) {
+        if (!context.session) {
+          return null;
+        }
         const registrants = await context.prisma.registrant.findMany({
           where: { registrationYear: { equals: year } }
         });
@@ -425,8 +637,33 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
     })
   },
   mutation: {
-    seedSchoolIndiaData: import_core2.graphql.field({
-      type: import_core2.graphql.Boolean,
+    disqualifyProject: import_core3.graphql.field({
+      type: base.object("Judgement"),
+      args: {
+        projectId: import_core3.graphql.arg({ type: import_core3.graphql.ID }),
+        reason: import_core3.graphql.arg({ type: import_core3.graphql.String })
+      },
+      resolve(_source, { projectId, reason }, context) {
+        const userId = context.session.item.id;
+        if (!userId)
+          throw new Error("Missing userId when disqualifying project");
+        return context.db.Judgement.createOne({
+          data: {
+            project: { connect: { id: projectId } },
+            disqualifiedBy: { connect: { id: userId } },
+            disqualifyReason: reason,
+            judge: { connect: { id: userId } },
+            overallScore: 0,
+            conceptCaliber: 0,
+            demonstrationAbility: 0,
+            implementationAttempt: 0,
+            presentationProfessionalism: 0
+          }
+        });
+      }
+    }),
+    seedSchoolIndiaData: import_core3.graphql.field({
+      type: import_core3.graphql.Boolean,
       async resolve(_source, _, context) {
         if (!context.session)
           return null;
@@ -434,9 +671,9 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         return true;
       }
     }),
-    verifyRegistrant: import_core2.graphql.field({
+    verifyRegistrant: import_core3.graphql.field({
       type: base.object("Registrant"),
-      args: { id: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.ID) }) },
+      args: { id: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.ID) }) },
       async resolve(_source, { id }, context) {
         const foundRegistrant = await context.prisma.registrant.findFirst({
           where: { id, verified: { equals: false } }
@@ -455,8 +692,8 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         return registrant;
       }
     }),
-    resendVerificationEmails: import_core2.graphql.field({
-      type: import_core2.graphql.list(import_core2.graphql.String),
+    resendVerificationEmails: import_core3.graphql.field({
+      type: import_core3.graphql.list(import_core3.graphql.String),
       async resolve(_source, _, context) {
         if (!context.session)
           return null;
@@ -469,11 +706,11 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
         return unverifiedRegistrants.map((registrant) => registrant.email);
       }
     }),
-    massSendRegistrantEmail: import_core2.graphql.field({
-      type: import_core2.graphql.nonNull(import_core2.graphql.list(import_core2.graphql.String)),
+    massSendRegistrantEmail: import_core3.graphql.field({
+      type: import_core3.graphql.nonNull(import_core3.graphql.list(import_core3.graphql.String)),
       args: {
-        sendGridId: import_core2.graphql.arg({ type: import_core2.graphql.nonNull(import_core2.graphql.String) }),
-        where: import_core2.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+        sendGridId: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.String) }),
+        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
       },
       async resolve(_source, { sendGridId, where }, context) {
         if (!context.session)
@@ -490,96 +727,147 @@ var extendGraphqlSchema = import_core2.graphql.extend((base) => ({
   }
 }));
 
-// src/schema/judgment.ts
-var import_core3 = require("@keystone-6/core");
-var import_fields3 = require("@keystone-6/core/fields");
-var Judgement = (0, import_core3.list)({
+// src/schema/judgement.ts
+var import_core4 = require("@keystone-6/core");
+var import_fields4 = require("@keystone-6/core/fields");
+var Judgement = (0, import_core4.list)(addCompoundKey({
   access: {
-    operation: allOperations(isAuthenticated)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin", "organizer", "judge")),
+      delete: allOperations2(hasRoleOneOf("admin"))["delete"]
+    }
   },
   fields: {
-    conceptCaliber: (0, import_fields3.integer)({
+    conceptCaliber: (0, import_fields4.integer)({
       validation: { isRequired: true }
     }),
-    implementationAttempt: (0, import_fields3.integer)({
+    implementationAttempt: (0, import_fields4.integer)({
       validation: { isRequired: true }
     }),
-    demonstrationAbility: (0, import_fields3.integer)({
+    demonstrationAbility: (0, import_fields4.integer)({
       validation: { isRequired: true }
     }),
-    presentationProfessionalism: (0, import_fields3.integer)({
+    presentationProfessionalism: (0, import_fields4.integer)({
       validation: { isRequired: true }
     }),
-    overallScore: (0, import_fields3.float)({
+    overallScore: (0, import_fields4.float)({
       validation: { isRequired: true }
     }),
-    applicableTracks: (0, import_fields3.relationship)({
+    applicableTracks: (0, import_fields4.relationship)({
       ref: "Track.judgements",
       many: true
     }),
-    disqualifyReason: (0, import_fields3.text)({
+    disqualifyReason: (0, import_fields4.text)({
       isFilterable: true
     }),
-    disqualifiedBy: (0, import_fields3.relationship)({
+    disqualifiedBy: (0, import_fields4.relationship)({
       ref: "User"
     }),
-    judge: (0, import_fields3.relationship)({
+    judge: (0, import_fields4.relationship)({
       ref: "User.judgements"
     }),
-    project: (0, import_fields3.relationship)({
+    project: (0, import_fields4.relationship)({
       ref: "Project.judgements"
     })
+  },
+  hooks: {
+    resolveInput({ context, resolvedData, operation }) {
+      if (operation !== "create") {
+        return resolvedData;
+      }
+      if (!context.session?.item.id) {
+        throw new Error("Unknown session itemId.");
+      }
+      return { ...resolvedData, judge: { connect: { id: context.session.item.id } } };
+    }
   }
-});
+}, ["judge", "project"]));
 
 // src/schema/project.ts
-var import_core4 = require("@keystone-6/core");
-var import_fields4 = require("@keystone-6/core/fields");
-var Project = (0, import_core4.list)({
+var import_core5 = require("@keystone-6/core");
+var import_fields5 = require("@keystone-6/core/fields");
+var Project = (0, import_core5.list)({
   access: {
-    operation: allOperations(isAuthenticated)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer", "judge"))["query"]
+    }
   },
   fields: {
-    url: (0, import_fields4.text)({
+    url: (0, import_fields5.text)({
       isIndexed: "unique",
       validation: { isRequired: true }
     }),
-    name: (0, import_fields4.text)({
+    name: (0, import_fields5.text)({
       validation: { isRequired: true }
     }),
-    judgingGroup: (0, import_fields4.integer)({
+    judgingGroup: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    year: (0, import_fields4.integer)({
+    year: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    judgements: (0, import_fields4.relationship)({
+    judgements: (0, import_fields5.relationship)({
       ref: "Judgement.project",
       many: true,
       graphql: { omit: { create: true, update: true } }
+    }),
+    countJudgements: (0, import_fields5.virtual)({
+      field: import_core5.graphql.field({
+        type: import_core5.graphql.Int,
+        async resolve(item, _, context) {
+          return await context.prisma.judgement.count({
+            where: { projectId: { equals: item.id.toString() } }
+          });
+        }
+      })
+    }),
+    score: (0, import_fields5.virtual)({
+      field: import_core5.graphql.field({
+        type: import_core5.graphql.Float,
+        async resolve(item, _, context) {
+          return (await context.prisma.judgement.aggregate({
+            _avg: { overallScore: true },
+            where: { projectId: item.id.toString() }
+          }))._avg.overallScore ?? 0;
+        }
+      })
+    }),
+    disqualified: (0, import_fields5.virtual)({
+      field: import_core5.graphql.field({
+        type: import_core5.graphql.Boolean,
+        async resolve(item, _, context) {
+          return await context.prisma.judgement.count({
+            where: {
+              projectId: item.id.toString(),
+              disqualifiedById: { not: null }
+            }
+          }) !== 0;
+        }
+      })
     })
   }
 });
 
 // src/schema/school.ts
-var import_core5 = require("@keystone-6/core");
-var import_access5 = require("@keystone-6/core/access");
-var import_fields5 = require("@keystone-6/core/fields");
-var School = (0, import_core5.list)({
+var import_core6 = require("@keystone-6/core");
+var import_access6 = require("@keystone-6/core/access");
+var import_fields6 = require("@keystone-6/core/fields");
+var School = (0, import_core6.list)({
   access: {
     operation: {
-      ...allOperations(isAuthenticated),
-      query: import_access5.allowAll
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: import_access6.allowAll
     }
   },
   fields: {
-    name: (0, import_fields5.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    city: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
-    state: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
-    county: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
-    country: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
-    alias: (0, import_fields5.text)({ isIndexed: true, validation: { isRequired: true } }),
-    createdAt: (0, import_fields5.timestamp)({
+    name: (0, import_fields6.text)({ isIndexed: "unique", validation: { isRequired: true } }),
+    city: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
+    state: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
+    county: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
+    country: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
+    alias: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
+    createdAt: (0, import_fields6.timestamp)({
       defaultValue: { kind: "now" }
     })
   },
@@ -589,19 +877,22 @@ var School = (0, import_core5.list)({
 });
 
 // src/schema/track.ts
-var import_core6 = require("@keystone-6/core");
-var import_fields6 = require("@keystone-6/core/fields");
-var Track = (0, import_core6.list)({
+var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
+var Track = (0, import_core7.list)({
   access: {
-    operation: allOperations(isAuthenticated)
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin")),
+      query: allOperations2(hasRoleOneOf("admin", "organizer", "judge"))["query"]
+    }
   },
   fields: {
-    name: (0, import_fields6.text)({
+    name: (0, import_fields7.text)({
       isIndexed: "unique",
       validation: { isRequired: true },
       isFilterable: true
     }),
-    judgements: (0, import_fields6.relationship)({
+    judgements: (0, import_fields7.relationship)({
       ref: "Judgement.applicableTracks",
       many: true,
       graphql: { omit: { create: true, update: true } }
@@ -610,23 +901,22 @@ var Track = (0, import_core6.list)({
 });
 
 // src/schema/user.ts
-var import_core7 = require("@keystone-6/core");
-var import_fields7 = require("@keystone-6/core/fields");
-var User = (0, import_core7.list)({
+var import_core8 = require("@keystone-6/core");
+var import_fields8 = require("@keystone-6/core/fields");
+var User = (0, import_core8.list)({
   access: {
-    operation: allOperations(isAuthenticated)
+    operation: allOperations2(hasRoleOneOf("admin"))
   },
   fields: {
-    name: (0, import_fields7.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields7.text)({
+    name: (0, import_fields8.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields8.text)({
       validation: { isRequired: true },
       isIndexed: "unique"
     }),
-    password: (0, import_fields7.password)({ validation: { isRequired: true } }),
-    createdAt: (0, import_fields7.timestamp)({ defaultValue: { kind: "now" } }),
-    roles: (0, import_fields7.select)({
+    createdAt: (0, import_fields8.timestamp)({ defaultValue: { kind: "now" } }),
+    roles: (0, import_fields8.multiselect)({
       type: "enum",
-      defaultValue: "default",
+      defaultValue: ["default"],
       options: [
         { label: "Admin", value: "admin" },
         { label: "Organizer", value: "organizer" },
@@ -634,11 +924,11 @@ var User = (0, import_core7.list)({
         { label: "Default", value: "default" }
       ]
     }),
-    registrations: (0, import_fields7.relationship)({
+    registrations: (0, import_fields8.relationship)({
       ref: "Registrant.user",
       many: true
     }),
-    judgements: (0, import_fields7.relationship)({
+    judgements: (0, import_fields8.relationship)({
       ref: "Judgement.judge",
       many: true
     })
@@ -667,7 +957,7 @@ var {
   S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core8.config)({
+  (0, import_core9.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -696,11 +986,19 @@ var keystone_default = withAuth(
         forcePathStyle: true
       }
     },
+    ui: {
+      isAccessAllowed: (context) => {
+        const session2 = context.session;
+        if (!session2 || !session2.item)
+          return false;
+        return session2.item.roles.some((role) => role === "admin");
+      }
+    },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
-        origin: "*",
-        allowedHeaders: "*",
+        origin: ["http://localhost:3000", "http://localhost:8000", "https://api.makeuc.io", "https://makeuc.io"],
+        allowedHeaders: ["apollo-require-preflight", "content-type"],
         credentials: true,
         methods: "*"
       },

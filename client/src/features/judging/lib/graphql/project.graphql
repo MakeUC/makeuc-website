@@ -1,0 +1,19 @@
+query GetProjects($where: ProjectWhereInput! = {}, $skip: Int! = 0, $take: Int = 20, $orderBy: [ProjectOrderByInput!]! = [], $cursor: ProjectWhereUniqueInput) {
+  projects(
+    where: $where,
+    skip: $skip,
+    take: $take,
+    orderBy: $orderBy,
+    cursor: $cursor
+  ) {
+    id
+    url
+    name
+    countJudgements
+    judgingGroup
+    year
+    score
+    disqualified
+  }
+  projectsCount(where: $where)
+}

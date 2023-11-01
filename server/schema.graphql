@@ -14,10 +14,12 @@ type Judgement {
   disqualifiedBy: User
   judge: User
   project: Project
+  judgeProjectCompoundKey: String
 }
 
 input JudgementWhereUniqueInput {
   id: ID
+  judgeProjectCompoundKey: String
 }
 
 input JudgementWhereInput {
@@ -35,6 +37,7 @@ input JudgementWhereInput {
   disqualifiedBy: UserWhereInput
   judge: UserWhereInput
   project: ProjectWhereInput
+  judgeProjectCompoundKey: StringFilter
 }
 
 input IDFilter {
@@ -118,6 +121,7 @@ input JudgementOrderByInput {
   presentationProfessionalism: OrderDirection
   overallScore: OrderDirection
   disqualifyReason: OrderDirection
+  judgeProjectCompoundKey: OrderDirection
 }
 
 enum OrderDirection {
@@ -198,6 +202,9 @@ type Project {
   year: Int
   judgements(where: JudgementWhereInput! = {}, orderBy: [JudgementOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JudgementWhereUniqueInput): [Judgement!]
   judgementsCount(where: JudgementWhereInput! = {}): Int
+  countJudgements: Int
+  score: Float
+  disqualified: Boolean
 }
 
 input ProjectWhereUniqueInput {
@@ -549,17 +556,12 @@ type User {
   id: ID!
   name: String
   email: String
-  password: PasswordState
   createdAt: DateTime
-  roles: UserRoleType
+  roles: [UserRoleType!]
   registrations(where: RegistrantWhereInput! = {}, orderBy: [RegistrantOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrantWhereUniqueInput): [Registrant!]
   registrationsCount(where: RegistrantWhereInput! = {}): Int
   judgements(where: JudgementWhereInput! = {}, orderBy: [JudgementOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JudgementWhereUniqueInput): [Judgement!]
   judgementsCount(where: JudgementWhereInput! = {}): Int
-}
-
-type PasswordState {
-  isSet: Boolean!
 }
 
 enum UserRoleType {
@@ -582,16 +584,8 @@ input UserWhereInput {
   name: StringFilter
   email: StringFilter
   createdAt: DateTimeNullableFilter
-  roles: UserRoleTypeNullableFilter
   registrations: RegistrantManyRelationFilter
   judgements: JudgementManyRelationFilter
-}
-
-input UserRoleTypeNullableFilter {
-  equals: UserRoleType
-  in: [UserRoleType!]
-  notIn: [UserRoleType!]
-  not: UserRoleTypeNullableFilter
 }
 
 input RegistrantManyRelationFilter {
@@ -605,15 +599,13 @@ input UserOrderByInput {
   name: OrderDirection
   email: OrderDirection
   createdAt: OrderDirection
-  roles: OrderDirection
 }
 
 input UserUpdateInput {
   name: String
   email: String
-  password: String
   createdAt: DateTime
-  roles: UserRoleType
+  roles: [UserRoleType!]
   registrations: RegistrantRelateToManyForUpdateInput
   judgements: JudgementRelateToManyForUpdateInput
 }
@@ -640,9 +632,8 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
-  password: String
   createdAt: DateTime
-  roles: UserRoleType
+  roles: [UserRoleType!]
   registrations: RegistrantRelateToManyForCreateInput
   judgements: JudgementRelateToManyForCreateInput
 }
@@ -655,6 +646,66 @@ input RegistrantRelateToManyForCreateInput {
 input JudgementRelateToManyForCreateInput {
   create: [JudgementCreateInput!]
   connect: [JudgementWhereUniqueInput!]
+}
+
+type PassportStrategyStorage {
+  id: ID!
+  user: User
+  strategyName: PassportStrategyStorageStrategyNameType
+  data: String
+  strategyNameDataCompoundKey: String
+}
+
+enum PassportStrategyStorageStrategyNameType {
+  google
+  microsoft
+}
+
+input PassportStrategyStorageWhereUniqueInput {
+  id: ID
+  strategyNameDataCompoundKey: String
+}
+
+input PassportStrategyStorageWhereInput {
+  AND: [PassportStrategyStorageWhereInput!]
+  OR: [PassportStrategyStorageWhereInput!]
+  NOT: [PassportStrategyStorageWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  strategyName: PassportStrategyStorageStrategyNameTypeNullableFilter
+  data: StringFilter
+  strategyNameDataCompoundKey: StringFilter
+}
+
+input PassportStrategyStorageStrategyNameTypeNullableFilter {
+  equals: PassportStrategyStorageStrategyNameType
+  in: [PassportStrategyStorageStrategyNameType!]
+  notIn: [PassportStrategyStorageStrategyNameType!]
+  not: PassportStrategyStorageStrategyNameTypeNullableFilter
+}
+
+input PassportStrategyStorageOrderByInput {
+  id: OrderDirection
+  strategyName: OrderDirection
+  data: OrderDirection
+  strategyNameDataCompoundKey: OrderDirection
+}
+
+input PassportStrategyStorageUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  strategyName: PassportStrategyStorageStrategyNameType
+  data: String
+}
+
+input PassportStrategyStorageUpdateArgs {
+  where: PassportStrategyStorageWhereUniqueInput!
+  data: PassportStrategyStorageUpdateInput!
+}
+
+input PassportStrategyStorageCreateInput {
+  user: UserRelateToOneForCreateInput
+  strategyName: PassportStrategyStorageStrategyNameType
+  data: String
 }
 
 """
@@ -699,30 +750,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createPassportStrategyStorage(data: PassportStrategyStorageCreateInput!): PassportStrategyStorage
+  createPassportStrategyStorages(data: [PassportStrategyStorageCreateInput!]!): [PassportStrategyStorage]
+  updatePassportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!, data: PassportStrategyStorageUpdateInput!): PassportStrategyStorage
+  updatePassportStrategyStorages(data: [PassportStrategyStorageUpdateArgs!]!): [PassportStrategyStorage]
+  deletePassportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
+  deletePassportStrategyStorages(where: [PassportStrategyStorageWhereUniqueInput!]!): [PassportStrategyStorage]
   endSession: Boolean!
-  authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
-  createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  disqualifyProject(projectId: ID, reason: String): Judgement
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
   resendVerificationEmails: [String]
   massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput): [String]!
-}
-
-union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
-
-type UserAuthenticationWithPasswordSuccess {
-  sessionToken: String!
-  item: User!
-}
-
-type UserAuthenticationWithPasswordFailure {
-  message: String!
-}
-
-input CreateInitialUserInput {
-  name: String
-  email: String
-  password: String
 }
 
 type Query {
@@ -744,12 +783,12 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int! = 50, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  passportStrategyStorages(where: PassportStrategyStorageWhereInput! = {}, orderBy: [PassportStrategyStorageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PassportStrategyStorageWhereUniqueInput): [PassportStrategyStorage!]
+  passportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
+  passportStrategyStoragesCount(where: PassportStrategyStorageWhereInput! = {}): Int
   keystone: KeystoneMeta!
-  authenticatedItem: AuthenticatedItem
   statistics(year: Int!): String
 }
-
-union AuthenticatedItem = User
 
 type KeystoneMeta {
   adminMeta: KeystoneAdminMeta!

@@ -1,9 +1,26 @@
 import { text } from "@keystone-6/core/fields";
 import { camelCase } from "lodash";
+import { z } from "zod";
 
 import type { ListConfig } from "@keystone-6/core";
 import type { BaseListTypeInfo } from "@keystone-6/core/types";
 
+
+const connectRelationshipSchema = z.object({
+  connect: z.object({
+    id: z.string(),
+  }),
+});
+
+function prepareValueForKey(value: unknown): string {
+  if (typeof value !== "object" && typeof value !== "function" && typeof value !== "undefined") return value.toString();
+  if (typeof value === "undefined") return "";
+
+  const connectRelationshipParsed = connectRelationshipSchema.safeParse(value);
+  if (connectRelationshipParsed.success) return connectRelationshipParsed.data.connect.id;
+
+  throw new Error(`Unable to prepare value for compound key: ${value}`);
+}
 
 type NonNullableResolveInput<Config extends ListConfig<BaseListTypeInfo>> = Config & {
   hooks: NonNullable<Config["hooks"]> & {
@@ -35,9 +52,6 @@ export function addCompoundKey<Config extends ListConfig<BaseListTypeInfo>>(
   hooks.resolveInput = async args => {
     let resolvedData = args.resolvedData;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolvedData[fieldName] = fieldNames.map(field => (resolvedData as any)[field] || (args.item as any)?.[field]).join("-");
-
     // Process Existing Hooks
     if (typeof oldResolveInput !== "function") {
       if (args.operation === "create" && oldResolveInput?.create)
@@ -47,6 +61,9 @@ export function addCompoundKey<Config extends ListConfig<BaseListTypeInfo>>(
     } else if (oldResolveInput) {
       resolvedData = await oldResolveInput({ ...args, resolvedData });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolvedData[fieldName] = fieldNames.map(field => prepareValueForKey((resolvedData as any)[field] || (args.item as any)?.[field])).join("-");
 
     return resolvedData;
   };
