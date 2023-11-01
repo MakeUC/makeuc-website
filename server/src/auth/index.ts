@@ -17,6 +17,8 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
 
+const backendUrl = process.env.BACKEND_URL ?? "";
+
 const googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID;
 const googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET;
 
@@ -42,7 +44,7 @@ export const { withAuth } = createPassportAuth<TypeInfo["lists"]["User"]>({
     {
       disabled: !googleId || !googleSecret,
       strategy: new GoogleOAuth2Strategy({
-        callbackURL: "/auth/strategy/google/redirect",
+        callbackURL: `${backendUrl}/auth/strategy/google/redirect`,
         clientID: googleId || "1",
         clientSecret: googleSecret || "1",
       }, (_accessToken, _refreshToken, profile, cb) => {
@@ -72,7 +74,7 @@ export const { withAuth } = createPassportAuth<TypeInfo["lists"]["User"]>({
       strategy: new MicrosoftOAuth2Strategy({
         clientID: microsoftClientId || "1",
         clientSecret: microsoftClientSecret || "1",
-        callbackURL: "/auth/strategy/microsoft/redirect",
+        callbackURL: `${backendUrl}/auth/strategy/microsoft/redirect`,
         scope: ["openid", "email", "user.read"],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }, (_accessToken: unknown, _refreshToken: unknown, profile: unknown, cb: (error: any, user?: any) => void) => {

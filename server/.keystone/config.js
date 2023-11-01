@@ -211,6 +211,7 @@ var sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = "-- DEV SECRET -- DONT USE IN PRODUCTION --";
 }
+var backendUrl = process.env.BACKEND_URL ?? "";
 var googleId = process.env.PASSPORT_STRATEGY_GOOGLE_CLIENTID;
 var googleSecret = process.env.PASSPORT_STRATEGY_GOOGLE_SECRET;
 var microsoftClientId = process.env.PASSPORT_STRATEGY_MICROSOFT_CLIENTID;
@@ -233,7 +234,7 @@ var { withAuth } = createPassportAuth({
     {
       disabled: !googleId || !googleSecret,
       strategy: new import_passport_google_oauth.OAuth2Strategy({
-        callbackURL: "/auth/strategy/google/redirect",
+        callbackURL: `${backendUrl}/auth/strategy/google/redirect`,
         clientID: googleId || "1",
         clientSecret: googleSecret || "1"
       }, (_accessToken, _refreshToken, profile, cb) => {
@@ -261,7 +262,7 @@ var { withAuth } = createPassportAuth({
       strategy: new import_passport_microsoft.Strategy({
         clientID: microsoftClientId || "1",
         clientSecret: microsoftClientSecret || "1",
-        callbackURL: "/auth/strategy/microsoft/redirect",
+        callbackURL: `${backendUrl}/auth/strategy/microsoft/redirect`,
         scope: ["openid", "email", "user.read"]
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }, (_accessToken, _refreshToken, profile, cb) => {
