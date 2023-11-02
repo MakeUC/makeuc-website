@@ -38,6 +38,9 @@ export default async function LiveSite() {
         <Link href="/resources" className="items-center">
           <Button className="flex gap-2 mt-4" size="lg">Resources</Button>
         </Link>
+        <Link href="/judging" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">Judging Info</Button>
+        </Link>
       </section>
       <h1 className="flex items-center justify-evenly py-8 font-bold text-3xl">Hacker Schedule</h1>
       <section className="flex items-center justify-evenly py-8">
