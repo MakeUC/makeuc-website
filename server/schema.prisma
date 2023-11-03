@@ -28,6 +28,7 @@ model Judgement {
   judgeId                     String?  @map("judge")
   project                     Project? @relation("Judgement_project", fields: [projectId], references: [id])
   projectId                   String?  @map("project")
+  judgeProjectCompoundKey     String   @unique @default("")
 
   @@index([disqualifiedById])
   @@index([judgeId])
@@ -105,20 +106,31 @@ model Track {
 }
 
 model User {
-  id                            String        @id @default(cuid())
-  name                          String        @default("")
-  email                         String        @unique @default("")
-  password                      String
-  createdAt                     DateTime?     @default(now())
-  roles                         UserRoleType? @default(default)
-  registrations                 Registrant[]  @relation("Registrant_user")
-  judgements                    Judgement[]   @relation("Judgement_judge")
-  from_Judgement_disqualifiedBy Judgement[]   @relation("Judgement_disqualifiedBy")
+  id                                String                    @id @default(cuid())
+  name                              String                    @default("")
+  email                             String                    @unique @default("")
+  createdAt                         DateTime?                 @default(now())
+  roles                             Json                      @default("[\"default\"]")
+  registrations                     Registrant[]              @relation("Registrant_user")
+  judgements                        Judgement[]               @relation("Judgement_judge")
+  from_Judgement_disqualifiedBy     Judgement[]               @relation("Judgement_disqualifiedBy")
+  from_PassportStrategyStorage_user PassportStrategyStorage[] @relation("PassportStrategyStorage_user")
 }
 
-enum UserRoleType {
-  admin
-  organizer
-  judge
-  default
+model PassportStrategyStorage {
+  id                          String                                  @id @default(cuid())
+  user                        User?                                   @relation("PassportStrategyStorage_user", fields: [userId], references: [id])
+  userId                      String?                                 @map("user")
+  strategyName                PassportStrategyStorageStrategyNameType
+  data                        String                                  @default("")
+  strategyNameDataCompoundKey String                                  @unique @default("")
+
+  @@index([userId])
+  @@index([strategyName])
+  @@index([data])
+}
+
+enum PassportStrategyStorageStrategyNameType {
+  google
+  microsoft
 }

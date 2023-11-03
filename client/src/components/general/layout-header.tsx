@@ -1,4 +1,4 @@
-import { Edit } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ const LINKS: NavigationLink[] = [
   { key: "about", href: "/about", children: "About" },
   { key: "tracks", href: "/tracks", children: "Tracks" },
   { key: "faq", href: "/faq", children: "FAQ" },
-  { key: "live", href: "/live-site", children: "Live Site" },
+  { key: "live", href: "/live", children: "Live Site" },
   // { key: "sponsors", href: "#", children: "Sponsors" },
 ];
 
@@ -42,8 +42,11 @@ export function LayoutHeader() {
 
         {/* Right Side */}
         <div className="flex justify-end items-center gap-4">
-          <Link href="/registration" className="hidden sm:block" tabIndex={-1}>
+          {/* <Link href="/registration" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
+          </Link> */}
+          <Link href="/live" className="hidden sm:block" tabIndex={-1}>
+            <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="16px" /></Button>
           </Link>
           <MobileNavbar className="sm:hidden" links={LINKS} />
           <div className="self-end">

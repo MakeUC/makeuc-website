@@ -2,13 +2,13 @@ import { list } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
 import { text, timestamp } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 
 
 export const School = list({
   access: {
     operation: {
-      ...allOperations(isAuthenticated),
+      ...allOperations(hasRoleOneOf("admin")),
       query: allowAll,
     },
   },
