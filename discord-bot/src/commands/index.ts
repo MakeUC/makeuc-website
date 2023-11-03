@@ -8,7 +8,6 @@ type ExecuteType = (interaction: CommandInteraction) => Promise<unknown>;
 
 export interface Command {
   data: SlashCommandBuilder,
-
   execute: ExecuteType,
 }
 

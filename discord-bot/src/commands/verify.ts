@@ -7,7 +7,6 @@ import type { Command } from "./index";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 
-
 const prisma = new PrismaClient();
 
 export const verifyCommand = {
@@ -61,6 +60,5 @@ export const verifyCommand = {
     return interaction.reply({
       content: `Welcome, ${participant.firstName} ${participant.lastName}! We have verified your registration!`,
     });
-
   },
 } as Command;

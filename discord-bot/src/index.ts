@@ -2,7 +2,7 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 
 import { commands } from "./commands";
 import { DISCORD_CONFIG as config } from "./config";
-import { deployCommands } from "./deploy_commands";
+import { deployCommands } from "./deploy-commands";
 
 
 export const client = new Client({
@@ -14,30 +14,21 @@ client.once(Events.ClientReady, c => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on(Events.GuildCreate, async guild => {
-  await deployCommands({ guildId: guild.id });
-});
+client.on(Events.GuildCreate, async guild => deployCommands({ guildId: guild.id }));
 
 // IIFE needed to force registration specifically on MakeUC server
-(async () => {
-  await deployCommands({
-    guildId: config.MAKEUC_GUILD_ID,
-  });
-})();
+(async () => await deployCommands({ guildId: config.MAKEUC_GUILD_ID }))();
 
 
 client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isCommand()) {
-    return;
-  }
+  if (!interaction.isCommand()) { return; }
 
   const { commandName } = interaction;
-  const command = commands.find(command => {
-    return command.data.name === commandName;
-  });
-  if (command) {
-    await command.execute(interaction);
-  }
+  const command = commands.find(command => command.data.name === commandName);
+
+  if (!command) { return; }
+
+  await command.execute(interaction);
 });
 
 client.login(config.TOKEN);
