@@ -2,9 +2,9 @@ if (!process.env.DISCORD_TOKEN || !process.env.DISCORD_CLIENT_ID || !process.env
   throw new Error("Missing Environment Variables for the discord token and discord client id");
 }
 export const checkin = process.env.CHECK_IN
-export const discord_config = {
-  token: process.env.DISCORD_TOKEN,
-  client_id: process.env.DISCORD_CLIENT_ID,
-  makeuc_guild_id: process.env.DISCORD_MAKEUC_GUILD_ID,
+export const DISCORD_CONFIG = {
+  TOKEN: process.env.DISCORD_TOKEN,
+  CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+  MAKEUC_GUILD_ID: process.env.DISCORD_MAKEUC_GUILD_ID,
 };
 

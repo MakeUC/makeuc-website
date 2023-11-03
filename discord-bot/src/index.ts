@@ -1,7 +1,7 @@
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Events, GatewayIntentBits } from 'discord.js';
 import { commands } from './commands';
 import { deployCommands } from "./deploy_commands";
-import { discord_config as config } from './config';
+import { DISCORD_CONFIG as config } from './config';
 
 export const client = new Client({
   intents: [GatewayIntentBits.Guilds]
@@ -18,7 +18,7 @@ client.on(Events.GuildCreate, async (guild) => {
 // IIFE needed to force registration specifically on MakeUC server
 (async () => {
   await deployCommands({
-    guildId: config.makeuc_guild_id,
+    guildId: config.MAKEUC_GUILD_ID,
   })
 })();
 
@@ -31,10 +31,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
   const { commandName } = interaction;
   const command = commands.find((command) => {
     return command.data.name === commandName
-  });  
+  });
   if (command) {
     await command.execute(interaction);
   }
 });
 
-client.login(config.token);
+client.login(config.TOKEN);

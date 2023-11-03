@@ -1,10 +1,10 @@
 import { REST, Routes } from "discord.js";
-import { discord_config as config } from "./config";
+import { DISCORD_CONFIG as config } from "./config";
 import { commands } from "./commands";
 
 const commandData = commands.map((command) => command.data);
 
-const rest = new REST().setToken(config.token);
+const rest = new REST().setToken(config.TOKEN);
 
 type DeployCommandProps = {
   guildId: string
@@ -15,7 +15,7 @@ export async function deployCommands({ guildId }: DeployCommandProps) {
     console.log("Started deploying (/) commands");
 
     await rest.put(
-      Routes.applicationGuildCommands(config.client_id, guildId),
+      Routes.applicationGuildCommands(config.CLIENT_ID, guildId),
       {
         body: commandData,
       }
