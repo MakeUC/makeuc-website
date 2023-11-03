@@ -40,9 +40,10 @@ export const scheduleData: EventInfo[] = [
   createData("Midnight Snack", "Second Floor Common Area", "-", "Nov 5 - 12:00 AM", "Nov 5 - 12:30 AM"),
   createData("Board Games/Jackbox Games", "Second Floor Common Area", "Discord #game-room-1-vc VC", "Nov 5 - 01:00 AM", "Nov 5 - 02:00 AM"),
   createData("Sim Racing", "Second Floor Common Area", "-", "Nov 5 - 04:00 AM", "Nov 5 - 05:00 AM"),
-  createData("Stretching", "Common Area", "-", "Nov 5 - 05:00 AM", "Nov 5 - 05:30 AM"),
+  createData("Stretching", "Second Floor Common Area", "-", "Nov 5 - 05:00 AM", "Nov 5 - 05:30 AM"),
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 5 - 09:00 AM", "Nov 5 - 10:00 AM"),
-  createData("Hacking Ends", "-", "-", "Nov 4 - 11:30 AM", "Nov 5 - 11:30 AM"),
+  createData("Hacking Ends", "-", "-", "Nov 4 - 11:30 AM", "Nov 5 - 11:30 AM"),  
+  createData("Lunch", "Second Floor Common Area", "-", "Nov 5 - 12:00 PM", "Nov 5 - 1:00 PM"),
   createData("Live Judging", "Assigned Discord VC", "Assigned Discord VC", "Nov 5 - 12:00 PM", "Nov 5 - 03:00 PM"),
   createData("Closing Ceremony", "Room 230", "YouTube Stream", "Nov 5 - 05:00 PM", "Nov 5 - 06:00 PM"),
 ];
@@ -50,7 +51,7 @@ export const scheduleData: EventInfo[] = [
 export const workshopData: EventInfo[] = [
   createData("[PRHI/Patient Safety Technology Challenge] Patient Safety 101", "Esports Lab", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDY0OTQ5NWUtY2ZhZi00ODU5LWE1ZjYtZDY2ZWE3ZWVlMmI3%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 4 - 02:00 PM", "Nov 4 - 02:30 PM"),
   createData("[IBM/Elevance Health] AI in Healthcare/Customer Care", "Esports Lab", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_NjcxNTQ0NjYtNTJmYy00MzdlLTgwYmQtYWJiNWQ5ZjgxOGM5%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 4 - 02:30 PM", "Nov 4 - 03:30 PM"),
-  createData("[Tata Colsultancy Services] TBD", "Esports Lab", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MTk5NzdlYmUtYmI0NS00MzEzLWJmOGQtZTEyNTI1NTljZjU4%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 4 - 03:30 PM", "Nov 4 - 04:00 PM"),
+  createData("[Tata Consultancy Services] TBD", "Esports Lab", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MTk5NzdlYmUtYmI0NS00MzEzLWJmOGQtZTEyNTI1NTljZjU4%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 4 - 03:30 PM", "Nov 4 - 04:00 PM"),
 ];
 
 export const transportData: EventInfo[] = [
