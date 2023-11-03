@@ -8,6 +8,8 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 
+import { BUILD_YOUR_OWN_RESOURCES } from "../constants/build-your-own";
+
 
 export function FreeResources() {
   return (
@@ -17,66 +19,15 @@ export function FreeResources() {
           <AccordionTrigger value={"1"}>
             <h2 className="text-xl text-left font-semibold">Starter Kits</h2>
           </AccordionTrigger>
-          <AccordionContent className="bg-muted">
-            <h2 className="text-md font-large">Build Your Own</h2>
-            <div className="underline text-primary">
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-3d-renderer">3D Renderer</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-augmented-reality">Augmented Reality</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-bittorrent-client">BitTorrent Client</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-blockchain--cryptocurrency">Blockchain / Crypto</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-bot">Bot</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-command-line-tool">Command-Line Tool</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-database">Database</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-docker">Docker</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-emulator--virtual-machine">Emulator / Virtual Machine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-front-end-framework--library">Front-end Library</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-game">Game Dev</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-git">Git</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-network-stack">Network Stack</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-neural-network">Neural Network</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-operating-system">Operating System</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-physics-engine">Physics Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-programming-language">Programming Language</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-regex-engine">Regex Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-search-engine">Search Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-shell">Shell</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-template-engine">Template Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-text-editor">Text Editor</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-visual-recognition-system">Visual Recognition System</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-voxel-engine">Voxel Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-web-search-engine">Web Search Engine</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#build-your-own-web-server">Web Server</Link>
-              <br />
-              <Link href="https://github.com/danistefanovic/build-your-own-x#uncategorized">Uncategorized</Link>
-            </div>
+          <AccordionContent className="border-b border-muted-foreground">
+            <h2 className="text-lg font-large">Build Your Own</h2>
+            <ul className="flex flex-col gap-2 pt-4 underline text-primary">
+              {BUILD_YOUR_OWN_RESOURCES.map(item => (
+                <li key={item.link}><Link href={item.link}>{item.name}</Link></li>
+              ))}
+            </ul>
             <br />
-            <h2 className="text-md font-large">Boilerplate for Node.js Applications</h2>
+            <h2 className="text-lg font-large">Boilerplate for Node.js Applications</h2>
             <div className="underline text-primary">
               <br />
               <Link href="https://github.com/sahat/hackathon-starter">github.com/sahat/hackathon-starter</Link>
@@ -85,14 +36,14 @@ export function FreeResources() {
             </div>
             <br />
             <p className="font-normal">
-              If you have attended any hackathons in the past, then you know how much time 
-              it takes to get a project starteddecide on what to build, pick a programming language, 
-              pick a web framework, pick a styling framework. A while later, you might have an initial 
+              If you have attended any hackathons in the past, then you know how much time
+              it takes to get a project starteddecide on what to build, pick a programming language,
+              pick a web framework, pick a styling framework. A while later, you might have an initial
               project up on GitHub and only then can other team members start contributing.
             </p>
             <p className="font-normal">
-              The primary focus is on simplicity and ease of use. 
-              The owner of this project also tried to make it as generic and reusable as possible 
+              The primary focus is on simplicity and ease of use.
+              The owner of this project also tried to make it as generic and reusable as possible
               to cover most use cases of hackathon web apps, without being too specific.
             </p>
           </AccordionContent>
@@ -101,7 +52,7 @@ export function FreeResources() {
           <AccordionTrigger value={"1"}>
             <h2 className="text-xl text-left font-semibold">Hardware</h2>
           </AccordionTrigger>
-          <AccordionContent className="bg-muted">
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">MakeUC isn't just software-related! Projects involving (or focusing on) hardware are more than welcomed. If you"re just getting started, or you want some inspiration, take a look at some of the resources below.</h3>
             <br />
             <Link className="underline text-primary" href="https://www.digikey.com/reference-designs/en">Digi-Key Reference Designs</Link><h3>Access schematics for hundreds of circuits that have been designed and tested to solve practical problems and reduce engineering time.</h3>
@@ -123,14 +74,14 @@ export function FreeResources() {
           <AccordionTrigger value={"1"}>
             <h2 className="text-xl text-left font-semibold">MOOC Platforms</h2>
           </AccordionTrigger>
-          <AccordionContent className="bg-muted">
+          <AccordionContent className="border-b border-muted-foreground">
             <br />
-            <p>A massive open online course (MOOC) is an online course aimed at unlimited participation 
-              and open access via the web. In addition to traditional course materials, such as filmed lectures, 
-              readings, and problem sets, many MOOCs provide interactive courses with user forums or 
-              social media discussions to support community interactions among students, professors, 
+            <p>A massive open online course (MOOC) is an online course aimed at unlimited participation
+              and open access via the web. In addition to traditional course materials, such as filmed lectures,
+              readings, and problem sets, many MOOCs provide interactive courses with user forums or
+              social media discussions to support community interactions among students, professors,
               and teaching assistants (TAs), as well as immediate feedback to quick quizzes and assignments.</p>
-            <p>MOOCs are great for learning. However, be careful to not submit code from the tutorials/courses. 
+            <p>MOOCs are great for learning. However, be careful to not submit code from the tutorials/courses.
               MOOCs should be used solely for learning.</p>
             <br />
             <Link className="underline text-primary" href="https://www.coursera.org/">Coursera</Link><h3>You can learn something new anytime, anywhere. Hundreds of free courses give you access to on-demand video lectures, homework exercises, and community discussion forums. Paid courses provide additional quizzes and projects as well as a shareable Course Certificate upon completion.</h3>

@@ -1,6 +1,5 @@
 import { PageTitle } from "~/components/general/typography";
-import { FreeResources } from "~/features/live-site/constants/resources";
-import { SponsorResources } from "~/features/live-site/constants/sponsor_resources";
+import { FreeResources, SponsorResources } from "~/features/live-site";
 
 
 export const metadata = {
@@ -12,15 +11,15 @@ export default function ResourcesPage() {
     <div className="flex justify-center">
       <div className="px-8 w-full max-w-5xl">
         <PageTitle>Sponsor Resources</PageTitle>
-        <section className="items-center bg-muted">
-          <hr className="border border-muted-foreground" />
+        <hr className="border border-muted-foreground" />
+        <section className="items-center">
           <div className="mt-4">
             <SponsorResources />
           </div>
         </section>
         <PageTitle>Free Resources</PageTitle>
-        <section className="items-center bg-muted">
-          <hr className="border border-muted-foreground" />
+        <hr className="border border-muted-foreground" />
+        <section className="items-center">
           <div className="mt-4">
             <FreeResources />
           </div>

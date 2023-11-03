@@ -1,5 +1,5 @@
 import { PageTitle } from "~/components/general/typography";
-import { Judging } from "~/features/live-site/constants/judging";
+import { Judging } from "~/features/live-site";
 
 
 export default function AboutPage() {

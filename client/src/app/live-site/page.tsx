@@ -3,8 +3,7 @@ import Link from "next/link";
 
 import Logo from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
-import { Timer } from "~/features/live-site/components/countdown";
-import { HackerScheduleTable, WorkshopScheduleTable } from "~/features/live-site/constants/schedule";
+import { HackerScheduleTable, WorkshopScheduleTable , Timer } from "~/features/live-site";
 
 
 export const metadata = {
@@ -18,7 +17,7 @@ export default async function LiveSite() {
         <div className="flex items-center">
           <div className="flex-grow">
             <Timer />
-          </div> 
+          </div>
           <div>
             <Image src={Logo} alt="MakeUC Butterfly Logo" width={400} />
           </div>

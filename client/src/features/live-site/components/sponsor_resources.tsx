@@ -17,11 +17,11 @@ export function SponsorResources() {
           <AccordionTrigger value={"1"}>
             <h2 className="text-xl text-left font-semibold">Pittsburgh Regional Health Initiative</h2>
           </AccordionTrigger>
-          <AccordionContent className="bg-muted">
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">
-            The Patient Safety Technology Challenge is designed to fuel the engagement of 
-            students and innovators in creating solutions and envisioning transformational approaches 
-            to reduce preventable harm from medical errors.
+              The Patient Safety Technology Challenge is designed to fuel the engagement of
+              students and innovators in creating solutions and envisioning transformational approaches
+              to reduce preventable harm from medical errors.
             </h3>
             <br />
             <Link className="underline text-primary" href={"https://www.patientsafetytech.com/"}>Patient Safety Technology</Link>
@@ -31,9 +31,9 @@ export function SponsorResources() {
           <AccordionTrigger value={"2"}>
             <h2 className="text-xl text-left font-semibold">Taskade</h2>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">
-              Taskade is the ultimate to-do list app for managing tasks, writing notes, and collaborating with others. 
+              Taskade is the ultimate to-do list app for managing tasks, writing notes, and collaborating with others.
               They are offering all hackers a 100% off lifetime workspace upgrade!
             </h3>
             <br />
@@ -44,9 +44,9 @@ export function SponsorResources() {
           <AccordionTrigger value={"value"}>
             <h2 className="text-xl text-left font-semibold">Wolfram|One</h2>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">
-              Wolfram|One is the world's first fully cloud-desktop hybrid, integrated computation platform the 
+              Wolfram|One is the world's first fully cloud-desktop hybrid, integrated computation platform the
               ideal entry point to using the full capabilities of the Wolfram technology stack.
             </h3>
             <br />
@@ -57,9 +57,9 @@ export function SponsorResources() {
           <AccordionTrigger value={"value"}>
             <h2 className="text-xl text-left font-semibold">.XYZ</h2>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">
-              .XYZ was made to help the next generation of innovators, entrepreneurs, makers, 
+              .XYZ was made to help the next generation of innovators, entrepreneurs, makers,
               and creatives bring their ideas online with a memorable domain name.
             </h3>
             <br />
@@ -72,9 +72,9 @@ export function SponsorResources() {
           <AccordionTrigger value={"value"}>
             <h2 className="text-xl text-left font-semibold">Microsoft Azure</h2>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="border-b border-muted-foreground">
             <h3 className="text-md font-large">
-            Create, deploy, and manage applications across multiple clouds, on-premises, and at the edge
+              Create, deploy, and manage applications across multiple clouds, on-premises, and at the edge
             </h3>
             <br />
             <Link className="underline text-primary" href={"https://azure.microsoft.com/en-us/free/"}>Free Azure Account</Link>
