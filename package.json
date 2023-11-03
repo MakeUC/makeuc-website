@@ -13,10 +13,13 @@
     "dev": "run-p dev:*",
     "dev:client": "cd client && yarn dev",
     "dev:server": "cd server && yarn dev",
-    "generate": "cd client && yarn generate",
+    "generate": "run-p generate:*",
+    "generate:client": "cd client && yarn generate",
+    "generate:bot": "cd discord-bot && yarn generate",
     "lint": "run-p lint:*",
     "lint:client": "cd client && yarn lint",
     "lint:server": "cd server && yarn lint",
+    "lint:bot": "cd discord-bot && yarn lint",
     "lint-staged": "run-s lint-staged:*",
     "lint-staged:client": "cd client && yarn lint-staged",
     "lint-staged:server": "cd server && yarn lint-staged",
@@ -27,7 +30,8 @@
     "prepare": "husky install",
     "postinstall": "run-p install:*",
     "install:client": "cd client && yarn install",
-    "install:server": "cd server && yarn install"
+    "install:server": "cd server && yarn install",
+    "install:bot": "cd discord-bot && yarn install"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",

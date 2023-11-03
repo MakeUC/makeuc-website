@@ -1,10 +1,10 @@
-import { CommandInteraction, InteractionResponse, SlashCommandBuilder } from "discord.js";
-
-import { whoamiCommand } from "./whoami";
-import { scheduleCommand } from "./schedule";
 import { verifyCommand } from "./verify";
+import { whoamiCommand } from "./whoami";
 
-type ExecuteType = (interaction: CommandInteraction) => Promise<any>;
+import type { CommandInteraction, SlashCommandBuilder } from "discord.js";
+
+
+type ExecuteType = (interaction: CommandInteraction) => Promise<unknown>;
 
 export interface Command {
   data: SlashCommandBuilder,
@@ -14,6 +14,5 @@ export interface Command {
 
 export const commands = [
   whoamiCommand,
-  scheduleCommand,
   verifyCommand,
 ];

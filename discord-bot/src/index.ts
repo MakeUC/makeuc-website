@@ -1,17 +1,20 @@
-import { Client, Events, GatewayIntentBits } from 'discord.js';
-import { commands } from './commands';
+import { Client, Events, GatewayIntentBits } from "discord.js";
+
+import { commands } from "./commands";
+import { DISCORD_CONFIG as config } from "./config";
 import { deployCommands } from "./deploy_commands";
-import { DISCORD_CONFIG as config } from './config';
+
 
 export const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [GatewayIntentBits.Guilds],
 });
 
-client.once(Events.ClientReady, (c) => {
+client.once(Events.ClientReady, c => {
+  // eslint-disable-next-line no-console
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on(Events.GuildCreate, async (guild) => {
+client.on(Events.GuildCreate, async guild => {
   await deployCommands({ guildId: guild.id });
 });
 
@@ -19,18 +22,18 @@ client.on(Events.GuildCreate, async (guild) => {
 (async () => {
   await deployCommands({
     guildId: config.MAKEUC_GUILD_ID,
-  })
+  });
 })();
 
 
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isCommand()) {
     return;
   }
 
   const { commandName } = interaction;
-  const command = commands.find((command) => {
-    return command.data.name === commandName
+  const command = commands.find(command => {
+    return command.data.name === commandName;
   });
   if (command) {
     await command.execute(interaction);

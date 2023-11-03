@@ -839,6 +839,7 @@ export type Registrant = {
   country?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   degree?: Maybe<Scalars['String']['output']>;
+  discordVerified?: Maybe<Scalars['Boolean']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   emailRegistrationYearCompoundKey?: Maybe<Scalars['String']['output']>;
   ethnicity?: Maybe<Scalars['String']['output']>;
@@ -895,6 +896,7 @@ export type RegistrantOrderByInput = {
   country?: InputMaybe<OrderDirection>;
   createdAt?: InputMaybe<OrderDirection>;
   degree?: InputMaybe<OrderDirection>;
+  discordVerified?: InputMaybe<OrderDirection>;
   email?: InputMaybe<OrderDirection>;
   emailRegistrationYearCompoundKey?: InputMaybe<OrderDirection>;
   ethnicity?: InputMaybe<OrderDirection>;
@@ -962,6 +964,7 @@ export type RegistrantWhereInput = {
   country?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeNullableFilter>;
   degree?: InputMaybe<StringFilter>;
+  discordVerified?: InputMaybe<BooleanFilter>;
   email?: InputMaybe<StringFilter>;
   emailRegistrationYearCompoundKey?: InputMaybe<StringFilter>;
   ethnicity?: InputMaybe<StringFilter>;

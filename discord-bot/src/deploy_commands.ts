@@ -1,12 +1,15 @@
+/* eslint-disable no-console */
 import { REST, Routes } from "discord.js";
-import { DISCORD_CONFIG as config } from "./config";
-import { commands } from "./commands";
 
-const commandData = commands.map((command) => command.data);
+import { commands } from "./commands";
+import { DISCORD_CONFIG as config } from "./config";
+
+
+const commandData = commands.map(command => command.data);
 
 const rest = new REST().setToken(config.TOKEN);
 
-type DeployCommandProps = {
+interface DeployCommandProps {
   guildId: string
 }
 
