@@ -80,28 +80,6 @@ export function SponsorResources() {
             <Link className="underline text-primary" href={"https://azure.microsoft.com/en-us/free/"}>Free Azure Account</Link>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="Google Cloud">
-          <AccordionTrigger value={"value"}>
-            <h2 className="text-xl text-left font-semibold">Google Cloud</h2>
-          </AccordionTrigger>
-          <AccordionContent className="border-b border-muted-foreground">
-            <h3 className="text-md font-large">
-              Google Cloud credits - $25 for each participant
-              <br/>
-              Redemption code: MakeUC23
-            </h3>
-            <br />
-            <Link className="underline text-primary" href={"goo.gle/googlecloudcredits"}>Google Cloud Credits</Link>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="IBM">
-          <AccordionTrigger value={"value"}>
-            <h2 className="text-xl text-left font-semibold">IBM </h2>
-          </AccordionTrigger>
-          <AccordionContent className="border-b border-muted-foreground">
-            <Link className="underline text-primary" href={"https://github.com/academic-initiative/documentation/blob/main/academic-initiative/how-to/How-to-create-an-IBM-Cloud-account/readme.md"}>IBM Cloud Account</Link>
-          </AccordionContent>
-        </AccordionItem>
       </Accordion>
     </div>
   );
