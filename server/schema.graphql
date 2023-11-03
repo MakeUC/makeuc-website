@@ -764,7 +764,7 @@ type Mutation {
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
   resendVerificationEmails: [String]
-  massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput): [String]!
+  massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput, skip: Int, take: Int): [String]!
 }
 
 type Query {

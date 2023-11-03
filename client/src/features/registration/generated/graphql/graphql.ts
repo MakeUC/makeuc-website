@@ -528,6 +528,8 @@ export type MutationDisqualifyProjectArgs = {
 
 export type MutationMassSendRegistrantEmailArgs = {
   sendGridId: Scalars['String']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RegistrantWhereInput>;
 };
 

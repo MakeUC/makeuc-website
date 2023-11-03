@@ -711,13 +711,17 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
       type: import_core3.graphql.nonNull(import_core3.graphql.list(import_core3.graphql.String)),
       args: {
         sendGridId: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.String) }),
-        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+        skip: import_core3.graphql.arg({ type: import_core3.graphql.Int }),
+        take: import_core3.graphql.arg({ type: import_core3.graphql.Int })
       },
-      async resolve(_source, { sendGridId, where }, context) {
+      async resolve(_source, { sendGridId, where, skip, take }, context) {
         if (!context.session)
           return [];
         const registrants = await context.sudo().db.Registrant.findMany({
-          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
+          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where },
+          skip: skip || void 0,
+          take: take || void 0
         });
         for (const registrant of registrants) {
           await sendEmailToRegistrant(registrant, sendGridId);
