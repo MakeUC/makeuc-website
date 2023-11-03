@@ -68,6 +68,7 @@ model Registrant {
   registrationYear                 Int?      @default(2023)
   createdAt                        DateTime? @default(now())
   verified                         Boolean   @default(false)
+  discordVerified                  Boolean   @default(false)
   acceptPhotoRelease               Boolean   @default(false)
   invitedInPerson                  Boolean   @default(false)
   user                             User?     @relation("Registrant_user", fields: [userId], references: [id])

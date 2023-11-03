@@ -98,6 +98,7 @@ export const Registrant = list(addCompoundKey({
       defaultValue: { kind: "now" },
     }),
     verified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    discordVerified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
 
