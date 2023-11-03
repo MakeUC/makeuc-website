@@ -16,7 +16,7 @@ services:
     environment:
       - POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10
       - POSTGRES_PRISMA_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10&pgbouncer=true
-      - POSTGRES_URL_NON_POOLING=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public
+      - POSTGRES_URL_NON_POOLING=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SHADOW_HOST}/${POSTGRES_DATABASE}?schema=public
   db:
     image: postgres:latest
     restart: unless-stopped
@@ -24,18 +24,13 @@ services:
       - postgres-data:/var/lib/postgresql/data
     env_file:
       - .env
-  # minio:
-  #   image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z
-  #   ports:
-  #     - 9000:9000
-  #   expose:
-  #     - 9000
-  #   volumes:
-  #     - minio_storage:/data
-  #   environment:
-  #     MINIO_ROOT_USER: minioadmin
-  #     MINIO_ROOT_PASSWORD: minioadmin
-  #   command: server /data
+  shadow-db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - shadow-postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env
   minio:
     image: quay.io/minio/minio:RELEASE.2023-08-23T10-07-06Z # figure out which image to get
     command: server --console-address ":9001" /data/minio # need to change the url
@@ -74,5 +69,6 @@ services:
 
 volumes:
   postgres-data:
+  shadow-postgres-data:
   data1-1:
   data1-2:
