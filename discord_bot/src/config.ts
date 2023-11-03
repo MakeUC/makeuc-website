@@ -1,16 +1,3 @@
-// import { config } from "dotenv";
-
-// config();
-
-import * as dotenv from 'dotenv';
-
-
-// Set the path to the .env file in the .devcontainer directory
-const envPath = '/workspace/.devcontainer/.env';
-
-// Load the environment variables from the specified .env file
-dotenv.config({ path: envPath });
-
 if (!process.env.DISCORD_TOKEN || !process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_MAKEUC_GUILD_ID) {
   throw new Error("Missing Environment Variables for the discord token and discord client id");
 }

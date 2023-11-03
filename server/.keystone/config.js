@@ -324,6 +324,7 @@ var Registrant = (0, import_core.list)(addCompoundKey({
       defaultValue: { kind: "now" }
     }),
     verified: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    discordVerified: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: (0, import_fields2.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     user: (0, import_fields2.relationship)({

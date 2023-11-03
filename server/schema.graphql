@@ -272,6 +272,7 @@ type Registrant {
   registrationYear: Int
   createdAt: DateTime
   verified: Boolean
+  discordVerified: Boolean
   acceptPhotoRelease: Boolean
   invitedInPerson: Boolean
   user: User
@@ -315,6 +316,7 @@ input RegistrantWhereInput {
   registrationYear: IntNullableFilter
   createdAt: DateTimeNullableFilter
   verified: BooleanFilter
+  discordVerified: BooleanFilter
   acceptPhotoRelease: BooleanFilter
   invitedInPerson: BooleanFilter
   user: UserWhereInput
@@ -368,6 +370,7 @@ input RegistrantOrderByInput {
   registrationYear: OrderDirection
   createdAt: OrderDirection
   verified: OrderDirection
+  discordVerified: OrderDirection
   acceptPhotoRelease: OrderDirection
   invitedInPerson: OrderDirection
   emailRegistrationYearCompoundKey: OrderDirection
