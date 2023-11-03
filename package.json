@@ -5,9 +5,10 @@
   "repository": "git@github.com:MakeUC/makeuc-website.git",
   "license": "MIT",
   "scripts": {
-    "build": "run-s build:server generate build:client",
+    "build": "run-s build:server generate build:client build:bot",
     "build:client": "cd client && yarn build",
     "build:server": "cd server && yarn build",
+    "build:bot": "cd discord-bot && yarn build",
     "compile": "run-p compile:*",
     "compile:client": "cd client && yarn compile",
     "dev": "run-p dev:*",

@@ -3,9 +3,11 @@
   "packageManager": "yarn@3.6.4",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "dev": "ts-node src/index.ts",
     "generate": "prisma generate",
-    "lint": "eslint src/*.ts src/**/*.ts --max-warnings 0"
+    "lint": "eslint src/*.ts src/**/*.ts --max-warnings 0",
+    "start": "node dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.8.7",

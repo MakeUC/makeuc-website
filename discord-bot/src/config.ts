@@ -11,7 +11,7 @@ if (missingVariables.length > 0) {
   throw new Error(`The Discord Bot is missing the following environment variables: ${missingVariables.join(", ")}`);
 }
 
-export const CHECK_IN = process.env.CHECK_IN;
+export const CHECK_IN = process.env.DISCORD_CHECK_IN;
 
 export const DISCORD_CONFIG = {
   TOKEN: process.env.DISCORD_TOKEN as string,
