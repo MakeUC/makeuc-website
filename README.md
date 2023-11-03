@@ -7,6 +7,7 @@
   - [Technology Stack](#technology-stack)
     - [Frontend (Client)](#frontend-client)
     - [Backend (Server)](#backend-server)
+    - [Discord Bot](#discord-bot)
   - [Current Standards](#current-standards)
 
 ## Overview
@@ -57,6 +58,10 @@ The following sections layout the notable libraries used in the MakeUC Website.
   - [TypeScript](https://www.typescriptlang.org/)
   - [KeystoneJS](https://keystonejs.com/)
     - [Prisma](https://www.prisma.io/) is used by KeystoneJS and is the database engine
+
+#### Discord Bot
+
+TODO
 
 ### Current Standards
 
