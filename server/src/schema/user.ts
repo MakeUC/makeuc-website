@@ -1,12 +1,12 @@
 import { list } from "@keystone-6/core";
-import { password, relationship, select, text, timestamp } from "@keystone-6/core/fields";
+import { relationship, multiselect, text, timestamp } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 
 
 export const User = list({
   access: {
-    operation: allOperations(isAuthenticated),
+    operation: allOperations(hasRoleOneOf("admin")),
   },
   fields: {
     name: text({ validation: { isRequired: true } }),
@@ -14,11 +14,10 @@ export const User = list({
       validation: { isRequired: true },
       isIndexed: "unique",
     }),
-    password: password({ validation: { isRequired: true } }),
     createdAt: timestamp({ defaultValue: { kind: "now" } }),
-    roles: select({
+    roles: multiselect({
       type: "enum",
-      defaultValue: "default",
+      defaultValue: ["default"],
       options: [
         { label: "Admin", value: "admin" },
         { label: "Organizer", value: "organizer" },

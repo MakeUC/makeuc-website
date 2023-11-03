@@ -19,6 +19,7 @@ function makeClient() {
   const httpLink = createUploadLink({
     uri: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/graphql`,
     headers: { "Apollo-Require-Preflight": "true" },
+    credentials: "include",
   }) as unknown as ApolloLink;
 
   return new ApolloClient({

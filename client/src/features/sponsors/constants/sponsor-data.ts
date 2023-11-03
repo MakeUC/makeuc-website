@@ -20,6 +20,7 @@ import PRHIImage from "../assets/prhi.png";
 import StandOutStickersImage from "../assets/standout-stickers.png";
 import StickerMuleImage from "../assets/sticker-mule.png";
 import TaskadeImage from "../assets/taskade.png";
+import TCSImage from "../assets/TCS.png";
 import temboImage from "../assets/tembo.svg";
 import WolframAlphaImage from "../assets/wolfram-alpha.png";
 import XYZImage from "../assets/xyz.png";
@@ -56,6 +57,11 @@ export const sponsorData: SponsorTier[] = [
         name: "PRHI",
         url: "https://www.patientsafetytech.com/",
         imageSrc: PRHIImage,
+      },
+      {
+        name: "Tata Consultancy Services",
+        url: "https://www.tcs.com/",
+        imageSrc: TCSImage,
       },
     ],
   },

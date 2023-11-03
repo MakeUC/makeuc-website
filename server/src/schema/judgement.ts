@@ -1,12 +1,16 @@
 import { list } from "@keystone-6/core";
 import { float, integer, relationship, text } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
+import { addCompoundKey } from "../utils/compoundKeys";
 
 
-export const Judgement = list({
+export const Judgement = list(addCompoundKey({
   access: {
-    operation: allOperations(isAuthenticated),
+    operation: {
+      ...allOperations(hasRoleOneOf("admin", "organizer", "judge")),
+      delete: allOperations(hasRoleOneOf("admin"))["delete"],
+    },
   },
   fields: {
     conceptCaliber: integer({
@@ -41,4 +45,11 @@ export const Judgement = list({
       ref: "Project.judgements",
     }),
   },
-});
+  hooks: {
+    resolveInput({ context, resolvedData, operation }) {
+      if (operation !== "create") { return resolvedData; }
+      if (!context.session?.item.id) { throw new Error("Unknown session itemId."); }
+      return { ...resolvedData, judge: { connect: { id: context.session.item.id } } };
+    },
+  },
+}, ["judge", "project"]));

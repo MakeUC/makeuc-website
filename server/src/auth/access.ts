@@ -1,12 +1,21 @@
-import type { TypeInfo, Context } from ".keystone/types";
+import type { KeystonePassportUserType } from "./passport";
+import type { TypeInfo, Context, UserRoleType } from ".keystone/types";
 import type { AccessOperation } from "@keystone-6/core/dist/declarations/src/types/config/access-control";
 import type { BaseListTypeInfo, ListOperationAccessControl, MaybePromise } from "@keystone-6/core/types";
 
 
+type UserItem = TypeInfo["lists"]["User"]["item"];
+
+export interface Session extends KeystonePassportUserType {
+  item: Omit<UserItem, "roles"> & {
+    roles: UserRoleType[]
+  };
+}
+
 interface AccessArgs {
-  context: Context;
-  session?: TypeInfo["session"];
-  listKey: keyof TypeInfo["lists"];
+  context: Context<Session>;
+  session?: TypeInfo<Session>["session"];
+  listKey: keyof TypeInfo<Session>["lists"];
   operation: AccessOperation;
 }
 
@@ -14,6 +23,15 @@ type AccessPredicate = (args: AccessArgs) => MaybePromise<boolean>;
 
 export function isAuthenticated(args: AccessArgs) {
   return !!args.session;
+}
+
+export function hasRoleOneOf(...roles: UserRoleType[]) {
+  return (args: AccessArgs) => {
+    const session = args.session;
+    if (!session || !session.item) return false;
+
+    return session.item.roles.some(role => roles.includes(role));
+  };
 }
 
 export function everyPredicate(...predicates: AccessPredicate[]): AccessPredicate {

@@ -47,11 +47,19 @@ export default withAuth(
         forcePathStyle: true,
       },
     },
+    ui: {
+      isAccessAllowed: context => {
+        const session = context.session;
+        if (!session || !session.item) return false;
+
+        return session.item.roles.some((role: string) => role === "admin");
+      },
+    },
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
-        origin: "*",
-        allowedHeaders: "*",
+        origin: ["http://localhost:3000", "http://localhost:8000", "https://api.makeuc.io", "https://makeuc.io"],
+        allowedHeaders: ["apollo-require-preflight", "content-type"],
         credentials: true,
         methods: "*",
       },

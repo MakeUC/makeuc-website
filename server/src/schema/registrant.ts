@@ -2,12 +2,21 @@ import { list } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
 import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
 
-import { allOperations, isAuthenticated } from "../auth/access";
+import { allOperations, hasRoleOneOf } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
 import { FROM_ADDRESS, REGISTRATION_URL, sendgrid } from "../utils/sendgrid";
 
 import type { Lists } from ".keystone/types";
 
+
+export function sendEmailToRegistrant(registrant: Lists.Registrant.Item, sendgridTemplateId: string) {
+  return sendgrid.send({
+    from: FROM_ADDRESS,
+    to: registrant.email,
+    templateId: sendgridTemplateId,
+    dynamicTemplateData: Object.fromEntries(Object.entries(registrant).map(([key, value]) => [key, value?.toString() ?? ""])),
+  });
+}
 
 export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
   return sendgrid.send({
@@ -37,7 +46,8 @@ export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Ite
 export const Registrant = list(addCompoundKey({
   access: {
     operation: {
-      ...allOperations(isAuthenticated),
+      ...allOperations(hasRoleOneOf("admin")),
+      query: allOperations(hasRoleOneOf("admin", "organizer"))["query"],
       create: allowAll,
     },
   },
@@ -94,9 +104,6 @@ export const Registrant = list(addCompoundKey({
       ref: "User.registrations",
       many: false,
     }),
-  },
-  graphql: {
-    maxTake: 50,
   },
   hooks: {
     async afterOperation({ operation, item }) {

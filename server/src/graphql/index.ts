@@ -1,6 +1,6 @@
 import { graphql } from "@keystone-6/core";
 
-import { sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
+import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
@@ -13,6 +13,9 @@ export const extendGraphqlSchema = graphql.extend(base => ({
       type: graphql.String, //Undefined --> Change in the future
       args: { year: graphql.arg({ type: graphql.nonNull(graphql.Int) }) },
       async resolve(source, { year }, context: Context) {
+        if (!context.session) {
+          return null;
+        }
         const registrants = await context.prisma.registrant.findMany({
           where: { registrationYear: { equals: year } },
         });
@@ -49,6 +52,31 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     }),
   },
   mutation: {
+    disqualifyProject: graphql.field({
+      type: base.object("Judgement"),
+      args: {
+        projectId: graphql.arg({ type: graphql.ID }),
+        reason: graphql.arg({ type: graphql.String }),
+      },
+      resolve(_source, { projectId, reason }, context: Context) {
+        const userId = context.session.item.id;
+        if (!userId) throw new Error("Missing userId when disqualifying project");
+
+        return context.db.Judgement.createOne({
+          data: {
+            project: { connect: { id: projectId } },
+            disqualifiedBy: { connect: { id: userId } },
+            disqualifyReason: reason,
+            judge: { connect: { id: userId } },
+            overallScore: 0,
+            conceptCaliber: 0,
+            demonstrationAbility: 0,
+            implementationAttempt: 0,
+            presentationProfessionalism: 0,
+          },
+        });
+      },
+    }),
     seedSchoolIndiaData: graphql.field({
       type: graphql.Boolean,
       async resolve(_source, _, context: Context) {
@@ -96,6 +124,28 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         }
 
         return unverifiedRegistrants.map(registrant => registrant.email);
+      },
+    }),
+    massSendRegistrantEmail: graphql.field({
+      type: graphql.nonNull(graphql.list(graphql.String)),
+      args: {
+        sendGridId: graphql.arg({ type: graphql.nonNull(graphql.String) }),
+        where: graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+      },
+      async resolve(_source, { sendGridId, where }, context: Context) {
+        if (!context.session) return [];
+
+        // Get all of the registrants from the current year that are NOT verified
+        const registrants = await context.sudo().db.Registrant.findMany({
+          where: { registrationYear: { equals: new Date().getFullYear() }, ...where },
+        });
+
+        // Send emails for each unverified registrant
+        for (const registrant of registrants) {
+          await sendEmailToRegistrant(registrant, sendGridId);
+        }
+
+        return registrants.map(registrant => registrant.email);
       },
     }),
   },
