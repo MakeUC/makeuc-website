@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { SlashCommandBuilder } from "discord.js";
 
-import { CHECK_IN } from "../config";
+import { CHECK_IN, DISCORD_CONFIG as config } from "../config";
 
 import type { Command } from "./index";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -18,19 +18,22 @@ export const verifyCommand = {
         .setDescription("Insert the email address you used to register for MakeUC")
         .setRequired(true)),
   execute: async (interaction: ChatInputCommandInteraction) => {
-    if (CHECK_IN !== "open") {
+    function sendReply(content: string) {
       return interaction.reply({
-        content: "Checkin has not opened yet! Please come back later. We appreciate your patience!",
+        content,
+        ephemeral: true,
       });
     }
+
+    if (CHECK_IN !== "open") {
+      return sendReply("Verification has not opened yet! Please come back later. We appreciate your patience!");
+    }
+
+    if (!interaction.member) { return sendReply("Only discord members can register!"); }
 
     const email = interaction.options.getString("email");
 
-    if (!email) {
-      return interaction.reply({
-        content: "Please specify an email!",
-      });
-    }
+    if (!email) { return sendReply("Please specify an email!"); }
 
     const participant = await prisma.registrant.findFirst({
       where: {
@@ -40,15 +43,11 @@ export const verifyCommand = {
     });
 
     if (!participant) {
-      return interaction.reply({
-        content: "We could not find a registration with that email. Please make sure that the email you entered is correct.",
-      });
+      return sendReply("We could not find a registration with that email. Please make sure that the email you entered is correct.");
     }
 
     if (participant.discordVerified) {
-      return interaction.reply({
-        content: `Hey, ${participant.firstName} ${participant.lastName}! You have already been verified!`,
-      });
+      return sendReply(`Hey, ${participant.firstName} ${participant.lastName}! You have already been verified!`);
     }
 
     // Update the registration
@@ -57,8 +56,12 @@ export const verifyCommand = {
       data: { discordVerified: true },
     });
 
-    return interaction.reply({
-      content: `Welcome, ${participant.firstName} ${participant.lastName}! We have verified your registration!`,
-    });
+    // Add the discord role
+    const roles = interaction.member.roles;
+    if (!Array.isArray(roles)) { await roles.add(config.VERIFIED_ROLE_ID); }
+    // eslint-disable-next-line no-console
+    else { console.error(`No permission to add role to ${interaction.user.discriminator}(${interaction.user.id})!`); }
+
+    return sendReply(`Welcome, ${participant.firstName} ${participant.lastName}! We have verified your registration!`);
   },
 } as Command;
