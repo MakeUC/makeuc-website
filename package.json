@@ -28,6 +28,7 @@
     "start": "run-p start:*",
     "start:client": "cd client && yarn start",
     "start:server": "cd server && yarn start",
+    "start:bot": "cd discord-bot && yarn start",
     "prepare": "husky install",
     "postinstall": "run-p install:*",
     "install:client": "cd client && yarn install",
