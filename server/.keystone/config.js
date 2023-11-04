@@ -428,7 +428,6 @@ var import_core3 = require("@keystone-6/core");
 
 // src/schema/registrant.ts
 var import_core2 = require("@keystone-6/core");
-var import_access2 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
 
 // src/auth/access.ts
@@ -493,7 +492,7 @@ var Registrant = (0, import_core2.list)(addCompoundKey({
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
       query: allOperations2(hasRoleOneOf("admin", "organizer"))["query"],
-      create: import_access2.allowAll
+      create: () => process.env.REGISTRATION_STATUS !== "disabled"
     }
   },
   fields: {
@@ -542,6 +541,7 @@ var Registrant = (0, import_core2.list)(addCompoundKey({
       defaultValue: { kind: "now" }
     }),
     verified: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    discordVerified: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     user: (0, import_fields3.relationship)({
@@ -711,13 +711,17 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
       type: import_core3.graphql.nonNull(import_core3.graphql.list(import_core3.graphql.String)),
       args: {
         sendGridId: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.String) }),
-        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+        skip: import_core3.graphql.arg({ type: import_core3.graphql.Int }),
+        take: import_core3.graphql.arg({ type: import_core3.graphql.Int })
       },
-      async resolve(_source, { sendGridId, where }, context) {
+      async resolve(_source, { sendGridId, where, skip, take }, context) {
         if (!context.session)
           return [];
         const registrants = await context.sudo().db.Registrant.findMany({
-          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
+          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where },
+          skip: skip || void 0,
+          take: take || void 0
         });
         for (const registrant of registrants) {
           await sendEmailToRegistrant(registrant, sendGridId);
@@ -852,13 +856,13 @@ var Project = (0, import_core5.list)({
 
 // src/schema/school.ts
 var import_core6 = require("@keystone-6/core");
-var import_access6 = require("@keystone-6/core/access");
+var import_access5 = require("@keystone-6/core/access");
 var import_fields6 = require("@keystone-6/core/fields");
 var School = (0, import_core6.list)({
   access: {
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
-      query: import_access6.allowAll
+      query: import_access5.allowAll
     }
   },
   fields: {

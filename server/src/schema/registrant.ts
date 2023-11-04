@@ -1,5 +1,4 @@
 import { list } from "@keystone-6/core";
-import { allowAll } from "@keystone-6/core/access";
 import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
 
 import { allOperations, hasRoleOneOf } from "../auth/access";
@@ -43,12 +42,14 @@ export function sendRegistrantConfirmationEmail(registrant: Lists.Registrant.Ite
   });
 }
 
+
+
 export const Registrant = list(addCompoundKey({
   access: {
     operation: {
       ...allOperations(hasRoleOneOf("admin")),
       query: allOperations(hasRoleOneOf("admin", "organizer"))["query"],
-      create: allowAll,
+      create: () => process.env.REGISTRATION_STATUS !== "disabled",
     },
   },
 
@@ -97,6 +98,7 @@ export const Registrant = list(addCompoundKey({
       defaultValue: { kind: "now" },
     }),
     verified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    discordVerified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
 

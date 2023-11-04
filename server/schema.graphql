@@ -279,6 +279,7 @@ type Registrant {
   registrationYear: Int
   createdAt: DateTime
   verified: Boolean
+  discordVerified: Boolean
   acceptPhotoRelease: Boolean
   invitedInPerson: Boolean
   user: User
@@ -322,6 +323,7 @@ input RegistrantWhereInput {
   registrationYear: IntNullableFilter
   createdAt: DateTimeNullableFilter
   verified: BooleanFilter
+  discordVerified: BooleanFilter
   acceptPhotoRelease: BooleanFilter
   invitedInPerson: BooleanFilter
   user: UserWhereInput
@@ -375,6 +377,7 @@ input RegistrantOrderByInput {
   registrationYear: OrderDirection
   createdAt: OrderDirection
   verified: OrderDirection
+  discordVerified: OrderDirection
   acceptPhotoRelease: OrderDirection
   invitedInPerson: OrderDirection
   emailRegistrationYearCompoundKey: OrderDirection
@@ -761,7 +764,7 @@ type Mutation {
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant
   resendVerificationEmails: [String]
-  massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput): [String]!
+  massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput, skip: Int, take: Int): [String]!
 }
 
 type Query {

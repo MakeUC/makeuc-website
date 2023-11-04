@@ -131,13 +131,17 @@ export const extendGraphqlSchema = graphql.extend(base => ({
       args: {
         sendGridId: graphql.arg({ type: graphql.nonNull(graphql.String) }),
         where: graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+        skip: graphql.arg({ type: graphql.Int }),
+        take: graphql.arg({ type: graphql.Int }),
       },
-      async resolve(_source, { sendGridId, where }, context: Context) {
+      async resolve(_source, { sendGridId, where, skip, take }, context: Context) {
         if (!context.session) return [];
 
         // Get all of the registrants from the current year that are NOT verified
         const registrants = await context.sudo().db.Registrant.findMany({
           where: { registrationYear: { equals: new Date().getFullYear() }, ...where },
+          skip: skip || undefined,
+          take: take || undefined,
         });
 
         // Send emails for each unverified registrant
