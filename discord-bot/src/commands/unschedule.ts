@@ -16,21 +16,23 @@ export const unscheduleCommand = {
         .setRequired(true)
     ),
   execute: async (interaction: ChatInputCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true });
+
     const permissions = interaction.member?.permissions;
     // You can only run the command if you're an administrator
     if (!permissions || typeof permissions === "string" || !permissions.has(PermissionFlagsBits.Administrator)) {
-      return interaction.reply({ content: "You cannot run this command.", ephemeral: true });
+      return interaction.editReply({ content: "You cannot run this command." });
     }
 
     const id = interaction.options.getString("id");
-    if (!id) { return interaction.reply("Missing ID"); }
+    if (!id) { return interaction.editReply("Missing ID"); }
 
     try {
       await scheduler.cancelEvent(id);
-      interaction.reply(`Unscheduled event with ID ${id}.`);
+      return interaction.editReply(`Unscheduled event with ID ${id}.`);
     } catch (err) {
       if (err instanceof UnknownScheduledEvent) {
-        return interaction.reply(`Scheduled Event with ID ${id} cannot be found.`);
+        return interaction.editReply(`Scheduled Event with ID ${id} cannot be found.`);
       }
 
       throw err;

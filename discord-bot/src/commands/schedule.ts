@@ -53,24 +53,26 @@ export const scheduleCommand = {
         .setRequired(false)
     ),
   execute: async (interaction: ChatInputCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true });
+
     const permissions = interaction.member?.permissions;
     // You can only run the command if you're an administrator
     if (!permissions || typeof permissions === "string" || !permissions.has(PermissionFlagsBits.Administrator)) {
-      return interaction.reply({ content: "You cannot run this command.", ephemeral: true });
+      return interaction.editReply({ content: "You cannot run this command." });
     }
 
     // Setup all variables for the interaction
     const channel = interaction.options.getChannel("channel");
-    if (!channel) { return interaction.reply({ content: "Missing channel" }); }
+    if (!channel) { return interaction.editReply({ content: "Missing channel" }); }
 
     const message = interaction.options.getString("message");
-    if (!message) { return interaction.reply({ content: "Missing Message" }); }
+    if (!message) { return interaction.editReply({ content: "Missing Message" }); }
 
     const time = interaction.options.getString("time");
-    if (!time) { return interaction.reply({ content: "Missing Time" }); }
+    if (!time) { return interaction.editReply({ content: "Missing Time" }); }
 
     const parsedTime = time.split(":").map(num => parseInt(num));
-    if (parsedTime.length !== 2) { return interaction.reply({ content: "Invalid time format, please use HH:mm" }); }
+    if (parsedTime.length !== 2) { return interaction.editReply({ content: "Invalid time format, please use HH:mm" }); }
     const [hours, minutes] = parsedTime as [number, number];
 
     const day = interaction.options.getInteger("day") ?? dayjs().date();
@@ -88,7 +90,7 @@ export const scheduleCommand = {
     // Setup scheduled event
     const channelId = channel.id;
     const guildId = interaction.guildId;
-    if (!guildId) { return interaction.reply({ content: "Unknown Guild..." }); }
+    if (!guildId) { return interaction.editReply({ content: "Unknown Guild..." }); }
 
     try {
       await scheduler.scheduleEvent({
@@ -99,12 +101,12 @@ export const scheduleCommand = {
       });
     } catch (err) {
       if (err instanceof ImpossibleScheduledEvent || err instanceof TooFarAwayScheduledEvent) {
-        return interaction.reply({ content: err.message });
+        return interaction.editReply({ content: err.message });
       }
 
       throw err;
     }
 
-    return interaction.reply(`Will be sent at <t:${date.unix()}:F> and will take ${date.valueOf() - dayjs().valueOf()} ms in <#${channelId}>.`);
+    return interaction.editReply(`Will be sent at <t:${date.unix()}:F> and will take ${date.valueOf() - dayjs().valueOf()} ms in <#${channelId}>.`);
   },
 } as Command;

@@ -38,7 +38,12 @@ client.on(Events.InteractionCreate, async interaction => {
 
   if (!command) { return; }
 
-  await command.execute(interaction);
+  try {
+    await command.execute(interaction);
+  } catch (err) {
+    console.error(`Error on command: ${command}:`);
+    console.error(err);
+  }
 });
 
 client.login(config.TOKEN);

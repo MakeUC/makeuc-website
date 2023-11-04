@@ -16,11 +16,10 @@ export const verifyCommand = {
         .setDescription("Insert the email address you used to register for MakeUC")
         .setRequired(true)),
   execute: async (interaction: ChatInputCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true });
+
     function sendReply(content: string) {
-      return interaction.reply({
-        content,
-        ephemeral: true,
-      });
+      return interaction.editReply({ content });
     }
 
     if (CHECK_IN !== "open") {
