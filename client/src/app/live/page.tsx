@@ -3,8 +3,7 @@ import Link from "next/link";
 
 import Logo from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
-import { Timer } from "~/features/live-site/components/countdown";
-import { HackerScheduleTable, WorkshopScheduleTable, TransportScheduleTable } from "~/features/live-site/constants/schedule";
+import { HackerScheduleTable, WorkshopScheduleTable, TransportScheduleTable, Timer } from "~/features/live-site";
 
 
 export const metadata = {
@@ -34,6 +33,12 @@ export default async function LiveSite() {
         </Link>
         <Link href="https://youtube.com/playlist?list=PLMOg6ZY3DC6PgVmJ9jsGWqQ9-hI0kAhqu&feature=shared" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">YouTube</Button>
+        </Link>
+        <Link href="/resources" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">Resources</Button>
+        </Link>
+        <Link href="/judging" className="items-center">
+          <Button className="flex gap-2 mt-4" size="lg">Judging Info</Button>
         </Link>
         <Link href="https://drive.google.com/file/d/1ISAejgMSg1u7cE4KMvLiBn9l-0rcgYej/view?usp=sharing" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Venue Maps</Button>

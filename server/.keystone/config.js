@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core9 = require("@keystone-6/core");
+var import_core10 = require("@keystone-6/core");
 
 // src/auth/index.ts
 var import_session = require("@keystone-6/core/session");
@@ -428,7 +428,6 @@ var import_core3 = require("@keystone-6/core");
 
 // src/schema/registrant.ts
 var import_core2 = require("@keystone-6/core");
-var import_access2 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
 
 // src/auth/access.ts
@@ -493,7 +492,7 @@ var Registrant = (0, import_core2.list)(addCompoundKey({
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
       query: allOperations2(hasRoleOneOf("admin", "organizer"))["query"],
-      create: import_access2.allowAll
+      create: () => process.env.REGISTRATION_STATUS !== "disabled"
     }
   },
   fields: {
@@ -542,6 +541,7 @@ var Registrant = (0, import_core2.list)(addCompoundKey({
       defaultValue: { kind: "now" }
     }),
     verified: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    discordVerified: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: (0, import_fields3.checkbox)({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     user: (0, import_fields3.relationship)({
@@ -711,13 +711,17 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
       type: import_core3.graphql.nonNull(import_core3.graphql.list(import_core3.graphql.String)),
       args: {
         sendGridId: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.String) }),
-        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") })
+        where: import_core3.graphql.arg({ type: base.inputObject("RegistrantWhereInput") }),
+        skip: import_core3.graphql.arg({ type: import_core3.graphql.Int }),
+        take: import_core3.graphql.arg({ type: import_core3.graphql.Int })
       },
-      async resolve(_source, { sendGridId, where }, context) {
+      async resolve(_source, { sendGridId, where, skip, take }, context) {
         if (!context.session)
           return [];
         const registrants = await context.sudo().db.Registrant.findMany({
-          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where }
+          where: { registrationYear: { equals: (/* @__PURE__ */ new Date()).getFullYear() }, ...where },
+          skip: skip || void 0,
+          take: take || void 0
         });
         for (const registrant of registrants) {
           await sendEmailToRegistrant(registrant, sendGridId);
@@ -728,10 +732,28 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
   }
 }));
 
-// src/schema/judgement.ts
+// src/schema/discordScheduledMessage.ts
 var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
-var Judgement = (0, import_core4.list)(addCompoundKey({
+var DiscordScheduledMessage = (0, import_core4.list)({
+  access: {
+    operation: {
+      ...allOperations2(hasRoleOneOf("admin"))
+    }
+  },
+  fields: {
+    message: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    guildId: (0, import_fields4.text)({ isIndexed: true, validation: { isRequired: true } }),
+    channelId: (0, import_fields4.text)({ isIndexed: true, validation: { isRequired: true } }),
+    unixExecutionTime: (0, import_fields4.bigInt)({ validation: { isRequired: true } }),
+    createdAt: (0, import_fields4.timestamp)({ defaultValue: { kind: "now" } })
+  }
+});
+
+// src/schema/judgement.ts
+var import_core5 = require("@keystone-6/core");
+var import_fields5 = require("@keystone-6/core/fields");
+var Judgement = (0, import_core5.list)(addCompoundKey({
   access: {
     operation: {
       ...allOperations2(hasRoleOneOf("admin", "organizer", "judge")),
@@ -739,35 +761,35 @@ var Judgement = (0, import_core4.list)(addCompoundKey({
     }
   },
   fields: {
-    conceptCaliber: (0, import_fields4.integer)({
+    conceptCaliber: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    implementationAttempt: (0, import_fields4.integer)({
+    implementationAttempt: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    demonstrationAbility: (0, import_fields4.integer)({
+    demonstrationAbility: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    presentationProfessionalism: (0, import_fields4.integer)({
+    presentationProfessionalism: (0, import_fields5.integer)({
       validation: { isRequired: true }
     }),
-    overallScore: (0, import_fields4.float)({
+    overallScore: (0, import_fields5.float)({
       validation: { isRequired: true }
     }),
-    applicableTracks: (0, import_fields4.relationship)({
+    applicableTracks: (0, import_fields5.relationship)({
       ref: "Track.judgements",
       many: true
     }),
-    disqualifyReason: (0, import_fields4.text)({
+    disqualifyReason: (0, import_fields5.text)({
       isFilterable: true
     }),
-    disqualifiedBy: (0, import_fields4.relationship)({
+    disqualifiedBy: (0, import_fields5.relationship)({
       ref: "User"
     }),
-    judge: (0, import_fields4.relationship)({
+    judge: (0, import_fields5.relationship)({
       ref: "User.judgements"
     }),
-    project: (0, import_fields4.relationship)({
+    project: (0, import_fields5.relationship)({
       ref: "Project.judgements"
     })
   },
@@ -785,9 +807,9 @@ var Judgement = (0, import_core4.list)(addCompoundKey({
 }, ["judge", "project"]));
 
 // src/schema/project.ts
-var import_core5 = require("@keystone-6/core");
-var import_fields5 = require("@keystone-6/core/fields");
-var Project = (0, import_core5.list)({
+var import_core6 = require("@keystone-6/core");
+var import_fields6 = require("@keystone-6/core/fields");
+var Project = (0, import_core6.list)({
   access: {
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
@@ -795,27 +817,27 @@ var Project = (0, import_core5.list)({
     }
   },
   fields: {
-    url: (0, import_fields5.text)({
+    url: (0, import_fields6.text)({
       isIndexed: "unique",
       validation: { isRequired: true }
     }),
-    name: (0, import_fields5.text)({
+    name: (0, import_fields6.text)({
       validation: { isRequired: true }
     }),
-    judgingGroup: (0, import_fields5.integer)({
+    judgingGroup: (0, import_fields6.integer)({
       validation: { isRequired: true }
     }),
-    year: (0, import_fields5.integer)({
+    year: (0, import_fields6.integer)({
       validation: { isRequired: true }
     }),
-    judgements: (0, import_fields5.relationship)({
+    judgements: (0, import_fields6.relationship)({
       ref: "Judgement.project",
       many: true,
       graphql: { omit: { create: true, update: true } }
     }),
-    countJudgements: (0, import_fields5.virtual)({
-      field: import_core5.graphql.field({
-        type: import_core5.graphql.Int,
+    countJudgements: (0, import_fields6.virtual)({
+      field: import_core6.graphql.field({
+        type: import_core6.graphql.Int,
         async resolve(item, _, context) {
           return await context.prisma.judgement.count({
             where: { projectId: { equals: item.id.toString() } }
@@ -823,9 +845,9 @@ var Project = (0, import_core5.list)({
         }
       })
     }),
-    score: (0, import_fields5.virtual)({
-      field: import_core5.graphql.field({
-        type: import_core5.graphql.Float,
+    score: (0, import_fields6.virtual)({
+      field: import_core6.graphql.field({
+        type: import_core6.graphql.Float,
         async resolve(item, _, context) {
           return (await context.prisma.judgement.aggregate({
             _avg: { overallScore: true },
@@ -834,9 +856,9 @@ var Project = (0, import_core5.list)({
         }
       })
     }),
-    disqualified: (0, import_fields5.virtual)({
-      field: import_core5.graphql.field({
-        type: import_core5.graphql.Boolean,
+    disqualified: (0, import_fields6.virtual)({
+      field: import_core6.graphql.field({
+        type: import_core6.graphql.Boolean,
         async resolve(item, _, context) {
           return await context.prisma.judgement.count({
             where: {
@@ -851,10 +873,10 @@ var Project = (0, import_core5.list)({
 });
 
 // src/schema/school.ts
-var import_core6 = require("@keystone-6/core");
+var import_core7 = require("@keystone-6/core");
 var import_access6 = require("@keystone-6/core/access");
-var import_fields6 = require("@keystone-6/core/fields");
-var School = (0, import_core6.list)({
+var import_fields7 = require("@keystone-6/core/fields");
+var School = (0, import_core7.list)({
   access: {
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
@@ -862,13 +884,13 @@ var School = (0, import_core6.list)({
     }
   },
   fields: {
-    name: (0, import_fields6.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    city: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
-    state: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
-    county: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
-    country: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
-    alias: (0, import_fields6.text)({ isIndexed: true, validation: { isRequired: true } }),
-    createdAt: (0, import_fields6.timestamp)({
+    name: (0, import_fields7.text)({ isIndexed: "unique", validation: { isRequired: true } }),
+    city: (0, import_fields7.text)({ isIndexed: true, validation: { isRequired: true } }),
+    state: (0, import_fields7.text)({ isIndexed: true, validation: { isRequired: true } }),
+    county: (0, import_fields7.text)({ isIndexed: true, validation: { isRequired: true } }),
+    country: (0, import_fields7.text)({ isIndexed: true, validation: { isRequired: true } }),
+    alias: (0, import_fields7.text)({ isIndexed: true, validation: { isRequired: true } }),
+    createdAt: (0, import_fields7.timestamp)({
       defaultValue: { kind: "now" }
     })
   },
@@ -878,9 +900,9 @@ var School = (0, import_core6.list)({
 });
 
 // src/schema/track.ts
-var import_core7 = require("@keystone-6/core");
-var import_fields7 = require("@keystone-6/core/fields");
-var Track = (0, import_core7.list)({
+var import_core8 = require("@keystone-6/core");
+var import_fields8 = require("@keystone-6/core/fields");
+var Track = (0, import_core8.list)({
   access: {
     operation: {
       ...allOperations2(hasRoleOneOf("admin")),
@@ -888,12 +910,12 @@ var Track = (0, import_core7.list)({
     }
   },
   fields: {
-    name: (0, import_fields7.text)({
+    name: (0, import_fields8.text)({
       isIndexed: "unique",
       validation: { isRequired: true },
       isFilterable: true
     }),
-    judgements: (0, import_fields7.relationship)({
+    judgements: (0, import_fields8.relationship)({
       ref: "Judgement.applicableTracks",
       many: true,
       graphql: { omit: { create: true, update: true } }
@@ -902,20 +924,20 @@ var Track = (0, import_core7.list)({
 });
 
 // src/schema/user.ts
-var import_core8 = require("@keystone-6/core");
-var import_fields8 = require("@keystone-6/core/fields");
-var User = (0, import_core8.list)({
+var import_core9 = require("@keystone-6/core");
+var import_fields9 = require("@keystone-6/core/fields");
+var User = (0, import_core9.list)({
   access: {
     operation: allOperations2(hasRoleOneOf("admin"))
   },
   fields: {
-    name: (0, import_fields8.text)({ validation: { isRequired: true } }),
-    email: (0, import_fields8.text)({
+    name: (0, import_fields9.text)({ validation: { isRequired: true } }),
+    email: (0, import_fields9.text)({
       validation: { isRequired: true },
       isIndexed: "unique"
     }),
-    createdAt: (0, import_fields8.timestamp)({ defaultValue: { kind: "now" } }),
-    roles: (0, import_fields8.multiselect)({
+    createdAt: (0, import_fields9.timestamp)({ defaultValue: { kind: "now" } }),
+    roles: (0, import_fields9.multiselect)({
       type: "enum",
       defaultValue: ["default"],
       options: [
@@ -925,11 +947,11 @@ var User = (0, import_core8.list)({
         { label: "Default", value: "default" }
       ]
     }),
-    registrations: (0, import_fields8.relationship)({
+    registrations: (0, import_fields9.relationship)({
       ref: "Registrant.user",
       many: true
     }),
-    judgements: (0, import_fields8.relationship)({
+    judgements: (0, import_fields9.relationship)({
       ref: "Judgement.judge",
       many: true
     })
@@ -941,6 +963,7 @@ var User = (0, import_core8.list)({
 
 // src/schema/index.ts
 var lists = {
+  DiscordScheduledMessage,
   Judgement,
   Project,
   Registrant,
@@ -958,7 +981,7 @@ var {
   S3_URL: s3Url = "http://minio:9000"
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core9.config)({
+  (0, import_core10.config)({
     db: {
       provider: "postgresql",
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

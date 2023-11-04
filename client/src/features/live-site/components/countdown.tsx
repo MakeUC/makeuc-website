@@ -64,7 +64,7 @@ interface TimerNumberProps {
 function TimerNumber({ time, name }: TimerNumberProps) {
   return (
     <div className="flex bg-base-800 rounded">
-      <div className="flex flex-col flex-grow content-center p-4 w-32">
+      <div className="flex flex-col flex-grow items-center content-center p-4 w-32">
         <div className="text-6xl">{time}</div>
         <div className="text-lg">{name}</div>
       </div>
