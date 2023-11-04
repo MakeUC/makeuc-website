@@ -42,7 +42,6 @@ export class Scheduler {
 
   constructor() {
     this.events = new Map();
-    this.loadFromDatabase();
   }
 
   async loadFromDatabase() {
