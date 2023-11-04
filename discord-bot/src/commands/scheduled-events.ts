@@ -16,8 +16,10 @@ export const scheduledEventsCommand = {
       return interaction.reply({ content: "You cannot run this command.", ephemeral: true });
     }
 
+    const content = scheduler.formattedEvents().join("\n").substring(0, 2000);
+
     return interaction.reply({
-      content: scheduler.formattedEvents().join("\n") || "No scheduled events.",
+      content: content || "No scheduled events.",
     });
   },
 } as Command;
