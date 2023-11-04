@@ -91,7 +91,7 @@ export class Scheduler {
 
   formattedEvents() {
     return Array.from(this.events)
-      .map(([id, scheduledEvent]) => `[id=\`${id}\`]: sending "${scheduledEvent.message.replace("@", "\\@")}" at <t:${dayjs(scheduledEvent.unixExecutionTime).unix()}:F> in <#${scheduledEvent.channelId}>`);
+      .map(([id, scheduledEvent]) => `[id=\`${id}\`]: sending "${scheduledEvent.message.replaceAll("@", "\\@")}" at <t:${dayjs(scheduledEvent.unixExecutionTime).unix()}:F> in <#${scheduledEvent.channelId}>`);
   }
 
   async scheduleEvent(event: Omit<ScheduledEvent, "timeout">): Promise<string> {
