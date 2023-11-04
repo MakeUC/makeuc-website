@@ -14,11 +14,23 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  BigInt: { input: any; output: any; }
   DateTime: { input: any; output: any; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
   /** The `Upload` scalar type represents a file upload. */
   Upload: { input: any; output: any; }
+};
+
+export type BigIntFilter = {
+  equals?: InputMaybe<Scalars['BigInt']['input']>;
+  gt?: InputMaybe<Scalars['BigInt']['input']>;
+  gte?: InputMaybe<Scalars['BigInt']['input']>;
+  in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  lt?: InputMaybe<Scalars['BigInt']['input']>;
+  lte?: InputMaybe<Scalars['BigInt']['input']>;
+  not?: InputMaybe<BigIntFilter>;
+  notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
 export type BooleanFilter = {
@@ -35,6 +47,62 @@ export type DateTimeNullableFilter = {
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   not?: InputMaybe<DateTimeNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type DiscordScheduledMessage = {
+  __typename?: 'DiscordScheduledMessage';
+  channelId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  guildId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  unixExecutionTime?: Maybe<Scalars['BigInt']['output']>;
+};
+
+export type DiscordScheduledMessageCreateInput = {
+  channelId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  guildId?: InputMaybe<Scalars['String']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  unixExecutionTime?: InputMaybe<Scalars['BigInt']['input']>;
+};
+
+export type DiscordScheduledMessageOrderByInput = {
+  channelId?: InputMaybe<OrderDirection>;
+  createdAt?: InputMaybe<OrderDirection>;
+  guildId?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+  message?: InputMaybe<OrderDirection>;
+  unixExecutionTime?: InputMaybe<OrderDirection>;
+};
+
+export type DiscordScheduledMessageUpdateArgs = {
+  data: DiscordScheduledMessageUpdateInput;
+  where: DiscordScheduledMessageWhereUniqueInput;
+};
+
+export type DiscordScheduledMessageUpdateInput = {
+  channelId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  guildId?: InputMaybe<Scalars['String']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  unixExecutionTime?: InputMaybe<Scalars['BigInt']['input']>;
+};
+
+export type DiscordScheduledMessageWhereInput = {
+  AND?: InputMaybe<Array<DiscordScheduledMessageWhereInput>>;
+  NOT?: InputMaybe<Array<DiscordScheduledMessageWhereInput>>;
+  OR?: InputMaybe<Array<DiscordScheduledMessageWhereInput>>;
+  channelId?: InputMaybe<StringFilter>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
+  guildId?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IdFilter>;
+  message?: InputMaybe<StringFilter>;
+  unixExecutionTime?: InputMaybe<BigIntFilter>;
+};
+
+export type DiscordScheduledMessageWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type FileFieldInput = {
@@ -329,6 +397,8 @@ export type KeystoneMeta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createDiscordScheduledMessage?: Maybe<DiscordScheduledMessage>;
+  createDiscordScheduledMessages?: Maybe<Array<Maybe<DiscordScheduledMessage>>>;
   createJudgement?: Maybe<Judgement>;
   createJudgements?: Maybe<Array<Maybe<Judgement>>>;
   createPassportStrategyStorage?: Maybe<PassportStrategyStorage>;
@@ -343,6 +413,8 @@ export type Mutation = {
   createTracks?: Maybe<Array<Maybe<Track>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
+  deleteDiscordScheduledMessage?: Maybe<DiscordScheduledMessage>;
+  deleteDiscordScheduledMessages?: Maybe<Array<Maybe<DiscordScheduledMessage>>>;
   deleteJudgement?: Maybe<Judgement>;
   deleteJudgements?: Maybe<Array<Maybe<Judgement>>>;
   deletePassportStrategyStorage?: Maybe<PassportStrategyStorage>;
@@ -362,6 +434,8 @@ export type Mutation = {
   massSendRegistrantEmail: Array<Maybe<Scalars['String']['output']>>;
   resendVerificationEmails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   seedSchoolIndiaData?: Maybe<Scalars['Boolean']['output']>;
+  updateDiscordScheduledMessage?: Maybe<DiscordScheduledMessage>;
+  updateDiscordScheduledMessages?: Maybe<Array<Maybe<DiscordScheduledMessage>>>;
   updateJudgement?: Maybe<Judgement>;
   updateJudgements?: Maybe<Array<Maybe<Judgement>>>;
   updatePassportStrategyStorage?: Maybe<PassportStrategyStorage>;
@@ -377,6 +451,16 @@ export type Mutation = {
   updateUser?: Maybe<User>;
   updateUsers?: Maybe<Array<Maybe<User>>>;
   verifyRegistrant?: Maybe<Registrant>;
+};
+
+
+export type MutationCreateDiscordScheduledMessageArgs = {
+  data: DiscordScheduledMessageCreateInput;
+};
+
+
+export type MutationCreateDiscordScheduledMessagesArgs = {
+  data: Array<DiscordScheduledMessageCreateInput>;
 };
 
 
@@ -447,6 +531,16 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateUsersArgs = {
   data: Array<UserCreateInput>;
+};
+
+
+export type MutationDeleteDiscordScheduledMessageArgs = {
+  where: DiscordScheduledMessageWhereUniqueInput;
+};
+
+
+export type MutationDeleteDiscordScheduledMessagesArgs = {
+  where: Array<DiscordScheduledMessageWhereUniqueInput>;
 };
 
 
@@ -531,6 +625,17 @@ export type MutationMassSendRegistrantEmailArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RegistrantWhereInput>;
+};
+
+
+export type MutationUpdateDiscordScheduledMessageArgs = {
+  data: DiscordScheduledMessageUpdateInput;
+  where: DiscordScheduledMessageWhereUniqueInput;
+};
+
+
+export type MutationUpdateDiscordScheduledMessagesArgs = {
+  data: Array<DiscordScheduledMessageUpdateArgs>;
 };
 
 
@@ -780,6 +885,9 @@ export type ProjectWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query';
+  discordScheduledMessage?: Maybe<DiscordScheduledMessage>;
+  discordScheduledMessages?: Maybe<Array<DiscordScheduledMessage>>;
+  discordScheduledMessagesCount?: Maybe<Scalars['Int']['output']>;
   judgement?: Maybe<Judgement>;
   judgements?: Maybe<Array<Judgement>>;
   judgementsCount?: Maybe<Scalars['Int']['output']>;
@@ -803,6 +911,25 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type QueryDiscordScheduledMessageArgs = {
+  where: DiscordScheduledMessageWhereUniqueInput;
+};
+
+
+export type QueryDiscordScheduledMessagesArgs = {
+  cursor?: InputMaybe<DiscordScheduledMessageWhereUniqueInput>;
+  orderBy?: Array<DiscordScheduledMessageOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: DiscordScheduledMessageWhereInput;
+};
+
+
+export type QueryDiscordScheduledMessagesCountArgs = {
+  where?: DiscordScheduledMessageWhereInput;
 };
 
 

@@ -13,6 +13,18 @@ generator client {
   previewFeatures = ["postgresqlExtensions"]
 }
 
+model DiscordScheduledMessage {
+  id                String    @id @default(cuid())
+  message           String    @default("")
+  guildId           String    @default("")
+  channelId         String    @default("")
+  unixExecutionTime BigInt
+  createdAt         DateTime? @default(now())
+
+  @@index([guildId])
+  @@index([channelId])
+}
+
 model Judgement {
   id                          String   @id @default(cuid())
   conceptCaliber              Int

@@ -4,6 +4,7 @@
 // This file is where we define the lists, fields and hooks for our data.
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
+import { DiscordScheduledMessage } from "./discordScheduledMessage";
 import { Judgement } from "./judgement";
 import { Project } from "./project";
 import { Registrant } from "./registrant";
@@ -15,6 +16,7 @@ import type { Lists } from ".keystone/types";
 
 
 export const lists = {
+  DiscordScheduledMessage,
   Judgement,
   Project,
   Registrant,

@@ -1,3 +1,6 @@
+import { scheduleCommand } from "./schedule";
+import { scheduledEventsCommand } from "./scheduled-events";
+import { unscheduleCommand } from "./unschedule";
 import { verifyCommand } from "./verify";
 import { whoamiCommand } from "./whoami";
 
@@ -12,6 +15,9 @@ export interface Command {
 }
 
 export const commands = [
-  whoamiCommand,
+  scheduleCommand,
+  scheduledEventsCommand,
+  unscheduleCommand,
   verifyCommand,
+  whoamiCommand,
 ];

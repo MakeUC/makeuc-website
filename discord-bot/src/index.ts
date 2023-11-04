@@ -1,17 +1,27 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+/* eslint-disable no-console */
+import { Client, Events, GatewayIntentBits, OAuth2Scopes, PermissionFlagsBits } from "discord.js";
 
 import { commands } from "./commands";
 import { DISCORD_CONFIG as config } from "./config";
 import { deployCommands } from "./deploy-commands";
+import { Scheduler } from "./utils/scheduler";
 
 
 export const client = new Client({
   intents: [GatewayIntentBits.Guilds],
 });
 
-client.once(Events.ClientReady, c => {
-  // eslint-disable-next-line no-console
+export const scheduler = new Scheduler();
+
+client.once(Events.ClientReady, async c => {
+  await scheduler.loadFromDatabase();
+
+  const inviteLink = client.generateInvite({
+    scopes: [OAuth2Scopes.Bot],
+    permissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.UseApplicationCommands],
+  });
   console.log(`Ready! Logged in as ${c.user.tag}`);
+  console.log(`Invite the bot to join with the following link: ${inviteLink}`);
 });
 
 client.on(Events.GuildCreate, async guild => deployCommands({ guildId: guild.id }));

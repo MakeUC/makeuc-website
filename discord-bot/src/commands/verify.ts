@@ -1,13 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import { SlashCommandBuilder } from "discord.js";
 
 import { CHECK_IN, DISCORD_CONFIG as config } from "../config";
+import { prisma } from "../utils/prisma";
 
 import type { Command } from "./index";
 import type { ChatInputCommandInteraction } from "discord.js";
 
-
-const prisma = new PrismaClient();
 
 export const verifyCommand = {
   data: new SlashCommandBuilder()
