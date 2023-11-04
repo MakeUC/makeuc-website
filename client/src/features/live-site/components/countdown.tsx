@@ -107,11 +107,16 @@ export function Timer() {
           </span>
           !
         </PageTitle>
-        <div className="flex flex-grow justify-evenly w-full">
+        <div className="md:flex hidden  flex-grow justify-evenly">
           <TimerNumber time={timeLeft.days} name="DAYS" />
           <TimerNumber time={timeLeft.hours} name="HOURS" />
           <TimerNumber time={timeLeft.minutes} name="MINUTES" />
           <TimerNumber time={timeLeft.seconds} name="SECONDS" />
+        </div>
+        <div className="flex md:hidden  flex-grow justify-evenly">
+          
+          <TimerNumber time={timeLeft.hours} name="HOURS" />
+          <TimerNumber time={timeLeft.minutes} name="MINUTES" />
         </div>
       </div>
     </>

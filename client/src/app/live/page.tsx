@@ -12,19 +12,19 @@ export const metadata = {
 
 export default async function LiveSite() {
   return (
-    <main>
+    <main className="sm:p-0 px-1 text-center">
       <section className="relative flex justify-center min-h-[calc(100vh-70px)]">
-        <div className="flex items-center">
-          <div className="flex-grow">
+        <div className="flex items-center flex-col md:flex-row">
+          <div className="">
             <Timer />
           </div>
-          <div>
+          <div className="">
             <Image src={Logo} alt="MakeUC Butterfly Logo" width={400} />
           </div>
         </div>
       </section>
       <h1 className="flex items-center justify-evenly py-8 bg-muted font-bold text-3xl">Helpful Links</h1>
-      <section className="flex items-center justify-evenly py-8 bg-muted">
+      <section className="flex items-center md:flex-row flex-col justify-evenly py-8 bg-muted">
         <Link href="https://discord.gg/g2T8QAhaME" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
         </Link>
@@ -45,20 +45,20 @@ export default async function LiveSite() {
         </Link>
       </section>
       <h1 className="flex items-center justify-evenly py-8 font-bold text-3xl">Hacker Schedule</h1>
-      <section className="flex items-center justify-evenly py-8">
-        <div className="flex-grow">
+      <section className="py-8">
+        <div className="flex-grow overflow-auto">
           <HackerScheduleTable />
         </ div>
       </section>
       <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">Workshop Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
-        <div className="flex-grow">
+        <div className="flex-grow overflow-auto">
           <WorkshopScheduleTable />
         </ div>
       </section>
-      <h1 className="flex items-center justify-evenly py-8 font-bold text-3xl">UC Shuttle Schedule</h1>
-      <section className="flex items-center justify-evenly py-8">
-        <div className="flex-grow">
+      <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">UC Shuttle Schedule</h1>
+      <section className="flex items-center justify-evenly py-8 bg-muted">
+        <div className="flex-grow overflow-x-auto">
           <TransportScheduleTable />
         </ div>
       </section>
