@@ -55,6 +55,10 @@ export class Scheduler {
   }
 
   private setupEvent(eventId: string, event: Omit<ScheduledEvent, "timeout">) {
+    if (this.events.has(eventId)) {
+      return console.error(`Attempted to register with ID ${eventId} even though it has already been registered.`);
+    }
+
     const executeEvent = async (bypass = false) => {
       if (!this.events.has(eventId) && !bypass) { return; }
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
