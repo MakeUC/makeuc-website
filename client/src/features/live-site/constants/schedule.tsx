@@ -86,7 +86,8 @@ export interface ScheduleGridProps {
 
 export function HackerScheduleTable() {
   return (
-    <Table className="flex items-center justify-evenly">
+    <Table className="flex flex-col sm:items-center sm:justify-evenly">
+      
       <TableBody>
         <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary rounded">
           <TableCell className="text-center font-semibold border-1 border-white">Event</TableCell>
@@ -103,7 +104,7 @@ export function HackerScheduleTable() {
 
 export function WorkshopScheduleTable() {
   return (
-    <Table className="flex items-center justify-evenly">
+    <Table className="flex flex-col sm:items-center sm:justify-evenly">
       <TableBody>
         <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Event</TableCell>
@@ -120,7 +121,7 @@ export function WorkshopScheduleTable() {
 
 export function TransportScheduleTable() {
   return (
-    <Table className="flex items-center justify-evenly">
+    <Table className="flex flex-col sm:items-center sm:justify-evenly">
       <TableBody>
         <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Purpose</TableCell>
