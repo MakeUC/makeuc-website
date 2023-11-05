@@ -69,7 +69,7 @@ export function ProjectsTable() {
       {
         projectForDisqualification && (
           <div className="flex flex-col items-center justify-center fixed top-0 left-0 bg-[#00000080] w-screen h-screen z-50">
-            <div className="flex flex-col gap-4 bg-background w-[400px] p-4 rounded-md">
+            <div className="flex flex-col gap-4 bg-background w-[400px] p-4 rounded-md max-h-screen overflow-y-auto">
               <h1 className="text-lg font-medium">Disqualify Project</h1>
               <hr className="border border-muted-foreground" />
               <DisqualifyForm
@@ -83,7 +83,7 @@ export function ProjectsTable() {
       {
         projectForJudgement && (
           <div className="flex flex-col items-center justify-center fixed top-0 left-0 bg-[#00000080] w-screen h-screen z-50">
-            <div className="flex flex-col gap-4 bg-background w-[400px] p-4 rounded-md">
+            <div className="flex flex-col gap-4 bg-background w-[400px] p-4 rounded-md max-h-screen overflow-y-auto">
               <h1 className="text-lg font-medium">Make Judgment</h1>
               <hr className="border border-muted-foreground" />
               <JudgementForm

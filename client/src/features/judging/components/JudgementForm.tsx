@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/inputs/checkbox";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 
 import { GetProjectsDocument, SubmitJudgementDocument } from "../generated/graphql/graphql";
@@ -20,6 +21,10 @@ const judgementFormSchema = z.object({
   implementationAttempt: z.number().min(0).max(10),
   demonstrationAbility: z.number().min(0).max(10),
   presentationProfessionalism: z.number().min(0).max(10),
+  greenTechTrack: z.boolean().optional(),
+  educationTrack: z.boolean().optional(),
+  socialIssuesTrack: z.boolean().optional(),
+  securityTrack: z.boolean().optional(),
 });
 
 export type JudgementFormValues = z.infer<typeof judgementFormSchema>;
@@ -39,11 +44,21 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
   });
 
   const onSubmit = useCallback<SubmitHandler<JudgementFormValues>>(formValues => {
+    const { greenTechTrack, securityTrack, socialIssuesTrack, educationTrack, ...values } = formValues;
     const promise = submitJudgement({
       variables: {
         data: {
-          ...formValues,
-          overallScore: Object.values(formValues).reduce((prev, current) => prev + current, 0),
+          ...values,
+          overallScore: Object.values(values).reduce((prev, current) => prev + current, 0),
+          applicableTracks: {
+            connect: [
+              // TODO: Don't hard code
+              ...(greenTechTrack ? [{ name: "Green Tech" }] : []),
+              ...(educationTrack ? [{ name: "Education" }] : []),
+              ...(socialIssuesTrack ? [{ name: "Social Issues" }] : []),
+              ...(securityTrack ? [{ name: "Security" }] : []),
+            ],
+          },
           project: {
             connect: {
               id: projectId,
@@ -75,6 +90,12 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       <InputNumber control={control} label="Implementation Attempt" name="implementationAttempt" placeholder="Enter Implementation Attempt" />
       <InputNumber control={control} label="Demonstration Ability" name="demonstrationAbility" placeholder="Enter Demonstration Ability" />
       <InputNumber control={control} label="Presentation Professionalism" name="presentationProfessionalism" placeholder="Enter Presentation Professionalism" />
+      <hr className="border border-muted-foreground" />
+      <h4 className="text-lg font-bold">Select All Applicable Tracks (optional)</h4>
+      <Checkbox control={control} label="Applicable to Green Tech Track?" name="greenTechTrack" />
+      <Checkbox control={control} label="Applicable to Education Track?" name="educationTrack" />
+      <Checkbox control={control} label="Applicable to Social Issues Track?" name="socialIssuesTrack" />
+      <Checkbox control={control} label="Applicable to Security Track?" name="securityTrack" />
       <div className="flex justify-center gap-2 md:justify-end md:col-span-2">
         <Button className="bg-muted-gray-foreground" onClick={onCancel}>Cancel</Button>
         <Button type="submit">Submit Judgment</Button>

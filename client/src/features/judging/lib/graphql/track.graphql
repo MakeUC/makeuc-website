@@ -1,0 +1,5 @@
+query GetTracks($where: TrackWhereInput, $skip: Int! = 0, $take: Int = 20, $orderBy: [TrackOrderByInput!]! = [], $cursor: TrackWhereUniqueInput) {
+  tracks(where: $where, skip: $skip, take: $take, orderBy: $orderBy, cursor: $cursor) {
+    name
+  }
+}
