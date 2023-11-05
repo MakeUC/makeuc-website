@@ -1,4 +1,4 @@
-query GetProjects($where: ProjectWhereInput! = {}, $skip: Int! = 0, $take: Int = 20, $orderBy: [ProjectOrderByInput!]! = [], $cursor: ProjectWhereUniqueInput) {
+query GetProjects($where: ProjectWhereInput! = {}, $skip: Int! = 0, $take: Int = 100, $orderBy: [ProjectOrderByInput!]! = [], $cursor: ProjectWhereUniqueInput) {
   projects(
     where: $where,
     skip: $skip,
