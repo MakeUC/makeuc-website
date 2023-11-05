@@ -867,6 +867,24 @@ var Project = (0, import_core6.list)({
       many: true,
       graphql: { omit: { create: true, update: true } }
     }),
+    applicableTracks: (0, import_fields6.virtual)({
+      field: import_core6.graphql.field({
+        type: import_core6.graphql.list(import_core6.graphql.String),
+        async resolve(item, _, context) {
+          if (!item.id) {
+            return [];
+          }
+          return (await context.prisma.judgement.findMany({
+            where: {
+              projectId: { equals: item.id.toString() }
+            },
+            select: {
+              applicableTracks: true
+            }
+          })).flatMap((judgement) => judgement.applicableTracks.map((track) => track.name));
+        }
+      })
+    }),
     countJudgements: (0, import_fields6.virtual)({
       field: import_core6.graphql.field({
         type: import_core6.graphql.Int,

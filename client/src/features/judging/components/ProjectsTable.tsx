@@ -28,6 +28,14 @@ export function ProjectsTable() {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Project Name" className="min-w-[300px]" />,
     },
     {
+      accessorKey: "applicableTracks",
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Tracks" />,
+      filterFn: (row, id, value) => {
+        if (!row.getValue(id) && value?.length > 0) return false;
+        return value.some((trackNameFilter: string) => (row.getValue(id) as string).includes(trackNameFilter));
+      },
+    },
+    {
       accessorKey: "judgingGroup",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Group" />,
       filterFn: (row, id, value) => value.includes(row.getValue(id)),

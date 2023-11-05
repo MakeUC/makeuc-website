@@ -23,6 +23,16 @@ const JUDGING_GROUP_OPTIONS: DataTableFacetedFilterOption[] = Array.from({ lengt
 // @ts-ignore
 const DISQUALIFIED_OPTIONS: DataTableFacetedFilterOption[] = [{ label: "Not Disqualified", value: false }, { label: "Disqualified", value: true }];
 
+// TODO: Deal with this
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const TRACK_OPTIONS: DataTableFacetedFilterOption[] = [
+  { label: "Green Tech", value: "Green Tech" },
+  { label: "Education", value: "Education" },
+  { label: "Social Issues", value: "Social Issues" },
+  { label: "Security", value: "Security" },
+];
+
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -54,6 +64,13 @@ export function DataTableToolbar<TData>({
             many
           />
         )}
+        {table.getColumn("applicableTracks") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("applicableTracks")}
+            title="Applicable Tracks"
+            options={TRACK_OPTIONS}
+          />
+        )}
         {table.getColumn("disqualified") && (
           <DataTableFacetedFilter
             column={table.getColumn("disqualified")}
@@ -61,13 +78,6 @@ export function DataTableToolbar<TData>({
             options={DISQUALIFIED_OPTIONS}
           />
         )}
-        {/* {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
-        )} */}
         {isFiltered && (
           <Button
             variant="ghost"

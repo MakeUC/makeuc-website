@@ -802,6 +802,7 @@ export type PassportStrategyStorageWhereUniqueInput = {
 
 export type Project = {
   __typename?: 'Project';
+  applicableTracks?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   countJudgements?: Maybe<Scalars['Int']['output']>;
   disqualified?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['ID']['output'];

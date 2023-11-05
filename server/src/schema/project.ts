@@ -32,6 +32,23 @@ export const Project = list({
       many: true,
       graphql: { omit: { create: true, update: true } },
     }),
+    applicableTracks: virtual({
+      field: graphql.field({
+        type: graphql.list(graphql.String),
+        async resolve(item, _, context) {
+          if (!item.id) { return []; }
+
+          return (await (context as Context).prisma.judgement.findMany({
+            where: {
+              projectId: { equals: item.id.toString() },
+            },
+            select: {
+              applicableTracks: true,
+            },
+          })).flatMap(judgement => judgement.applicableTracks.map(track => track.name));
+        },
+      }),
+    }),
     countJudgements: virtual({
       field: graphql.field({
         type: graphql.Int,

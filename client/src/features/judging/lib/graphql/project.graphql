@@ -14,6 +14,7 @@ query GetProjects($where: ProjectWhereInput! = {}, $skip: Int! = 0, $take: Int =
     year
     score
     disqualified
+    applicableTracks
   }
   projectsCount(where: $where)
 }
