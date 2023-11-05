@@ -300,6 +300,7 @@ var session = (0, import_session.statelessSessions)({
 var import_express2 = require("express");
 
 // src/express/api/utilities.ts
+var import_sync = require("csv-parse/sync");
 var import_express = require("express");
 var import_express_fileupload = __toESM(require("express-fileupload"));
 var import_zod4 = require("zod");
@@ -402,6 +403,37 @@ utilitiesRouter.post("/import-registrants", (0, import_express_fileupload.defaul
     return res.status(500).send(JSON.stringify(err));
   }
   res.sendStatus(200);
+});
+var projectCSVSchema = import_zod4.z.array(import_zod4.z.object({
+  name: import_zod4.z.string(),
+  devpost: import_zod4.z.string(),
+  group: import_zod4.z.string()
+}));
+utilitiesRouter.post("/import-projects", (0, import_express_fileupload.default)(), async (req, res) => {
+  if (!req.context.session)
+    return res.sendStatus(403);
+  const file_ = req.files?.file;
+  const file2 = Array.isArray(file_) ? file_[0] : file_;
+  if (!file2)
+    return res.status(400).send("File not attached");
+  let fileObj;
+  try {
+    fileObj = (0, import_sync.parse)(file2.data, { columns: true, skip_empty_lines: true });
+  } catch {
+    return res.status(400).send("Failed to parse the data.");
+  }
+  const result = projectCSVSchema.safeParse(fileObj);
+  if (!result.success) {
+    return res.status(400).send(result.error);
+  }
+  return req.context.prisma.project.createMany({
+    data: result.data.map((data) => ({
+      name: data.name,
+      url: data.devpost,
+      judgingGroup: parseInt(data.group),
+      year: (/* @__PURE__ */ new Date()).getFullYear()
+    }))
+  }).catch((err) => res.status(400).send(err));
 });
 
 // src/express/api/index.ts

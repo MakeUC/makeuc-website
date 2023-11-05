@@ -45,6 +45,17 @@ const importRegistrants: FormEventHandler<HTMLFormElement> = event => {
   });
 };
 
+const importProjects: FormEventHandler<HTMLFormElement> = event => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target as HTMLFormElement);
+
+  return fetch("/api/utilities/import-projects", {
+    method: "POST",
+    body: formData,
+  });
+};
+
 async function sendVerificationEmails() {
   await fetchGraphQL(gql`
     mutation {
@@ -69,6 +80,12 @@ export default function UtilitiesPage() {
       <form onSubmit={importRegistrants}>
         <input type="file" name="file" />
         <Button type="submit" tone="positive">Import Registrants</Button>
+      </form>
+      <H3>Import Projects</H3>
+      <br />
+      <form onSubmit={importProjects}>
+        <input type="file" name="file" />
+        <Button type="submit" tone="positive">Import Projects</Button>
       </form>
       <br />
       <H3>Send Verification Emails to Unverified Registrants for {new Date().getFullYear()}</H3>

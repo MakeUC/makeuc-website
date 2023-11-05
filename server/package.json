@@ -26,6 +26,7 @@
     "@keystone-6/core": "^5.5.1",
     "@keystone-6/fields-document": "^7.0.0",
     "@sendgrid/mail": "^7.7.0",
+    "csv-parse": "^5.5.2",
     "express-fileupload": "^1.4.0",
     "lodash": "^4.17.21",
     "npm-run-all": "^4.1.5",

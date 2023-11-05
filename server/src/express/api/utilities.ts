@@ -1,3 +1,4 @@
+import { parse } from "csv-parse/sync";
 import { Router } from "express";
 import fileUploadMiddleware from "express-fileupload";
 import { z } from "zod";
@@ -114,6 +115,43 @@ utilitiesRouter.post("/import-registrants", fileUploadMiddleware(), async (req, 
   }
 
   res.sendStatus(200);
+});
+
+const projectCSVSchema = z.array(z.object({
+  name: z.string(),
+  devpost: z.string(),
+  group: z.string(),
+}));
+
+utilitiesRouter.post("/import-projects", fileUploadMiddleware(), async (req, res) => {
+  if (!req.context.session) return res.sendStatus(403);
+
+  const file_ = req.files?.file;
+  const file = Array.isArray(file_) ? file_[0] : file_;
+
+  if (!file) return res.status(400).send("File not attached");
+
+  let fileObj;
+
+  try {
+    fileObj = parse(file.data, { columns: true, skip_empty_lines: true });
+  } catch {
+    return res.status(400).send("Failed to parse the data.");
+  }
+
+  const result = projectCSVSchema.safeParse(fileObj);
+
+  if (!result.success) { return res.status(400).send(result.error); }
+
+  return req.context.prisma.project.createMany({
+    data: result.data.map(data => ({
+      name: data.name,
+      url: data.devpost,
+      judgingGroup: parseInt(data.group),
+      year: new Date().getFullYear(),
+    })),
+  })
+    .catch(err => res.status(400).send(err));
 });
 
 export { utilitiesRouter };
