@@ -40,11 +40,11 @@ export const scheduleData: EventInfo[] = [
   createData("Midnight Snack", "Second Floor Common Area", "-", "Nov 5 - 12:00 AM", "Nov 5 - 12:30 AM"),
   createData("Board Games/Jackbox Games", "Second Floor Common Area", "Discord #game-room-1-vc VC", "Nov 5 - 01:00 AM", "Nov 5 - 02:00 AM"),
   createData("Sim Racing", "Second Floor Common Area", "-", "Nov 5 - 04:00 AM", "Nov 5 - 05:00 AM"),
-  createData("Stretching", "Second Floor Common Area", "-", "Nov 5 - 05:00 AM", "Nov 5 - 05:30 AM"),
+  createData("Stretching", "Second Floor Common Area", "-", "Nov 5 - 06:00 AM", "Nov 5 - 06:30 AM"),
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 5 - 09:00 AM", "Nov 5 - 10:00 AM"),
   createData("Hacking Ends", "-", "-", "Nov 4 - 11:30 AM", "Nov 5 - 11:30 AM"),  
   createData("Lunch", "Second Floor Common Area", "-", "Nov 5 - 12:00 PM", "Nov 5 - 1:00 PM"),
-  createData("Live Judging", "Assigned Discord VC", "Assigned Discord VC", "Nov 5 - 12:00 PM", "Nov 5 - 03:00 PM"),
+  createData("Judging", "Discord", "Assigned Discord VC", "Nov 5 - 12:00 PM", "Nov 5 - 03:00 PM"),
   createData("Closing Ceremony", "Room 230", "YouTube Stream", "Nov 5 - 05:00 PM", "Nov 5 - 06:00 PM"),
 ];
 
