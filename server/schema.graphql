@@ -284,7 +284,7 @@ type Project {
   judgements(where: JudgementWhereInput! = {}, orderBy: [JudgementOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JudgementWhereUniqueInput): [Judgement!]
   judgementsCount(where: JudgementWhereInput! = {}): Int
   countJudgements: Int
-  score: Float
+  score: String
   disqualified: Boolean
 }
 

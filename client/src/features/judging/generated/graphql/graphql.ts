@@ -809,7 +809,7 @@ export type Project = {
   judgementsCount?: Maybe<Scalars['Int']['output']>;
   judgingGroup?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
   year?: Maybe<Scalars['Int']['output']>;
 };
@@ -1529,7 +1529,7 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projectsCount?: number | null, projects?: Array<{ __typename?: 'Project', id: string, url?: string | null, name?: string | null, countJudgements?: number | null, judgingGroup?: number | null, year?: number | null, score?: number | null, disqualified?: boolean | null }> | null };
+export type GetProjectsQuery = { __typename?: 'Query', projectsCount?: number | null, projects?: Array<{ __typename?: 'Project', id: string, url?: string | null, name?: string | null, countJudgements?: number | null, judgingGroup?: number | null, year?: number | null, score?: string | null, disqualified?: boolean | null }> | null };
 
 export type GetTracksQueryVariables = Exact<{
   where?: InputMaybe<TrackWhereInput>;

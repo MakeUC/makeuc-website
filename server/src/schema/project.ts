@@ -44,12 +44,12 @@ export const Project = list({
     }),
     score: virtual({
       field: graphql.field({
-        type: graphql.Float,
+        type: graphql.String,
         async resolve(item, _, context) {
-          return (await (context as Context).prisma.judgement.aggregate({
+          return ((await (context as Context).prisma.judgement.aggregate({
             _avg: { overallScore: true },
             where: { projectId: item.id.toString() },
-          }))._avg.overallScore ?? 0;
+          }))._avg.overallScore || 0).toFixed(2);
         },
       }),
     }),

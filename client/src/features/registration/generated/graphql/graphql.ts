@@ -809,7 +809,7 @@ export type Project = {
   judgementsCount?: Maybe<Scalars['Int']['output']>;
   judgingGroup?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  score?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
   year?: Maybe<Scalars['Int']['output']>;
 };

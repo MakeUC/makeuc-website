@@ -16,7 +16,7 @@ import type { Table } from "@tanstack/react-table";
 // TODO: Deal with this
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const JUDGING_GROUP_OPTIONS: DataTableFacetedFilterOption[] = Array.from({ length: 10 }, (_, i) => ({ label: `Group ${i + 1}`, value: i + 1 }));
+const JUDGING_GROUP_OPTIONS: DataTableFacetedFilterOption[] = Array.from({ length: 12 }, (_, i) => ({ label: `Group ${i + 1}`, value: i + 1 }));
 
 // TODO: Deal with this
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

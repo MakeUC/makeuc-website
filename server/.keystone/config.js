@@ -847,12 +847,12 @@ var Project = (0, import_core6.list)({
     }),
     score: (0, import_fields6.virtual)({
       field: import_core6.graphql.field({
-        type: import_core6.graphql.Float,
+        type: import_core6.graphql.String,
         async resolve(item, _, context) {
-          return (await context.prisma.judgement.aggregate({
+          return ((await context.prisma.judgement.aggregate({
             _avg: { overallScore: true },
             where: { projectId: item.id.toString() }
-          }))._avg.overallScore ?? 0;
+          }))._avg.overallScore || 0).toFixed(2);
         }
       })
     }),
