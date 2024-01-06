@@ -632,9 +632,6 @@ var extendGraphqlSchema = import_core3.graphql.extend((base) => ({
       //Undefined --> Change in the future
       args: { year: import_core3.graphql.arg({ type: import_core3.graphql.nonNull(import_core3.graphql.Int) }) },
       async resolve(source, { year }, context) {
-        if (!context.session) {
-          return null;
-        }
         const registrants = await context.prisma.registrant.findMany({
           where: { registrationYear: { equals: year } }
         });
