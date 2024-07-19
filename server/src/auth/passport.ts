@@ -87,6 +87,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
           app.get(`/auth/strategy/${strat.strategy.name}/login`, (req, res, next) => {
             const loginOptions = { ...strat.loginOptions } ?? {};
 
+            // Inject state into the loginOptions
             if (typeof req.query.state === "string") { loginOptions["state"] = Buffer.from(req.query.state).toString("base64url"); }
 
             passport.authenticate(strat.strategy, loginOptions)(req, res, next);
@@ -136,6 +137,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
 
               if (typeof req.query.state === "string") {
                 try {
+                  // Redirect to the main page if the state is "isAdminLogin" so we doing redirect to the public site
                   const state = Buffer.from(req.query.state, "base64url").toString("utf-8");
                   if (state === "isAdminLogin") { return res.redirect("/"); }
                 } catch (err) {
