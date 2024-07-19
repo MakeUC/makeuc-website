@@ -13,6 +13,7 @@
     "compile:client": "cd client && yarn compile",
     "dev": "run-p dev:*",
     "dev:client": "cd client && yarn dev",
+    "dev-turbo:client": "cd client && yarn dev-turbo",
     "dev:server": "cd server && yarn dev",
     "dev:bot": "cd discord-bot && yarn dev",
     "generate": "run-p generate:*",
