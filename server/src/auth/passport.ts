@@ -84,7 +84,14 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
           // eslint-disable-next-line no-console
           if (strat.disabled) return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
 
-          app.get(`/auth/strategy/${strat.strategy.name}/login`, passport.authenticate(strat.strategy, strat.loginOptions ?? {}));
+          app.get(`/auth/strategy/${strat.strategy.name}/login`, (req, res, next) => {
+            const loginOptions = { ...strat.loginOptions } ?? {};
+
+            // Inject state into the loginOptions
+            if (typeof req.query.state === "string") { loginOptions["state"] = Buffer.from(req.query.state).toString("base64url"); }
+
+            passport.authenticate(strat.strategy, loginOptions)(req, res, next);
+          });
           app.get(`/auth/strategy/${strat.strategy.name}/redirect`,
             passport.authenticate(strat.strategy, { session: false }),
             async (req, res) => {
@@ -127,6 +134,16 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
                 // TODO: Don't hardcode user
                 data: { ...user, strategy: strat.strategy.name, item: item.user },
               });
+
+              if (typeof req.query.state === "string") {
+                try {
+                  // Redirect to the main page if the state is "isAdminLogin" so we doing redirect to the public site
+                  const state = Buffer.from(req.query.state, "base64url").toString("utf-8");
+                  if (state === "isAdminLogin") { return res.redirect("/"); }
+                } catch (err) {
+                  console.error("Error occurred when parsing req.query.state for passport redirect.");
+                }
+              }
 
               res.redirect(loginSuccessRedirectUrl);
             }

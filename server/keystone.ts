@@ -1,9 +1,12 @@
 import { config } from "@keystone-6/core";
 
+
 import { withAuth, session } from "./src/auth";
 import { extendExpressApp } from "./src/express";
 import { extendGraphqlSchema } from "./src/graphql";
 import { lists } from "./src/schema";
+
+import type { Request as ExpressRequest } from "express";
 
 
 const {
@@ -48,11 +51,24 @@ export default withAuth(
       },
     },
     ui: {
+      publicPages: ["/signin"],
       isAccessAllowed: context => {
         const session = context.session;
         if (!session || !session.item) return false;
 
         return session.item.roles.some((role: string) => role === "admin");
+      },
+      async pageMiddleware({ context, basePath }) {
+        if (basePath.startsWith("/api") || basePath.startsWith("/auth")) { return; }
+  
+        const req = context.req as ExpressRequest | undefined;
+
+        if (!req || req.path.startsWith("/signin")) { return; }
+
+        if (!context.session) {
+          // If no session, redirect to login
+          return { kind: "redirect", to: "/signin" };
+        }
       },
     },
     server: {
