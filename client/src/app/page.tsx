@@ -1,3 +1,4 @@
+import { PlugZap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +8,7 @@ import { About } from "~/components/general/about";
 import { Faq } from "~/components/general/faq";
 import { Button } from "~/components/ui/button";
 import { ViewportSection } from "~/components/ui/viewport-section";
-import { SponsorGridPlaceholder } from "~/features/sponsors";
+// import { SponsorGridPlaceholder } from "~/features/sponsors";
 import { TrackGrid } from "~/features/tracks";
 
 
@@ -20,7 +21,7 @@ export default async function HomePage() {
           <div className="flex flex-col p-8 pt-48 md:flex-row justify-between items-center w-full max-w-7xl md:pt-8 gap-16">
             <div>
               <Image src={MakeUCText} alt="MakeUC" />
-              <div className="text-muted-foreground text-xl mt-4">November 4 - 5, 2023</div>
+              <div className="text-muted-foreground text-xl mt-4">November 9 - 10, 2024</div>
 
               <Link href="/registration" className="" tabIndex={-1}>
                 <Button className="flex gap-2 mt-4" size="lg">Register Now</Button>
@@ -67,11 +68,11 @@ export default async function HomePage() {
           <h2 className="text-3xl font-bold tracking-wider text-center mb-8">Sponsors</h2>
           <h3 className="text-center">Are you interested in sponsoring MakeUC? Please email us at <Link href="mailto:contact@makeuc.io" className="text-primary">contact@makeuc.io</Link>!</h3>
           <br />
-          <SponsorGridPlaceholder />
-          {/* <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4">
+          {/* <SponsorGridPlaceholder /> */}
+          <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4">
             <span className="text-xl font-semibold text-center">There are no sponsors currently. Please check back in the future!</span>
             <PlugZap size={48} strokeWidth={1} />
-          </div> */}
+          </div>
         </div>
       </ViewportSection>
     </main>
