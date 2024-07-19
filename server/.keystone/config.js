@@ -148,7 +148,13 @@ function createPassportAuth({
             throw new Error("Strategy is missing a name.");
           if (strat.disabled)
             return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
-          app.get(`/auth/strategy/${strat.strategy.name}/login`, import_passport.default.authenticate(strat.strategy, strat.loginOptions ?? {}));
+          app.get(`/auth/strategy/${strat.strategy.name}/login`, (req, res, next) => {
+            const loginOptions = { ...strat.loginOptions };
+            if (typeof req.query.state === "string") {
+              loginOptions["state"] = Buffer.from(req.query.state).toString("base64url");
+            }
+            import_passport.default.authenticate(strat.strategy, loginOptions)(req, res, next);
+          });
           app.get(
             `/auth/strategy/${strat.strategy.name}/redirect`,
             import_passport.default.authenticate(strat.strategy, { session: false }),
@@ -190,6 +196,16 @@ function createPassportAuth({
                 // TODO: Don't hardcode user
                 data: { ...user, strategy: strat.strategy.name, item: item.user }
               });
+              if (typeof req.query.state === "string") {
+                try {
+                  const state = Buffer.from(req.query.state, "base64url").toString("utf-8");
+                  if (state === "isAdminLogin") {
+                    return res.redirect("/");
+                  }
+                } catch (err) {
+                  console.error("Error occurred when parsing req.query.state for passport redirect.");
+                }
+              }
               res.redirect(loginSuccessRedirectUrl);
             }
           );
@@ -1058,11 +1074,24 @@ var keystone_default = withAuth(
       }
     },
     ui: {
+      publicPages: ["/signin"],
       isAccessAllowed: (context) => {
         const session2 = context.session;
         if (!session2 || !session2.item)
           return false;
         return session2.item.roles.some((role) => role === "admin");
+      },
+      async pageMiddleware({ context, basePath }) {
+        if (basePath.startsWith("/api")) {
+          return;
+        }
+        const req = context.req;
+        if (!req || req.path.startsWith("/signin")) {
+          return;
+        }
+        if (!context.session) {
+          return { kind: "redirect", to: "/signin" };
+        }
       }
     },
     server: {
