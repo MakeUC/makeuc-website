@@ -44,3 +44,28 @@ You should open a new Codespace from the `main` branch. On creation, GitHub will
 
 #### Mac Known Bugs
 
+## Development
+
+### Frontend
+
+To develop in the frontend, you can run
+
+```bash
+yarn dev:client
+```
+
+Though this has some performance isuee, in that it takes a long time to compile and the changes are not reflected immediately. To try a slightly faster (but more experimental) method, try
+
+```bash
+yarn run dev-turbo:client
+```
+
+Note that this method will supposedly compile locally faster, but will have documented problems with styling. I've observed some quirks, just as the banner disappearing.
+
+### Backend
+
+TBA
+
+### Discord Bot
+
+The bot is currently non-functional due to breaking changes from `discord-js`. Petition to change the bot to `discord.py`.
