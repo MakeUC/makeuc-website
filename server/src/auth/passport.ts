@@ -85,7 +85,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
           if (strat.disabled) return console.warn(`Login strategy '${strat.strategy.name}' has been disabled.`);
 
           app.get(`/auth/strategy/${strat.strategy.name}/login`, (req, res, next) => {
-            const loginOptions = { ...strat.loginOptions } ?? {};
+            const loginOptions = { ...strat.loginOptions };
 
             // Inject state into the loginOptions
             if (typeof req.query.state === "string") { loginOptions["state"] = Buffer.from(req.query.state).toString("base64url"); }
