@@ -59,7 +59,7 @@ export default withAuth(
         return session.item.roles.some((role: string) => role === "admin");
       },
       async pageMiddleware({ context, basePath }) {
-        if (basePath.startsWith("/api")) { return; }
+        if (basePath.startsWith("/api") || basePath.startsWith("/auth")) { return; }
   
         const req = context.req as ExpressRequest | undefined;
 
