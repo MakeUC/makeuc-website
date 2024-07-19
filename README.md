@@ -18,6 +18,9 @@ This is the repository for the [MakeUC Website](https://makeuc.io)!
 
 Note that yarn and a container engine are required for this project.
 
+**If you are using Windows as your main environment, WSL is *strongly* recommended as using the devcontainer is very inconsistent on just Windows.**
+**This means to use the `code .` command in WSL. You can read more [here](https://code.visualstudio.com/docs/remote/wsl).**
+
 For a container engine, one of the following is recommended:
 - [Rancher Desktop](https://rancherdesktop.io/) (Recommended)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Validated)
@@ -77,41 +80,3 @@ TODO
 6. Use the linting tools and their rules to ensure uniformity. Below is a list of configured linting tools.
     - ESLint
     - Stylelint
-
-## Steps to build the app for Mac and Linux
-### Update the following if asked with this command:
-* yarn upgrade caniuse-lite browserslist
-<br />
-To focus on developing the front-end part of your website, you can start the client application separately. This will allow you to work on the front-end without the overhead of running the entire backend and other services simultaneously. Here’s how you can proceed:
-<br />
-
-1.	Start the Client Application:
-Run the client development server to see and work on the front-end part of your website.
-yarn dev:client
-
-<br/>
-Make sure to install yarn as needed.
-<br/>
-Check for Any Issues:
-<br/>
-If the client requires the server to be running for API calls, you may need to start the server as well. Start the server in a separate terminal if needed:
-<br/>
-yarn dev:server
-
-Example of Running Commands in Parallel:
-<br/>
-
-Open Two Terminal Windows:
-
-In the first terminal, run the client:
-
-yarn dev:client
-
-In the second terminal, run the server:
-
-yarn dev:server
-<br/>
-## Summary:
-To work on the front-end of your website, start the client application using yarn dev:client. If the front-end depends on the backend APIs, you can start the server in a separate terminal using yarn dev:server. This approach will help you focus on front-end development without the extra overhead of running unnecessary services.
-
-
