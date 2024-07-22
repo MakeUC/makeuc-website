@@ -23,12 +23,12 @@ export default async function HomePage() {
               <Image src={MakeUCText} alt="MakeUC" />
               <div className="text-muted-foreground text-xl mt-4">November 9 - 10, 2024</div>
 
-              <Link href="/registration" className="" tabIndex={-1}>
+              {/* <Link href="/registration" className="" tabIndex={-1}>
                 <Button className="flex gap-2 mt-4" size="lg">Register Now</Button>
-              </Link>
-              {/* <Link href="/live" className="" tabIndex={-1}>
-                <Button className="flex gap-2 mt-4" size="lg">View Hackathon Information</Button>
               </Link> */}
+              <Link href="/live" className="" tabIndex={-1}>
+                <Button className="flex gap-2 mt-4" size="lg">View Hackathon Information</Button>
+              </Link>
             </div>
             <div>
               <Image src={Logo} alt="MakeUC Butterfly Logo" width={400} />
