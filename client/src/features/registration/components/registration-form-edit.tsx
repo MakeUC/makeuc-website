@@ -94,7 +94,7 @@ export function RegistrationFormEdit() {
   }, [createRegistrant, push]);
 
   return (
-    <form className="grid grid-cols-1 md:grid-cols-[auto,_1fr] gap-8" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid grid-cols-1 md:grid-cols-[auto,_1fr] gap-8 titillium-web-light" onSubmit={handleSubmit(onSubmit)}>
       <FormSection name="Registrant Information" description="This information allows us to update you with the latest information about MakeUC.">
         <FormGroup>
           <Input control={control} label="First Name" name="firstName" placeholder="Enter First Name" readOnly />

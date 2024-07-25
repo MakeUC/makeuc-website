@@ -1,7 +1,7 @@
 import EducationImage from "../assets/education.png";
-import GreenTechImage from "../assets/green-tech.png";
+import GreenTechImage from "../assets/green_tech.png";
 import SecurityImage from "../assets/security.png";
-import SocialIssuesImage from "../assets/social-issues.png";
+import SocialIssuesImage from "../assets/social_issues.png";
 
 
 import type { TrackCardProps } from "../components/track-card";

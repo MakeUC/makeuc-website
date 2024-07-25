@@ -24,7 +24,7 @@ interface NavLinkProps {
 // TODO: Add something on hover for all links
 function NavLink({ href, children, onClick }: NavLinkProps) {
   return (
-    <Link href={href} onClick={onClick} className="text-2xl text-foreground font-semibold">
+    <Link href={href} onClick={onClick} className="text-2xl text-foreground font-semibold titillium-web-light">
       {children}
     </Link>
   );

@@ -29,7 +29,7 @@ CREATE TABLE "Registrant" (
     "mlhCodeOfConductAgreement" BOOLEAN NOT NULL DEFAULT false,
     "mlhPrivacyPolicyAgreement" BOOLEAN NOT NULL DEFAULT false,
     "mlhEmailAgreement" BOOLEAN NOT NULL DEFAULT false,
-    "registrationYear" INTEGER DEFAULT 2023,
+    "registrationYear" INTEGER DEFAULT 2024,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "emailRegistrationYearCompoundKey" TEXT NOT NULL DEFAULT '',
 

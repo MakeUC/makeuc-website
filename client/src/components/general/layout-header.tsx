@@ -1,5 +1,5 @@
 // import { Edit } from "lucide-react";
-import { CalendarCheck } from "lucide-react";
+// import { CalendarCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ import Link from "next/link";
 import LogoPng from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
 
-import { MLHBanner } from "./mlh-banner";
+// import { MLHBanner } from "./mlh-banner";
 import { DesktopNavbar } from "./navbar-desktop";
 import { MobileNavbar } from "./navbar-mobile";
 
@@ -30,7 +30,7 @@ const LINKS: NavigationLink[] = [
 
 export function LayoutHeader() {
   return (
-    <div className="flex justify-center py-2 px-4 push-in-bottom bg-background-inset sticky top-0 z-10">
+    <div className="flex justify-center py-2 px-4 push-in-bottom bg-background-inset sticky top-0 z-10 titillium-web-light">
       <nav className="flex items-center justify-between gap-4 w-full">
         {/* Left Side */}
         <div className="flex gap-6">
@@ -43,18 +43,18 @@ export function LayoutHeader() {
 
         {/* Right Side */}
         <div className="flex justify-end items-center gap-4">
-          {/* <Link href="/registration" className="hidden sm:block" tabIndex={-1}>
-            <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
-          </Link> */}
-          <Link href="/live" className="hidden sm:block" tabIndex={-1}>
-            <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="16px" /></Button>
+          <Link href="/registration" className="hidden sm:block" tabIndex={-1}>
+            <Button className="flex gap-2" size="sm">Register</Button>
           </Link>
+          {/* <Link href="/live" className="hidden sm:block" tabIndex={-1}>
+            <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="16px" /></Button>
+          </Link> */}
           <MobileNavbar className="sm:hidden" links={LINKS} />
-          <div className="self-end">
+          {/* <div className="self-end">
             <div className="relative -bottom-4">
               <MLHBanner />
             </div>
-          </div>
+          </div> */}
         </div>
       </nav>
     </div>

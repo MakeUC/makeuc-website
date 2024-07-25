@@ -27,11 +27,11 @@ function SponsorTierRow({ name, sponsors }: SponsorTier) {
   if (!sponsors?.length) return <></>;
 
   return (
-    <div className="flex flex-wrap justify-center gap-4 bg-white rounded px-8 py-4">
+    <div className="flex flex-wrap justify-center gap-4 bg-white rounded px-8 py-4 titillium-web-regular">
       {name && (
-        <div className="w-full flex flex-col gap-2">
-          <h3 className="text-primary-foreground text-xl text-center tracking-wider font-semibold">{name}</h3>
-          <hr className="border border-primary-foreground" />
+        <div className="w-full flex flex-col gap-2 titillium-web-regular">
+          <h3 className="text-primary-foreground text-xl text-center tracking-wider font-semibold titillium-web-regular">{name}</h3>
+          <hr className="border border-primary-foreground titillium-web-regular" />
         </div>
       )}
       {sponsors?.map(sponsor => <SponsorItem key={sponsor.name} {...sponsor} />)}
@@ -45,7 +45,7 @@ export interface SponsorGridProps {
 
 export function SponsorGrid({ sponsorTiers }: SponsorGridProps) {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 titillium-web-regular">
       {sponsorTiers.map(tier => <SponsorTierRow key={tier.name} {...tier} />)}
     </div>
   );

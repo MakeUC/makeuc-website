@@ -18,15 +18,15 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WHEN IS MAKEUC?",
-    dropDown: "MakeUC 2023 will start on November 4th and lasts 24 hours, ending on November 5th.",
+    dropDown: "MakeUC 2024 will start on November 9th and lasts 24 hours, ending on November 10th.",
   },
   {
     card: "WILL MAKEUC BE IN PERSON?",
-    dropDown: "MakeUC 2023 will be held in person and online. In-person spots will be limited, virtual spots will be unlimited!",
+    dropDown: "MakeUC 2024 will be held in person and online. In-person spots will be limited, virtual spots will be unlimited!",
   },
   {
     card: "WHO CAN ATTEND IN PERSON?",
-    dropDown: "We will release more information soon about who is eligible to attend in person.",
+    dropDown: "We will release more information soon about who is eligible to attend in person. Check your emails for an invitation",
   },
   {
     card: "HOW MUCH DOES IT COST?",
@@ -62,12 +62,12 @@ export function Faq() {
           return (
             <AccordionItem key={index} value={value.card}>
               <AccordionTrigger value={`value-${index}`}>
-                <h2 className="text-xl text-left font-semibold">
+                <h2 className="text-xl text-left font-semibold titillium-web-bold">
                   {value.card}
                 </h2>
               </AccordionTrigger>
               <AccordionContent>
-                <h3 className="text-md font-large">
+                <h3 className="text-md font-large titillium-web-regular">
                   {value.dropDown}
                 </h3>
               </AccordionContent>
