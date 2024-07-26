@@ -40,18 +40,18 @@
     --muted: #7c2fd1;
     --muted-foreground: #fff;
     --muted-gray-foreground: #fff;
-    --popover: #fff;
+    --popover: #000;
     --popover-foreground: #fff;
-    --card: hsl(217deg 52% 17%);
+    --card: #fff;
     --card-foreground: #fff;
-    --border: hsl(216deg 40% 30%);
+    --border: #8d8ae4;
     --input: #7c2fd1;
     --primary: #ff85ea;
-    --primary-foreground: hsl(217deg 52% 0%);
-    --secondary: hsl(217deg 52% 17%);
+    --primary-foreground: #000;
+    --secondary: #7c2fd1;
     --secondary-foreground: #fff;
-    --accent: hsl(200deg 90% 56%);
-    --accent-foreground: hsl(217deg 52% 0%);
+    --accent: #fff;
+    --accent-foreground: #000;
     --destructive: hsl(0deg 63% 31%);
     --destructive-foreground: #fff;
     --ring: hsl(216deg 34% 17%);
@@ -124,7 +124,7 @@
 }
 
 .hero-image {
-  background: url("../assets/header-graphic.svg");
+  background: url("../assets/header.svg");
   background-repeat: repeat-x;
   background-size: 125vh auto;
 }

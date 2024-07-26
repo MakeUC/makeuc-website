@@ -11,7 +11,7 @@ export default function StatsPage() {
   return (
     <div className="flex justify-center">
       <div className="px-8 w-full max-w-5xl">
-        <PageTitle className="text-center">Statistics for {year}</PageTitle>
+        <PageTitle className="text-center titillium-web-bold">Statistics for {year}</PageTitle>
         <hr className="border border-muted-foreground" />
         <div className="mt-4">
           <Stats year={year} />
