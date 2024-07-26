@@ -52,21 +52,21 @@ export function Stats({ year }: StatsProps) {
     <div className="p-6">
       <div className="flex flex-col gap-2 text-center">
         <span className="text-4xl font-semibold">{statisticsJson.countRegistrants}</span>
-        <h3 className="text-lg text-muted-foreground">Total Registrants</h3>
+        <h3 className="text-lg text-muted-foreground titillium-web-bold">Total Registrants</h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[repeat(3,_1fr)] gap-4 my-8 p-2 justify-between">
         <div className="flex flex-col gap-2 text-center">
           <span className="text-3xl font-semibold">{statisticsJson.femalePercent.toFixed(2)}%</span>
-          <h3 className="text-lg text-muted-foreground">Female Attendance</h3>
+          <h3 className="text-lg text-muted-foreground titillium-web-bold">Female Attendance</h3>
         </div>
         <div className="flex flex-col gap-2 text-center">
           <span className="text-3xl font-semibold">{statisticsJson.countSchoolsRepresented}</span>
-          <h3 className="text-lg text-muted-foreground">Schools Represented</h3>
+          <h3 className="text-lg text-muted-foreground titillium-web-bold">Schools Represented</h3>
         </div>
         <div className="flex flex-col gap-2 text-center">
           <span className="text-3xl font-semibold">{statisticsJson.countCountriesRepresented}</span>
-          <h3 className="text-lg text-muted-foreground">Countries Represented</h3>
+          <h3 className="text-lg text-muted-foreground titillium-web-bold">Countries Represented</h3>
         </div>
       </div>
       <div className="flex flex-col justify-between md:flex-row gap-8">

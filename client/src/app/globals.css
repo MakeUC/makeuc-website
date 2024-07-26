@@ -4,61 +4,61 @@
 
 @layer base {
   :root {
-    --background: hsl(40deg 2% 98%);
-    --background-inset-color: hsl(40deg 10% 93%);
-    --foreground: hsl(0deg 0% 5%);
+    --background: #8d8ae6;
+    --background-inset-color: #8d8ae6;
+    --foreground: #8d8ae6;
     --foreground-inset-color: hsl(20deg 5% 50%);
-    --muted: hsl(210deg 40% 96.1%);
+    --muted: #000;
     --muted-foreground: hsl(215.4deg 16.3% 46.9%);
     --muted-gray-foreground: hsl(213deg 40% 60%);
     --popover: hsl(40deg 2% 98%);
-    --popover-foreground: hsl(200deg 78% 56%);
+    --popover-foreground: #7c2fd1;
     --card: hsl(40deg 2% 98%);
-    --card-foreground: hsl(200deg 78% 56%);
+    --card-foreground: #7c2fd1;
     --border: hsl(214.3deg 31.8% 91.4%);
     --input: hsl(214.3deg 31.8% 91.4%);
-    --primary: hsl(200deg 78% 56%);
-    --primary-foreground: hsl(217deg 52% 17%);
-    --secondary: hsl(40deg 2% 98%);
-    --secondary-foreground: hsl(0deg 0% 5%);
-    --accent: hsl(210deg 40% 96.1%);
+    --primary: #8d8ae6;
+    --primary-foreground: #7c2fd1;
+    --secondary: #7c2fd1;
+    --secondary-foreground: #000;
+    --accent: #000;
     --accent-foreground: hsl(200deg 78% 56%);
-    --destructive: hsl(0deg 100% 50%);
+    --destructive: #000;
     --destructive-foreground: hsl(200deg 78% 56%);
     --ring: hsl(215deg 20.2% 65.1%);
     --radius: 0.5rem;
-    --push-in-top-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%);
-    --push-in-top-shadow-no-overhang: inset 0 0 2px hsl(0deg 0% 0% / 40%);
-    --push-in-bottom-shadow: 0 2px 0 hsl(0deg 0% 100% / 7%);
+    --push-in-top-shadow: inset 0 2px 2px #7c2fd1;
+    --push-in-top-shadow-no-overhang: inset 0 0 2px #7c2fd1;
+    --push-in-bottom-shadow: 0 2px 0 #7c2fd1;
   }
  
   .dark {
-    --background: hsl(217deg 52% 17%);
-    --background-inset-color: hsl(213deg 73% 12%);
-    --foreground: hsl(0deg 0% 100%);
-    --foreground-inset-color: hsl(213deg 20% 60%);
-    --muted: hsl(223deg 47% 11%);
-    --muted-foreground: hsl(201deg 88% 49%);
-    --muted-gray-foreground: hsl(213deg 40% 60%);
-    --popover: hsl(213deg 73% 12%);
-    --popover-foreground: hsl(0deg 0% 100%);
-    --card: hsl(217deg 52% 17%);
-    --card-foreground: hsl(0deg 0% 100%);
-    --border: hsl(216deg 40% 30%);
-    --input: hsl(216deg 40% 30%);
-    --primary: hsl(200deg 90% 56%);
-    --primary-foreground: hsl(217deg 52% 0%);
-    --secondary: hsl(217deg 52% 17%);
-    --secondary-foreground: hsl(0deg 0% 100%);
-    --accent: hsl(200deg 90% 56%);
-    --accent-foreground: hsl(217deg 52% 0%);
+    --background: #8d8ae6;
+    --background-inset-color: #7c2fd1;
+    --foreground: #fff; 
+    --foreground-inset-color: #7c2fd1;
+    --muted: #7c2fd1;
+    --muted-foreground: #fff;
+    --muted-gray-foreground: #fff;
+    --popover: #000;
+    --popover-foreground: #fff;
+    --card: #fff;
+    --card-foreground: #fff;
+    --border: #8d8ae4;
+    --input: #7c2fd1;
+    --primary: #ff85ea;
+    --primary-foreground: #000;
+    --secondary: #7c2fd1;
+    --secondary-foreground: #fff;
+    --accent: #fff;
+    --accent-foreground: #000;
     --destructive: hsl(0deg 63% 31%);
-    --destructive-foreground: hsl(0deg 0% 100%);
+    --destructive-foreground: #fff;
     --ring: hsl(216deg 34% 17%);
     --radius: 0.5rem;
-    --push-in-top-shadow: inset 0 2px 2px hsl(0deg 0% 0% / 40%);
-    --push-in-top-shadow-no-overhang: inset 0 0 2px hsl(0deg 0% 0% / 40%);
-    --push-in-bottom-shadow: 0 2px 0 hsl(0deg 0% 100% / 7%);
+    --push-in-top-shadow: inset 0 2px 2px #7c2fd1;
+    --push-in-top-shadow-no-overhang: inset 0 0 2px #7c2fd1;
+    --push-in-bottom-shadow: 0 2px 0 #7c2fd1;
   }
 }
  
@@ -109,11 +109,11 @@
   }
 
   .bump-out {
-    box-shadow: 0 1px 1px hsl(0deg 0% 0% / 40%), inset 0 3px 1px hsl(0deg 0% 100% / 7%);
+    box-shadow: 0 1px 1px #000, inset 0 3px 1px #fff;
   }
 
   .dark .bump-out {
-    box-shadow: 0 3px 2px hsl(0deg 0% 0% / 40%), inset 0 3px 1px hsl(0deg 0% 100% / 7%);
+    box-shadow: 0 3px 2px #000, inset 0 3px 1px #fff;
   }
 }
 
@@ -124,7 +124,77 @@
 }
 
 .hero-image {
-  background: url("../assets/hero.png");
+  background: url("../assets/header.svg");
   background-repeat: repeat-x;
-  background-size: 100vh auto;
+  background-size: 125vh auto;
+}
+
+.titillium-web-extralight {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.titillium-web-light {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.titillium-web-regular {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.titillium-web-semibold {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.titillium-web-bold {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.titillium-web-black {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.titillium-web-extralight-italic {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.titillium-web-light-italic {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.titillium-web-regular-italic {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.titillium-web-semibold-italic {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.titillium-web-bold-italic {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.text-large {
+  font-size: 40px;
 }
