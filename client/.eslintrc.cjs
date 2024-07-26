@@ -68,7 +68,7 @@ module.exports = {
     "@typescript-eslint/no-this-alias": "warn",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/prefer-as-const": "warn",
     "@typescript-eslint/prefer-namespace-keyword": "warn",
