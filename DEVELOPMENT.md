@@ -30,6 +30,14 @@ You should open a new Codespace from the `main` branch. On creation, GitHub will
 4. Open the terminal inside VSCode (the one that is spawned from the container) and run `yarn install`.
 5. Run the development command for whichever application you're using. `yarn dev` runs every single application in this monorepo, whereas `yarn dev:client` runs only the NextJS frontend, for example. The rule of thumb here is `dev:[file]`.
 
+#### Push Hooks
+
+To push, a pre-push hook is run. Inside this hook, `yarn build` is executed. To successfully push to the git repository while satisfying the pre-push hook, first have the server started with `yarn dev:server` before running `git push`.
+
+#### General Known Bug
+
+If the build fails, particularly on the client, a cached build may have been used and this cache is not being invalidated (especially if no changes to the server have been made). To invalidate said cached build, remove the `.next` folder in the client directory.
+
 #### Windows 10 Known Bugs
 
 - In the devcontainer setup, there is a command that is ran before container setup that *expects* a Linux environment (it is written in bash). This will fail the setup step for Windows users since Powershell cannot run bash commands. This command basically checks whether an `.env.local` already exist, and if not, create a copy of the `.env.local.default` and rename it to `.env.local`. One of the ways to monkeypatch this issue is to delete the `"initializeCommand"` field in the `/.devcontainer/.devcontainer.json`, and create the `.env.local` yourself and copy in the content of the `.env.local.default` file.
