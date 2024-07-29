@@ -19,8 +19,9 @@ export default async function HomePage() {
         <div className="absolute h-full w-full hero-image -z-10" />
         <div className="flex flex-1 justify-center items-end">
           <div className="flex flex-col p-8 pt-48 md:flex-row justify-between items-center w-full max-w-7xl md:pt-8 gap-16">
+            <div className="h-[15vh] md:hidden" />
             <div>
-              <Image src={MakeUCText} alt="MakeUC" width="1000"/>
+              <Image src={MakeUCText} alt="MakeUC" width="1000" />
               <div className="text-muted-foreground text-large mt-4 titillium-web-bold">November 9 - 10, 2024</div>
 
               <Link href="/registration" className="" tabIndex={-1}>
