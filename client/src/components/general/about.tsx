@@ -76,7 +76,7 @@ export function About() {
           </div>
           <h4 className="text-center text-muted-foreground">Fall 2022</h4>
         </Link>
-        <Link href="https://makeuc-2022.devpost.com/" className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125">
+        <Link href="https://makeuc-2023.devpost.com/" className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125">
           <div className="flex items-center h-full">
             <Image
               src={Logo2023}
