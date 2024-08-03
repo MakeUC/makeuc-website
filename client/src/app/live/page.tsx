@@ -28,7 +28,7 @@ export default async function LiveSite() {
         <Link href="https://discord.gg/g2T8QAhaME" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
         </Link>
-        <Link href="https://makeuc-2024.devpost.com/" className="items-center" target="_blank">
+        <Link href="https://makeuc-2023.devpost.com/" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Devpost</Button>
         </Link>
         <Link href="https://youtube.com/playlist?list=PLMOg6ZY3DC6PgVmJ9jsGWqQ9-hI0kAhqu&feature=shared" className="items-center" target="_blank">
