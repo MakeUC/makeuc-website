@@ -13,8 +13,8 @@ interface TimeLeft {
   hasStarted?: boolean;
 }
 
-const startTime = new Date("2023-11-04T11:30:00-04:00");
-const endTime = new Date("2023-11-05T11:30:00-05:00");
+const startTime = new Date("2024-11-09T11:30:00-04:00");
+const endTime = new Date("2024-11-10T11:30:00-05:00");
 
 const msToTime = (ms: number): TimeLeft => {
   const seconds = Math.floor((ms / 1000) % 60),
@@ -114,7 +114,7 @@ export function Timer() {
           <TimerNumber time={timeLeft.seconds} name="SECONDS" />
         </div>
         <div className="flex md:hidden  flex-grow justify-evenly">
-          
+
           <TimerNumber time={timeLeft.hours} name="HOURS" />
           <TimerNumber time={timeLeft.minutes} name="MINUTES" />
         </div>
