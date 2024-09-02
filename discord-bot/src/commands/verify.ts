@@ -35,7 +35,7 @@ export const verifyCommand = {
     const participant = await prisma.registrant.findFirst({
       where: {
         email: email,
-        registrationYear: 2023,
+        registrationYear: 2024,
       },
     });
 

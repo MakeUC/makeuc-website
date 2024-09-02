@@ -33,8 +33,8 @@ export const scheduleCommand = {
       option.setName("day")
         .setDescription("Day to send message on")
         .addChoices(
-          { name: "4", value: 4 },
-          { name: "5", value: 5 },
+          { name: "9", value: 9 },
+          { name: "10", value: 10 },
         )
         .setRequired(false)
     ).addIntegerOption(option =>
@@ -48,7 +48,7 @@ export const scheduleCommand = {
       option.setName("year")
         .setDescription("Year to send message on")
         .addChoices(
-          { name: "2023", value: 2023 },
+          { name: "2024", value: 2024 },
         )
         .setRequired(false)
     ),
