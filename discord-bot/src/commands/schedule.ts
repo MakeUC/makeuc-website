@@ -32,8 +32,6 @@ export const scheduleCommand = {
     ).addIntegerOption(option =>
       option.setName("day")
         .setDescription("Day to send message on")
-        .setMinValue(1)
-        .setMaxValue(31)
         .setRequired(false)
     ).addIntegerOption(option =>
       option.setName("month")
@@ -58,7 +56,6 @@ export const scheduleCommand = {
         .setDescription("Year to send message on")
         .addChoices(
           { name: "2024", value: 2024 },
-          { name: "2025", value: 2025 }
         )
         .setRequired(false)
     ),
