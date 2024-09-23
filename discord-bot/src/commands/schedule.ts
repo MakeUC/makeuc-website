@@ -32,16 +32,23 @@ export const scheduleCommand = {
     ).addIntegerOption(option =>
       option.setName("day")
         .setDescription("Day to send message on")
-        .addChoices(
-          { name: "9", value: 9 },
-          { name: "10", value: 10 },
-        )
         .setRequired(false)
     ).addIntegerOption(option =>
       option.setName("month")
         .setDescription("Month to send message on")
         .addChoices(
+          { name: "January", value: 1 },
+          { name: "February", value: 2 },
+          { name: "March", value: 3 },
+          { name: "April", value: 4 },
+          { name: "May", value: 5 },
+          { name: "June", value: 6 },
+          { name: "July", value: 7 },
+          { name: "August", value: 8 },
+          { name: "September", value: 9 },
+          { name: "October", value: 10 },
           { name: "November", value: 11 },
+          { name: "December", value: 12 }
         )
         .setRequired(false)
     ).addIntegerOption(option =>
@@ -79,6 +86,9 @@ export const scheduleCommand = {
     const month = (interaction.options.getInteger("month") ?? (dayjs().month() + 1)) - 1;
     const year = interaction.options.getInteger("year") ?? dayjs().year();
 
+    // This is something to be careful about. Docker containers are by default set to UTC. 
+    // in order to change the timezone of a container, first enter the container
+    // then run  `dpkg-reconfigure tzdata` as root and select desired timezone.
     const date = dayjs({
       year: year,
       month: month,

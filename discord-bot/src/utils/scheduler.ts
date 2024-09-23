@@ -98,7 +98,10 @@ export class Scheduler {
   }
 
   async scheduleEvent(event: Omit<ScheduledEvent, "timeout">): Promise<string> {
-    const offset = event.unixExecutionTime - dayjs().valueOf();
+    const currentTime = dayjs().valueOf();
+    const eventTime = dayjs(event.unixExecutionTime).valueOf();
+
+    const offset = eventTime - currentTime;
     if (offset > 2147483647) { throw new TooFarAwayScheduledEvent(); }
     if (offset <= 0) { throw new ImpossibleScheduledEvent(); }
 
