@@ -8,7 +8,7 @@ import { About } from "~/components/general/about";
 import { Faq } from "~/components/general/faq";
 import { Button } from "~/components/ui/button";
 import { ViewportSection } from "~/components/ui/viewport-section";
-// import { SponsorGridPlaceholder } from "~/features/sponsors";
+import { SponsorGridPlaceholder } from "~/features/sponsors";
 import { TrackGrid } from "~/features/tracks";
 
 
@@ -69,11 +69,11 @@ export default async function HomePage() {
           <h2 className="text-3xl font-bold tracking-wider text-center mb-8 titillium-web-bold">Sponsors</h2>
           <h3 className="text-center titillium-web-regular">Are you interested in sponsoring MakeUC? Please email us at <Link href="mailto:contact@makeuc.io" className="text-primary">contact@makeuc.io</Link>!</h3>
           <br />
-          {/* <SponsorGridPlaceholder /> */}
-          <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4">
-            <span className="text-xl font-semibold text-center">There are no sponsors currently. Please check back in the future!</span>
-            <PlugZap size={48} strokeWidth={1} />
-          </div>
+          <SponsorGridPlaceholder />
+          {/* <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4"> */}
+          {/* <span className="text-xl font-semibold text-center">There are no sponsors currently. Please check back in the future!</span> */}
+          {/* <PlugZap size={48} strokeWidth={1} /> */}
+          {/* </div> */}
         </div>
       </ViewportSection>
     </main>

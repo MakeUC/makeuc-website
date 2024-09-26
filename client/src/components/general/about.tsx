@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// import Logo1819 from "~/assets/1819-logo.png";
+import Logo1819 from "~/assets/1819-logo.png";
 import UCIEEELogo from "~/assets/IEEE_logo.png";
 import Logo2020 from "~/assets/old-logos/2020.png";
 import Logo2021 from "~/assets/old-logos/2021.png";
@@ -32,16 +32,15 @@ export function About() {
       <p className="text-center titillium-web-bold">
         The MakeUC hackathon is brought to by
         <br />
-        <Link href="https://ieee.uc.edu" target="_blank" className="text-primary">IEEE@UC</Link>
-        {/* <Link href="https://innovation.uc.edu/" target="_blank" className="text-primary">1819 Innovation Hub</Link>. */}
+        <Link href="https://ieee.uc.edu" target="_blank" className="text-primary">IEEE@UC</Link> supported by <Link href="https://innovation.uc.edu/" target="_blank" className="text-primary">1819 Innovation Hub</Link>.
       </p>
       <div className="flex flex-col gap-8 justify-center items-center md:flex-row">
         <Link href="https://ieee.uc.edu" target="_blank" className="text-primary">
           <Image alt="IEEE@UC Logo" src={UCIEEELogo} width={300} />
         </Link>
-        {/* <Link href="https://innovation.uc.edu/" target="_blank" className="text-primary">
-          <Image alt="1819 Innovation Hub Logo" src={Logo1819} width={300} />
-        </Link> */}
+        <Link href="https://innovation.uc.edu/" target="_blank" className="text-primary">
+          <Image alt="1819 Innovation Hub Logo" src={Logo1819} width={200} />
+        </Link>
       </div>
       <hr className="border border-muted-foreground" />
       <h3 className="text-2xl font-bold tracking-wider text-center titillium-web-bold">Past Hackathons</h3>
