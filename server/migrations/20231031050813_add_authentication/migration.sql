@@ -48,3 +48,5 @@ CREATE UNIQUE INDEX "Judgement_judgeProjectCompoundKey_key" ON "Judgement"("judg
 
 -- AddForeignKey
 ALTER TABLE "PassportStrategyStorage" ADD CONSTRAINT "PassportStrategyStorage_user_fkey" FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+ON DELETE CASCADE ON UPDATE CASCADE
