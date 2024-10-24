@@ -10,13 +10,13 @@ export default function ResourcesPage() {
   return (
     <div className="flex justify-center">
       <div className="px-8 w-full max-w-5xl">
-        <PageTitle>Sponsor Resources</PageTitle>
+        {/* <PageTitle>Sponsor Resources</PageTitle>
         <hr className="border border-muted-foreground" />
         <section className="items-center">
           <div className="mt-4">
             <SponsorResources />
           </div>
-        </section>
+        </section> */}
         <PageTitle>Free Resources</PageTitle>
         <hr className="border border-muted-foreground" />
         <section className="items-center">
