@@ -12,6 +12,7 @@
     "compile": "run-p compile:*",
     "compile:client": "cd client && yarn compile",
     "dev": "run-p dev:*",
+    "dev-turbo": "run-p dev:server dev-turbo:client",
     "dev:client": "cd client && yarn dev",
     "dev-turbo:client": "cd client && yarn dev-turbo",
     "dev:server": "cd server && yarn dev",
