@@ -131,7 +131,7 @@ model User {
 
 model PassportStrategyStorage {
   id                          String                                  @id @default(cuid())
-  user                        User?                                   @relation("PassportStrategyStorage_user", fields: [userId], references: [id])
+  user                        User?                                   @relation("PassportStrategyStorage_user", fields: [userId], references: [id], onDelete: Cascade)
   userId                      String?                                 @map("user")
   strategyName                PassportStrategyStorageStrategyNameType
   data                        String                                  @default("")
