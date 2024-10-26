@@ -52,7 +52,19 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
       operation: allOperations(() => false),
     },
     fields: {
-      user: relationship({ ref: listKey, many: false }),
+      user: relationship({
+        ref: listKey, many: false, db: {
+          extendPrismaSchema(field) {
+            // Add onDelete: Cascade to the `user` field of the PassportStrategyStorage object
+            // So that PassportStrategyStorage record is also removed when a user is deleted
+            if (field.startsWith("user")) {
+              // Regex to add what inside @relation(...) with 'onDelete: Cascade'
+              return field.replace(/@relation\((.*?)\)/, "@relation($1, onDelete: Cascade)");
+            }
+            return field;
+          },
+        },
+      }),
       strategyName: select({
         type: "enum", options: strategies.map(strat => ({ label: strat.strategy.name, value: strat.strategy.name })),
         validation: { isRequired: true },
