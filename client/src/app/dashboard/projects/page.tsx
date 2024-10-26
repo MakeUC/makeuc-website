@@ -1,5 +1,5 @@
 import { PageTitle } from "~/components/general/typography";
-import { ProjectsTable } from "~/features/judging";
+import { ProjectsTable } from "~/features/judging/components/ProjectsTable";
 
 
 export const metadata = {
