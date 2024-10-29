@@ -61,10 +61,10 @@ export const workshopData: EventInfo[] = [
 ];
 
 export const transportData: EventInfo[] = [
-  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 9 - TBD", "Nov 9 - TBD"),
-  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 9 - TBD", "Nov 10 - TBD"),
-  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 10 - TBD", "Nov 10 - TBD"),
-  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 10 - TBD", "Nov 10 - TBD"),
+  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 9 - 10:00 AM", "Nov 9 - 12:00 PM"),
+  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 9 - 11:00 PM", "Nov 10 - 12:00 PM"),
+  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 10 - 07:00 AM", "Nov 10 - 09:00 AM"),
+  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 10 - 06:00 PM", "Nov 10 - 07:00 PM"),
 ];
 
 function ScheduleGrid({ name, location, location_virt, start, end }: EventInfo) {
