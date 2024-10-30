@@ -7,11 +7,11 @@
 // import FISImage from "../assets/FIS.svg";
 // import GoogleCloudImage from "../assets/google-cloud.svg";
 // import greatAmericanInsuranceImage from "../assets/great_american_insurance.png";
+import SeeedImage from "../assets/Color Logo-Seeed.png";
 import HiiImage from "../assets/hii.png";
 // import IBMImage from "../assets/ibm.svg";
 import InfineraImage from "../assets/infinera.png";
 // import KaoImage from "../assets/kao.png";
-import SeeedImage from "../assets/Color Logo-Seeed.png";
 import KineticVisionImage from "../assets/kinetic-vision.png";
 // import MicrosoftImage from "../assets/Microsoft.png";
 // import NorthropGrummanImage from "../assets/northrop_grumman.png";

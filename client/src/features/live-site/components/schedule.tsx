@@ -29,7 +29,7 @@ export const scheduleData: EventInfo[] = [
   createData("Check-In", "First Floor Main Desk", "Discord #verification Channel", "Nov 9 - 09:00 AM", "Nov 9 - 10:30 AM"),
   createData("Sponsor Expo", "Second Floor Common Area", "Discord Sponsor VC", "Nov 9 - 10:00 AM", "Nov 9 - 12:30 AM"),
   createData("Opening Ceremony", "Room 230", "YouTube Stream", "Nov 9 - 11:00 AM", "Nov 9 - 11:45 AM"),
-  createData("Lunch", "Second Floor Common Area", "-", "Nov 9 - 12:00 AM", "Nov 9 - 12:30 PM"),
+  createData("Lunch", "Second Floor Common Area", "-", "Nov 9 - 12:00 PM", "Nov 9 - 12:30 PM"),
   createData("Hacking Begins", "-", "-", "Nov 9 - 12:00 PM", "Nov 5 - 12:00 PM"),
   createData("Hackathon 101", "TBD", "Discord #hackathon-101 VC", "Nov 10 - 12:30 PM", "Nov 10 - 01:00 PM"),
   createData("Team Formation", "TBD", "Discord #team-formation VC", "Nov 9 - 01:00 PM", "Nov 9 - 01:30 PM"),
@@ -61,10 +61,10 @@ export const workshopData: EventInfo[] = [
 ];
 
 export const transportData: EventInfo[] = [
-  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 9 - TBD", "Nov 9 - TBD"),
-  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 9 - TBD", "Nov 10 - TBD"),
-  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 10 - TBD", "Nov 10 - TBD"),
-  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 10 - TBD", "Nov 10 - TBD"),
+  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 9 - 10:00 AM", "Nov 9 - 12:00 PM"),
+  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 9 - 11:00 PM", "Nov 10 - 12:00 PM"),
+  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 10 - 07:00 AM", "Nov 10 - 09:00 AM"),
+  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 10 - 06:00 PM", "Nov 10 - 07:00 PM"),
 ];
 
 function ScheduleGrid({ name, location, location_virt, start, end }: EventInfo) {
