@@ -1,6 +1,8 @@
 
 import dayjs from "dayjs";
 import objectSupport from "dayjs/plugin/objectSupport";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
 import { scheduler } from "..";
@@ -10,6 +12,8 @@ import type { Command } from "./index";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(objectSupport);
 
 export const scheduleCommand = {
@@ -86,16 +90,14 @@ export const scheduleCommand = {
     const month = (interaction.options.getInteger("month") ?? (dayjs().month() + 1)) - 1;
     const year = interaction.options.getInteger("year") ?? dayjs().year();
 
-    // This is something to be careful about. Docker containers are by default set to UTC. 
-    // in order to change the timezone of a container, first enter the container
-    // then run  `dpkg-reconfigure tzdata` as root and select desired timezone.
-    const date = dayjs({
+    // Create all dates in the America/New_York timezone
+    const date = dayjs.tz({
       year: year,
       month: month,
       day: day,
       hour: hours,
       minute: minutes,
-    });
+    }, "America/New_York");
 
     // Setup scheduled event
     const channelId = channel.id;
