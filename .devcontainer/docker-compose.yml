@@ -17,6 +17,7 @@ services:
       - POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10
       - POSTGRES_PRISMA_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE}?schema=public&connection_limit=10&pgbouncer=true
       - POSTGRES_URL_NON_POOLING=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SHADOW_HOST}/${POSTGRES_DATABASE}?schema=public
+      - TZ=America/New_York
   db:
     image: postgres:latest
     restart: unless-stopped
