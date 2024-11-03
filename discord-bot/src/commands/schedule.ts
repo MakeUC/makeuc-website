@@ -1,6 +1,5 @@
 
 import dayjs from "dayjs";
-import objectSupport from "dayjs/plugin/objectSupport";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
@@ -14,7 +13,6 @@ import type { ChatInputCommandInteraction } from "discord.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.extend(objectSupport);
 
 export const scheduleCommand = {
   data: new SlashCommandBuilder()
@@ -86,18 +84,14 @@ export const scheduleCommand = {
     if (parsedTime.length !== 2) { return interaction.editReply({ content: "Invalid time format, please use HH:mm" }); }
     const [hours, minutes] = parsedTime as [number, number];
 
-    const day = interaction.options.getInteger("day") ?? dayjs().date();
-    const month = (interaction.options.getInteger("month") ?? (dayjs().month() + 1)) - 1;
     const year = interaction.options.getInteger("year") ?? dayjs().year();
+    const day = interaction.options.getInteger("day") ?? dayjs().date();
+    const month = interaction.options.getInteger("month") ?? dayjs().month() + 1; // Plus 1 since Dayjs month is 0-index-based, but we want 1-index-based to contruct the date string below
 
-    // Create all dates in the America/New_York timezone
-    const date = dayjs.tz({
-      year: year,
-      month: month,
-      day: day,
-      hour: hours,
-      minute: minutes,
-    }, "America/New_York");
+    const datetime_string = `${year}-${month}-${day} ${hours}:${minutes}:00`;
+
+    // Create the date in the America/New_York timezone
+    const date = dayjs.tz(datetime_string, "America/New_York");
 
     // Setup scheduled event
     const channelId = channel.id;
