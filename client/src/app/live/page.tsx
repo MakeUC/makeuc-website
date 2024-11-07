@@ -31,7 +31,7 @@ export default async function LiveSite() {
         <Link href="https://makeuc-2024.devpost.com/" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Devpost</Button>
         </Link>
-        <Link href="https://youtube.com/playlist?list=PLMOg6ZY3DC6PgVmJ9jsGWqQ9-hI0kAhqu&feature=shared" className="items-center" target="_blank">
+        <Link href="https://youtube.com/playlist?list=PLMOg6ZY3DC6PXoZGBDCfdTYtAvl_L_4kF&feature=shared" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">YouTube</Button>
         </Link>
         {/* <Link href="/resources" className="items-center">
