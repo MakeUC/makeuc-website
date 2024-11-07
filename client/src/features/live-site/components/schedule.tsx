@@ -27,7 +27,7 @@ function createData(name: string, location: string, location_virt: ReactNode, st
 
 export const scheduleData: EventInfo[] = [
   createData("Check-In", "First Floor Main Desk", "Discord #verification Channel", "Nov 9 - 09:00 AM", "Nov 9 - 10:30 AM"),
-  createData("Sponsor Expo", "Second Floor Common Area", "Discord Sponsor VC", "Nov 9 - 10:00 AM", "Nov 9 - 12:30 AM"),
+  createData("Sponsor Expo", "Second Floor Common Area", "Discord Sponsor VC", "Nov 9 - 10:00 AM", "Nov 9 - 12:30 PM"),
   createData("Opening Ceremony", "Room 230", "YouTube Stream", "Nov 9 - 11:00 AM", "Nov 9 - 11:45 AM"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 9 - 12:00 PM", "Nov 9 - 12:30 PM"),
   createData("Hacking Begins", "-", "-", "Nov 9 - 12:00 PM", "Nov 5 - 12:00 PM"),
@@ -44,7 +44,7 @@ export const scheduleData: EventInfo[] = [
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 10 - 09:00 AM", "Nov 5 - 10:00 AM"),
   createData("Hacking Ends", "-", "-", "Nov 10 - 12:00 PM", "Nov 10 - 12:00 PM"),  
   createData("Lunch", "Second Floor Common Area", "-", "Nov 10 - 12:00 PM", "Nov 10 - 1:00 PM"),
-  createData("Judging", "Discord", "Assigned Discord VC", "Nov 10 - 12:00 PM", "Nov 10 - 03:00 PM"),
+  createData("Judging", "Discord", "Assigned Discord VC", "Nov 10 - 12:30 PM", "Nov 10 - 04:00 PM"),
   createData("Closing Ceremony", "Room 230", "YouTube Stream", "Nov 10 - 05:00 PM", "Nov 10 - 06:00 PM"),
 ];
 
@@ -57,7 +57,7 @@ export const cyberData: EventInfo[] = [
 export const workshopData: EventInfo[] = [
   // createData("[Kinetic Vision] Development Enviornments", "Room 230", <Link href=""https://teams.microsoft.com/l/meetup-join/19%3ameeting_NjcxNTQ0NjYtNTJmYy00MzdlLTgwYmQtYWJiNWQ5ZjgxOGM5%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%22e0cebd79-a7bb-4111-b7f1-076b38496b9c%22%7d"" target="_blank" className="underline">Teams Meeting</Link>, "Nov 9 - 02:00 PM", "Nov 9 - 03:00 PM"),
   // createData("[IBM/Elevance Health] AI in Healthcare/Customer Care", "Room 230", <Link href="<Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDlhNGNjOWQtMDQ2Mi00NWNjLTk1YWEtOThhYTc4MmY2NWNi%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%222c753377-9ef9-44dd-83be-b68103d3dea5%22%7d" target="_blank" className="underline">Teams Meeting</Link>" target="_blank" className="underline">Teams Meeting</Link>, "Nov 9 - 03:00 PM", "Nov 9 - 03:00 PM"),
-  createData("[Kinetic Vision] Development Enviornments", "Room 230", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDlhNGNjOWQtMDQ2Mi00NWNjLTk1YWEtOThhYTc4MmY2NWNi%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%222c753377-9ef9-44dd-83be-b68103d3dea5%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 9 - 02:00 PM", "Nov 9 - 03:00 PM"),
+  createData("[Kinetic Vision] Development Environments", "Room 230", <Link href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDlhNGNjOWQtMDQ2Mi00NWNjLTk1YWEtOThhYTc4MmY2NWNi%40thread.v2/0?context=%7b%22Tid%22%3a%22f5222e6c-5fc6-48eb-8f03-73db18203b63%22%2c%22Oid%22%3a%222c753377-9ef9-44dd-83be-b68103d3dea5%22%7d" target="_blank" className="underline">Teams Meeting</Link>, "Nov 9 - 02:00 PM", "Nov 9 - 03:00 PM"),
 ];
 
 export const transportData: EventInfo[] = [
