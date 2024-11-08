@@ -10,8 +10,8 @@
 import SeeedImage from "../assets/Color Logo-Seeed.png";
 import HiiImage from "../assets/hii.png";
 // import IBMImage from "../assets/ibm.svg";
-import InfineraImage from "../assets/infinera.png";
 import ICRImage from "../assets/icr.png";
+import InfineraImage from "../assets/infinera.png";
 // import KaoImage from "../assets/kao.png";
 import KineticVisionImage from "../assets/kinetic-vision.png";
 // import MicrosoftImage from "../assets/Microsoft.png";
