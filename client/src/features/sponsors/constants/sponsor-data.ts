@@ -11,6 +11,7 @@ import SeeedImage from "../assets/Color Logo-Seeed.png";
 import HiiImage from "../assets/hii.png";
 // import IBMImage from "../assets/ibm.svg";
 import InfineraImage from "../assets/infinera.png";
+import ICRImage from "../assets/icr.png";
 // import KaoImage from "../assets/kao.png";
 import KineticVisionImage from "../assets/kinetic-vision.png";
 // import MicrosoftImage from "../assets/Microsoft.png";
@@ -26,7 +27,6 @@ import KineticVisionImage from "../assets/kinetic-vision.png";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
 import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
 import XYZImage from "../assets/xyz.png";
-import ICRImage from "../assets/icr.png";
 
 
 import type { SponsorTier } from "../components/sponsor-grid";
