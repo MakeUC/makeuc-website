@@ -10,6 +10,7 @@
 import SeeedImage from "../assets/Color Logo-Seeed.png";
 import HiiImage from "../assets/hii.png";
 // import IBMImage from "../assets/ibm.svg";
+import ICRImage from "../assets/icr.png";
 import InfineraImage from "../assets/infinera.png";
 // import KaoImage from "../assets/kao.png";
 import KineticVisionImage from "../assets/kinetic-vision.png";
@@ -84,6 +85,11 @@ export const sponsorData: SponsorTier[] = [
         name: "Infinera",
         url: "https://www.infinera.com/",
         imageSrc: InfineraImage,
+      },
+      {
+        name: "ICR",
+        url: "https://icr-team.com/",
+        imageSrc: ICRImage,
       },
       // {
       //   name: "Northrop Grumman",
