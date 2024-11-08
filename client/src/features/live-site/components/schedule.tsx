@@ -42,6 +42,7 @@ export const scheduleData: EventInfo[] = [
   createData("Sim Racing", "Second Floor Common Area", "-", "Nov 10 - 04:00 AM", "Nov 10 - 05:00 AM"),
   createData("Stretching", "Second Floor Common Area", "-", "Nov 10 - 06:00 AM", "Nov 10 - 06:30 AM"),
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 10 - 09:00 AM", "Nov 10 - 10:00 AM"),
+  createData("Video Editing Basics", "Room 220", "Discord #project-help-vc-1 VC", "Nov 10 - 09:00 AM", "Nov 10 - 09:30 AM"),
   createData("Hacking Ends", "-", "-", "Nov 10 - 12:00 PM", "Nov 10 - 12:00 PM"),  
   createData("Lunch", "Second Floor Common Area", "-", "Nov 10 - 12:00 PM", "Nov 10 - 1:00 PM"),
   createData("Judging", "Discord", "Assigned Discord VC", "Nov 10 - 12:30 PM", "Nov 10 - 04:00 PM"),
