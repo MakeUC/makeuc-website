@@ -26,6 +26,7 @@ import KineticVisionImage from "../assets/kinetic-vision.png";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
 import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
 import XYZImage from "../assets/xyz.png";
+import ICRImage from "../assets/icr.png";
 
 
 import type { SponsorTier } from "../components/sponsor-grid";
@@ -84,6 +85,11 @@ export const sponsorData: SponsorTier[] = [
         name: "Infinera",
         url: "https://www.infinera.com/",
         imageSrc: InfineraImage,
+      },
+      {
+        name: "ICR",
+        url: "https://icr-team.com/",
+        imageSrc: ICRImage,
       },
       // {
       //   name: "Northrop Grumman",
