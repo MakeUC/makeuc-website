@@ -31,8 +31,8 @@ export const scheduleData: EventInfo[] = [
   createData("Opening Ceremony", "Room 230", "YouTube Stream", "Nov 9 - 11:00 AM", "Nov 9 - 11:45 AM"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 9 - 12:00 PM", "Nov 9 - 12:30 PM"),
   createData("Hacking Begins", "-", "-", "Nov 9 - 12:00 PM", "Nov 9 - 12:00 PM"),
-  createData("Hackathon 101", "TBD", "Discord #hackathon-101 VC", "Nov 10 - 12:30 PM", "Nov 10 - 01:00 PM"),
-  createData("Team Formation", "TBD", "Discord #team-formation VC", "Nov 9 - 01:00 PM", "Nov 9 - 01:30 PM"),
+  createData("Hackathon 101", "Room 220", "Discord #hackathon-101 VC", "Nov 10 - 12:30 PM", "Nov 10 - 01:00 PM"),
+  createData("Team Formation", "Room 220", "Discord #team-formation VC", "Nov 9 - 01:00 PM", "Nov 9 - 01:30 PM"),
   createData("Workshops (see below)", "Room 230", "Teams Meeting", "Nov 9 - 02:00 PM", "Nov 9 - 05:00 PM"),
   createData("Dinner", "Second Floor Common Area", "-", "Nov 9 - 06:00 PM", "Nov 9 - 06:30 PM"),
   createData("Super Smash Bros Tournament", "Esports Lab", "-", "Nov 9 - 07:00 PM", "Nov 9 - 08:00 PM"),
@@ -50,7 +50,7 @@ export const scheduleData: EventInfo[] = [
 ];
 
 export const cyberData: EventInfo[] = [
-  createData("Intro to CTF", "TBD", "Discord #cyber-uc VC", "Nov 9 - 01:30 PM", "Nov 9 - 02:00 PM"),
+  createData("Intro to CTF", "Room 220", "Discord #cyber-uc VC", "Nov 9 - 01:30 PM", "Nov 9 - 02:00 PM"),
   createData("CTF Start", "-", "-", "Nov 9 - 02:00 PM", "Nov 9 - 02:00 PM"),
   createData("CTF End", "-", "-", "Nov 10 - 12:00 AM", "Nov 10 - 12:00 AM"),
 ];
