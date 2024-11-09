@@ -34,7 +34,10 @@ export const verifyCommand = {
 
     const participant = await prisma.registrant.findFirst({
       where: {
-        email: email,
+        email: {
+          equals: email,
+          mode: "insensitive",
+        },
         registrationYear: 2024,
       },
     });
