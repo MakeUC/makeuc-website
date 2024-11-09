@@ -13,7 +13,7 @@ export function SponsorResources() {
   return (
     <div className="grid grid-cols-1 gap-8">
       <Accordion type="multiple" className="w-full">
-        <AccordionItem value="PRHI">
+        {/* <AccordionItem value="PRHI">
           <AccordionTrigger value={"1"}>
             <h2 className="text-xl text-left font-semibold">Pittsburgh Regional Health Initiative</h2>
           </AccordionTrigger>
@@ -100,6 +100,14 @@ export function SponsorResources() {
           </AccordionTrigger>
           <AccordionContent className="border-b border-muted-foreground">
             <Link className="underline text-primary" href={"https://github.com/academic-initiative/documentation/blob/main/academic-initiative/how-to/How-to-create-an-IBM-Cloud-account/readme.md"}>IBM Cloud Account</Link>
+          </AccordionContent>
+        </AccordionItem> */}
+        <AccordionItem value="Kinetic Vision">
+          <AccordionTrigger value={"value"}>
+            <h2 className="text-xl text-left font-semibold">Kinetic Vision</h2>
+          </AccordionTrigger>
+          <AccordionContent className="border-b border-muted-foreground">
+            <Link className="underline text-primary" href={"https://kineticvision-my.sharepoint.com/:b:/g/personal/sfasone_kinetic-vision_com/EdApFRW0Ub9Ak_YdMs-9SnkBVfvcC_f1yfHrePxn3iiA6A?e=4cYDkg"}>Kinetic Vision's 3D Printing Challenge</Link>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
