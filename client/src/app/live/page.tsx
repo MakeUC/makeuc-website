@@ -43,6 +43,9 @@ export default async function LiveSite() {
         <Link href="https://drive.google.com/drive/folders/1WcYK2-0QmweQIlju5xrPwiS2R2nt6M22?usp=sharing" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Venue Maps</Button>
         </Link>
+        <Link href="https://ctf.cyberatuc.org" target="_blank">
+          <Button className="flex gap-2 mt-4" size="lg">CTF Website</Button>
+        </Link>
       </section>
       <h1 className="flex items-center justify-evenly py-8 font-bold text-3xl">Hacker Schedule</h1>
       <section className="py-8">
