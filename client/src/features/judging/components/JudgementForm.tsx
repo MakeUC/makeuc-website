@@ -25,6 +25,7 @@ const judgementFormSchema = z.object({
   educationTrack: z.boolean().optional(),
   socialIssuesTrack: z.boolean().optional(),
   securityTrack: z.boolean().optional(),
+  hardwareTrack: z.boolean().optional(),
 });
 
 export type JudgementFormValues = z.infer<typeof judgementFormSchema>;
@@ -44,7 +45,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
   });
 
   const onSubmit = useCallback<SubmitHandler<JudgementFormValues>>(formValues => {
-    const { greenTechTrack, securityTrack, socialIssuesTrack, educationTrack, ...values } = formValues;
+    const { greenTechTrack, securityTrack, socialIssuesTrack, educationTrack, hardwareTrack, ...values } = formValues;
     const promise = submitJudgement({
       variables: {
         data: {
@@ -57,6 +58,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
               ...(educationTrack ? [{ name: "Education" }] : []),
               ...(socialIssuesTrack ? [{ name: "Social Issues" }] : []),
               ...(securityTrack ? [{ name: "Security" }] : []),
+              ...(hardwareTrack ? [{ name: "Hardware" }] : []),
             ],
           },
           project: {
@@ -96,6 +98,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       <Checkbox control={control} label="Applicable to Education Track?" name="educationTrack" />
       <Checkbox control={control} label="Applicable to Social Issues Track?" name="socialIssuesTrack" />
       <Checkbox control={control} label="Applicable to Security Track?" name="securityTrack" />
+      <Checkbox control={control} label="Applicable to Hardware Track?" name="hardwareTrack" />
       <div className="flex justify-center gap-2 md:justify-end md:col-span-2">
         <Button className="bg-muted-gray-foreground" onClick={onCancel}>Cancel</Button>
         <Button type="submit">Submit Judgment</Button>
