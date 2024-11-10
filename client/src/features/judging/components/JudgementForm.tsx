@@ -98,6 +98,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       <Checkbox control={control} label="Applicable to Education Track?" name="educationTrack" />
       <Checkbox control={control} label="Applicable to Social Issues Track?" name="socialIssuesTrack" />
       <Checkbox control={control} label="Applicable to Security Track?" name="securityTrack" />
+      <Checkbox control={control} label="Applicable to Hardware Track?" name="hardwareTrack" />
       <div className="flex justify-center gap-2 md:justify-end md:col-span-2">
         <Button className="bg-muted-gray-foreground" onClick={onCancel}>Cancel</Button>
         <Button type="submit">Submit Judgment</Button>
