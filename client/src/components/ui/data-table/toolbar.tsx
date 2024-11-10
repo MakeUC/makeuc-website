@@ -31,6 +31,7 @@ const TRACK_OPTIONS: DataTableFacetedFilterOption[] = [
   { label: "Education", value: "Education" },
   { label: "Social Issues", value: "Social Issues" },
   { label: "Security", value: "Security" },
+  { label: "Hardware", value: "Hardware" },
 ];
 
 
