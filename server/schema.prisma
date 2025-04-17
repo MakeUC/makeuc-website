@@ -77,7 +77,7 @@ model Registrant {
   mlhCodeOfConductAgreement        Boolean   @default(false)
   mlhPrivacyPolicyAgreement        Boolean   @default(false)
   mlhEmailAgreement                Boolean   @default(false)
-  registrationYear                 Int?      @default(2024)
+  registrationYear                 Int?      @default(2025)
   createdAt                        DateTime? @default(now())
   verified                         Boolean   @default(false)
   discordVerified                  Boolean   @default(false)
