@@ -1,14 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
-
 import { About } from "../components/general/about";
 import { Faq } from "../components/general/faq";
 import { HeroSection } from "../components/general/hero-section";
 import { ViewportSection } from "../components/ui/viewport-section";
 import { TrackGrid } from "../features/tracks/components/track-grid";
-
 
 export default async function HomePage() {
   return (

@@ -11,7 +11,8 @@ export default function RegistrationPage() {
     <div className="flex justify-center">
       <div className="px-8 w-full max-w-5xl">
         <PageTitle>Registration</PageTitle>
-        <RegistrationForm />
+        {/*<RegistrationForm />*/}
+        {<div>Registration is currently closed</div>}
       </div>
     </div>
   );
