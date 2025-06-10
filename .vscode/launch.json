@@ -18,6 +18,21 @@
       "env": {
         "POSTGRES_PRISMA_URL": "postgresql://postgres@localhost:5432/mydb?schema=public"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Yarn Dev (monorepo)",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {},
+      "stopOnEntry": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }
