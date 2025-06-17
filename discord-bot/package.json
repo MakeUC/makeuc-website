@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "echo 'discord bot disabled for now' && exit 0",
+    "dev": "ts-node src/index.ts",
     "generate": "prisma generate",
     "lint": "eslint src/*.ts src/**/*.ts --max-warnings 0",
     "start": "node dist/index.js"
