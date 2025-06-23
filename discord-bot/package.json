@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/index.ts",
+    "dev": "MY_DEV_MODE=1 ts-node src/index.ts",
     "generate": "prisma generate",
     "lint": "eslint src/*.ts src/**/*.ts --max-warnings 0",
     "start": "node dist/index.js"

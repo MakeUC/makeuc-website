@@ -8,7 +8,15 @@ const EXPECTED_ENV_VARIABLES = [
 const missingVariables = EXPECTED_ENV_VARIABLES.filter(varKey => !process.env[varKey]);
 
 if (missingVariables.length > 0) {
-  throw new Error(`The Discord Bot is missing the following environment variables: ${missingVariables.join(", ")}`);
+  // Check if running in dev mode (via custom MY_DEV_MODE env var set in package.json)
+  const isDev = process.env.MY_DEV_MODE === "1";
+  if (isDev) {
+    // eslint-disable-next-line no-console
+    console.warn(`The Discord Bot is missing the following environment variables: ${missingVariables.join(", ")}. Exiting in dev mode.`);
+    process.exit(0);
+  } else {
+    throw new Error(`The Discord Bot is missing the following environment variables: ${missingVariables.join(", ")}`);
+  }
 }
 
 export const CHECK_IN = process.env.DISCORD_CHECK_IN;
