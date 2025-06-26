@@ -26,7 +26,6 @@ import { SchoolCombobox } from "./school-selector";
 
 import type { SubmitHandler } from "react-hook-form";
 
-// Generate year options from current year to 7 years in the future
 const currentYear = new Date().getFullYear();
 const GRADUATION_YEAR_OPTIONS = Array.from({ length: 8 }, (_, i) => ({
   key: (currentYear + i).toString(),
