@@ -34,7 +34,8 @@ const registrationFormSchema = z.object({
   age: z.number().min(1),
   gender: z.string().min(1),
   ethnicity: z.string().min(1),
-  school: z.string().cuid().min(1),
+  school: z.string().min(1),
+  manualSchoolEntry: z.string().optional(),
   major: z.string().min(1),
   degree: z.string().min(1),
   country: z.string().min(1),
@@ -45,7 +46,12 @@ const registrationFormSchema = z.object({
   mlhCodeOfConductAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Code of Conduct." }) }),
   mlhPrivacyPolicyAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Privacy Policy." }) }),
   mlhEmailAgreement: z.boolean().optional(),
-});
+ }).refine(data => {
+  return data.school !== "other" || !!data.manualSchoolEntry?.trim();
+ }, {
+  path: ["manualSchoolEntry"],
+  message: "Please enter your school name if it’s not listed.",
+ });
 
 export type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 
@@ -59,7 +65,7 @@ export function RegistrationForm() {
   const [createRegistrant] = useMutation(CreateRegistrantDocument);
 
   const onSubmit = useCallback<SubmitHandler<RegistrationFormValues>>(formValues => {
-    const { school, ...values } = formValues;
+    const { school, manualSchoolEntry, ...values } = formValues;
 
     const promise = createRegistrant({
       variables: {
@@ -68,7 +74,9 @@ export function RegistrationForm() {
           resume: !!values.resume?.[0] ? {
             upload: values.resume[0],
           } : undefined,
-          school: { connect: { id: school } },
+          school: school === "other"
+            ? { create: { name: manualSchoolEntry || "Unnamed School" } }
+            : { connect: { id: school } }
         },
       },
     });
@@ -105,6 +113,14 @@ export function RegistrationForm() {
       </FormSection>
       <FormSection name="Education" description="Based on your current academic institution and what degree you are working towards.">
         <SchoolCombobox control={control} name="school" />
+        {control._formValues?.school === "other" && (
+          <Input
+            control={control}
+            label="Enter School Name"
+            name="manualSchoolEntry"
+          placeholder="Type your school name"
+          />
+        )}
         <FormGroup>
           <Input control={control} label="Major(s)" name="major" placeholder="Enter Major" />
           <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
