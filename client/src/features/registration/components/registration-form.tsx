@@ -35,6 +35,7 @@ const registrationFormSchema = z.object({
   gender: z.string().min(1),
   ethnicity: z.string().min(1),
   school: z.string().cuid().min(1),
+  manualSchoolEntry: z.string().optional(),
   major: z.string().min(1),
   degree: z.string().min(1),
   country: z.string().min(1),
@@ -105,6 +106,14 @@ export function RegistrationForm() {
       </FormSection>
       <FormSection name="Education" description="Based on your current academic institution and what degree you are working towards.">
         <SchoolCombobox control={control} name="school" />
+        {control._formValues?.school === "other" && (
+          <Input
+            control={control}
+            label="Enter School Name"
+            name="manualSchoolEntry"
+          placeholder="Type your school name"
+          />
+        )}
         <FormGroup>
           <Input control={control} label="Major(s)" name="major" placeholder="Enter Major" />
           <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
