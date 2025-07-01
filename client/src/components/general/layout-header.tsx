@@ -1,9 +1,9 @@
 import { Edit, CalendarCheck } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
-import LogoPng from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
+
+import { Logo } from "../ui/Logo";
 
 import { MLHBanner } from "./mlh-banner";
 import { DesktopNavbar } from "./navbar-desktop";
@@ -33,7 +33,7 @@ export function LayoutHeader() {
         {/* Left Side */}
         <div className="flex gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Image src={LogoPng} alt="MakeUC Logo" width="54" height="54" />
+            <Logo width={54}/>
           </Link>
 
           <DesktopNavbar className="sm:flex" links={LINKS} />

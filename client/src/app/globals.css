@@ -8,25 +8,26 @@
 
 @layer base {
   :root {
+    --logo: #e8b32d;
     --background: #000;
     --background-inset-color: #513cba;
-    --foreground: #8a3797;
-    --foreground-inset-color: #542d92;
-    --muted: #8697b7;
-    --muted-foreground: #46505f;
-    --muted-gray-foreground: #8697b7;
-    --popover: #e8b32d;
-    --popover-foreground: #513cba;
+    --foreground: #e8b32d;
+    --foreground-inset-color: #513cba;
+    --muted: #513cba;
+    --muted-foreground: #e8b32d;
+    --muted-gray-foreground: #e8b32d;
+    --popover: #8a3797;
+    --popover-foreground: #e8b32d;
     --card: #e8b32d;
-    --card-foreground: #513cba;
+    --card-foreground: #e8b32d;
     --border: #8697b7;
-    --input: #8697b7;
-    --primary: #8a3797;
-    --primary-foreground: #e8b32d;
+    --input: #513cba;
+    --primary: #e8b32d;
+    --primary-foreground: #46505f;
     --secondary: #513cba;
     --secondary-foreground: #e8b32d;
-    --accent: #d15635;
-    --accent-foreground: #e8b32d;
+    --accent: #e8b32d;
+    --accent-foreground: #46505f;
     --destructive: #d15635;
     --destructive-foreground: #e8b32d;
     --ring: #542d92;
@@ -125,12 +126,6 @@
     .remove-rounded-b * {
       @apply rounded-b-none;
     }
-  }
-
-  .hero-image {
-    background: url("../assets/header.svg");
-    background-repeat: repeat-x;
-    background-size: 125vh auto;
   }
 
   .titillium-web-extralight {
