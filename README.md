@@ -10,9 +10,20 @@
     - [Discord Bot](#discord-bot)
   - [Current Standards](#current-standards)
 
+
 ## Overview
 
 This is the repository for the [MakeUC Website](https://makeuc.io)!
+
+## Folder Structure & Sub-READMEs
+
+This repository is organized into several main folders, each with its own README for details and practices specific to that part of the project:
+
+- [client/README.md](client/README.md): Next.js frontend, registration enable/disable, theming, and SVG editing practices
+- [discord-bot/README.md](discord-bot/README.md): Discord bot setup and usage
+- [server/README.md](server/README.md): KeystoneJS backend and database
+
+Refer to each folder's README for details on working with that part of the codebase.
 
 ## Getting Started
 
