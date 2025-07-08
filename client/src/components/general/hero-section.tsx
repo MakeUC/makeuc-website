@@ -17,7 +17,7 @@ export function HeroSection() {
       }}
     >
       <div className="flex-1 flex flex-col justify-end">
-        <div className="z-9 flex flex-col md:flex-row justify-between items-end w-full max-w-7xl gap-16 mx-auto p-8 pb-12">
+        <div className="z-9 flex flex-col md:flex-row justify-between items-center w-full max-w-7xl gap-16 mx-auto p-8 pb-12">
           <div className="flex flex-col items-start text-left w-full md:w-auto">
             <div className="text-muted-foreground text-large mt-4 header-text text-left">
               <h1

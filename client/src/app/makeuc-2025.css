@@ -456,3 +456,28 @@ body {
 p.text-muted-foreground,p.titillium-web-regular,h3.text-md {
   color: #fff;
 }
+
+tr.bg-primary {
+  background-color: var(--popover);
+}
+
+input, button, textarea, select, [type="button"] {
+  --tw-drop-shadow: drop-shadow(0 2px 5px rgb(0 0 0 / 25%));
+
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+[role="listbox"],[role="dialog"] div,[role="dialog"] input {
+  background-color: var(--muted) !important;
+  filter:none;
+  color: var(--foreground) !important;
+}
+
+input::placeholder,
+[role="dialog"] input::placeholder {
+  color: var(--foreground) !important;
+}
+
+.bg-destructive {
+  color: white !important;
+}
