@@ -38,7 +38,7 @@ export const verifyCommand = {
           equals: email,
           mode: "insensitive",
         },
-        registrationYear: 2024,
+        registrationYear: 2025,
       },
     });
 
