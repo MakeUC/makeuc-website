@@ -18,15 +18,15 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WHEN IS MAKEUC?",
-    dropDown: "MakeUC 2024 will start on November 9th and lasts 24 hours, ending on November 10th.",
+    dropDown: "MakeUC 2025 will start on November 8th and lasts 24 hours, ending on November 9th.",
   },
   {
     card: "WILL MAKEUC BE IN PERSON?",
-    dropDown: "MakeUC 2024 will be held in person and online. In-person spots will be limited, virtual spots will be unlimited!",
+    dropDown: "MakeUC 2025 will be held in person. In-person spots will be limited, if you do not recieve an in person spot please reach out to our organizers at info@makeuc.io",
   },
   {
     card: "WHO CAN ATTEND IN PERSON?",
-    dropDown: "We will release more information soon about who is eligible to attend in person.",
+    dropDown: "We will release more information soon about who is eligible to attend in person. First come first serve to register for in person attendance",
   },
   {
     card: "HOW MUCH DOES IT COST?",
@@ -46,7 +46,7 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WILL I BE ABLE TO MEET SPONSORS?",
-    dropDown: "Yes! Many sponsors will be giving workshops throughout the event that all hackers can attend. We will also have an in-person and virtual sponsor expo where you can interact directly with sponsor representatives.",
+    dropDown: "Yes! Many sponsors will be giving workshops throughout the event that all hackers can attend. We will also have an in-person sponsor expo where you can interact directly with sponsor representatives.",
   },
   {
     card: "WHAT ARE HACKATHON TRACKS?",
