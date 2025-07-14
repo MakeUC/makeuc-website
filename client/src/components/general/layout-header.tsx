@@ -1,10 +1,9 @@
-import { Edit , CalendarCheck } from "lucide-react";
-import Image from "next/image";
+import { Edit, CalendarCheck } from "lucide-react";
 import Link from "next/link";
 
-
-import LogoPng from "~/assets/logo.png";
 import { Button } from "~/components/ui/button";
+
+import { Logo } from "../ui/Logo";
 
 import { MLHBanner } from "./mlh-banner";
 import { DesktopNavbar } from "./navbar-desktop";
@@ -34,7 +33,7 @@ export function LayoutHeader() {
         {/* Left Side */}
         <div className="flex gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Image src={LogoPng} alt="MakeUC Logo" width="54" height="54" />
+            <Logo width={54}/>
           </Link>
 
           <DesktopNavbar className="sm:flex" links={LINKS} />
@@ -46,7 +45,10 @@ export function LayoutHeader() {
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
           </Link> */}
           <Link href="/live" className="hidden sm:block" tabIndex={-1}>
-            <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="16px" /></Button>
+            <Button className="flex gap-2" size="sm">
+              Live Site
+              <CalendarCheck size="16px" />
+            </Button>
           </Link>
           <MobileNavbar className="sm:hidden" links={LINKS} />
           {/* <div className="self-end">

@@ -1,4 +1,5 @@
 # Rai's Monkeypatched Developemnt Setup Guide
+note, this is outdated a bit since some issues with workarounds listed here have been fixed! (ex, discord env variable requirement)
 
 Basically, I'll detail how I set up the repository (only the client for now, but will update) in painful details so hopefully you can get the site ready for local development. This is completely objective and based on my personal experience setting up the site, so things might change, and other debugging stuff might and will get added as I get more user stories in.
 
