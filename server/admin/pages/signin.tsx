@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Logo from "../assets/logo.png"
 import GoogleLogo from "../assets/google-logo.png";
+import Logo from "../assets/logo.png";
 import MicrosoftLogo from "../assets/microsoft.svg";
 
 
 const SUPPORTED_STRATEGIES = {
-  google: { name: "Google", icon: <Image alt="Google" src={GoogleLogo} width={20} height={20} />, className: "" },
-  microsoft: { name: "Microsoft", icon: <Image alt="Microsoft" src={MicrosoftLogo} width={20} height={20} />, className: "" },
+  google: { name: "Google", iconType: "img", iconSrc: GoogleLogo, className: "" },
+  microsoft: { name: "Microsoft", iconType: "svg", iconSrc: MicrosoftLogo, className: "" },
 } as const;
 
 export interface LoginFormProps {
@@ -30,7 +30,11 @@ export default function SignInForm() {
                 href={`/auth/strategy/${strategyKey}/login?state=isAdminLogin`}
                 style={{ display: "flex", gap: "0.5rem", padding: "0.5rem 0.75rem", background: "#fff", color: "#212121", fontWeight: "500", borderRadius: "9999px" }}
               >
-                {strategy.icon} Sign in with {strategy.name}
+                {strategy.iconType === "img" ? (
+                  <Image alt={strategy.name} src={strategy.iconSrc} width={20} height={20} />
+                ) : (
+                  <strategy.iconSrc width={20} height={20} title={strategy.name} />
+                )} Sign in with {strategy.name}
               </Link>
             );
           })
