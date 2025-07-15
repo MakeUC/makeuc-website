@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Logo from "../assets/logo.png"
 import GoogleLogo from "../assets/google-logo.png";
+import Logo from "../assets/logo.png";
 import MicrosoftLogo from "../assets/microsoft.svg";
 
 
