@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Registrant" ALTER COLUMN "registrationYear" SET DEFAULT 2024;
+ALTER TABLE "Registrant" ALTER COLUMN "registrationYear" SET DEFAULT 2025;
