@@ -43,14 +43,14 @@ export function About() {
         >
           IEEE@UC
         </Link>{" "}
-        supported by{" "}
+        {/* supported by{" "}
         <Link
           href="https://innovation.uc.edu/"
           target="_blank"
           className="text-primary"
         >
           1819 Innovation Hub
-        </Link>
+        </Link> */}
         .
       </p>
       <div className="flex flex-col gap-8 justify-center items-center md:flex-row">
@@ -61,13 +61,13 @@ export function About() {
         >
           <Image alt="IEEE@UC Logo" src={UCIEEELogo} width={300} />
         </Link>
-        <Link
+        {/* <Link
           href="https://innovation.uc.edu/"
           target="_blank"
           className="text-primary"
         >
           <Image alt="1819 Innovation Hub Logo" src={Logo1819} width={200} />
-        </Link>
+        </Link> */}
       </div>
       <hr className="border border-muted-foreground" />
       <h3 className="text-2xl font-bold tracking-wider text-center titillium-web-bold">
