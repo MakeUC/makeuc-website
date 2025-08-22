@@ -1,3 +1,7 @@
+
+
+
+
 "use client";
 
 import { isApolloError, useMutation } from "@apollo/client";
@@ -23,10 +27,22 @@ import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constant
 import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
 import { CreateRegistrantDocument } from "../generated/graphql/graphql";
 
+
+
 import styles from "./registration-form.module.css";
 import { SchoolCombobox } from "./school-selector";
 
-import type { SubmitHandler } from "react-hook-form";
+// Graduation year dropdown options
+const currentYear = new Date().getFullYear();
+const GRADUATION_YEAR_OPTIONS = Array.from({ length: 8 }, (_, i) => ({
+  key: (currentYear + i).toString(),
+  value: (currentYear + i).toString(),
+  label: (currentYear + i).toString(),
+}));
+
+
+
+
 
 
 const registrationFormSchema = z.object({
@@ -41,7 +57,7 @@ const registrationFormSchema = z.object({
   major: z.string().min(1),
   degree: z.string().min(1),
   country: z.string().min(1),
-  expectedGraduationYear: z.number().min(2000),
+  expectedGraduationYear: z.string().min(1),
   resume: z.custom<FileList>(file => file instanceof FileList).optional(),
   hackathonsAttended: z.number().optional(),
   notes: z.string().optional(),
@@ -134,13 +150,15 @@ export function RegistrationForm() {
 
   const [createRegistrant] = useMutation(CreateRegistrantDocument);
 
-  const onSubmit = useCallback<SubmitHandler<RegistrationFormValues>>(formValues => {
-    const { school, manualSchoolEntry, ...values } = formValues;
+  const onSubmit = useCallback((formValues: RegistrationFormValues) => {
+
+    const { school, manualSchoolEntry, expectedGraduationYear, ...values } = formValues;
 
     const promise = createRegistrant({
       variables: {
         data: {
           ...values,
+          expectedGraduationYear: parseInt(expectedGraduationYear),
           resume: !!values.resume?.[0] ? {
             upload: values.resume[0],
           } : undefined,
@@ -210,7 +228,7 @@ export function RegistrationForm() {
             <Combobox control={control} label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />
           </div>
           <div className="mt-8">
-            <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" />
+            <Select control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Select Expected Graduation Year" options={GRADUATION_YEAR_OPTIONS} />
           </div>
         </div>
       </FormSection>
