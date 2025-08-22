@@ -1,7 +1,3 @@
-
-
-
-
 "use client";
 
 import { isApolloError, useMutation } from "@apollo/client";
@@ -22,12 +18,10 @@ import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
 
-import { MAKEUC_LIABILITY_WAIVER, MAKEUC_PHOTO_RELEASE } from "../constants/makeuc-copy";
+import { MAKEUC_CODE_OF_CONDUCT, MAKEUC_HACKATHON_RULES, MAKEUC_LIABILITY_RELEASE } from "../constants/makeuc-copy";
 import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constants/mlh-copy";
-import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
+import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS, MAJOR_OPTIONS } from "../constants/select-options";
 import { CreateRegistrantDocument } from "../generated/graphql/graphql";
-
-
 
 import styles from "./registration-form.module.css";
 import { SchoolCombobox } from "./school-selector";
@@ -64,8 +58,9 @@ const registrationFormSchema = z.object({
   mlhCodeOfConductAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Code of Conduct." }) }),
   mlhPrivacyPolicyAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Privacy Policy." }) }),
   mlhEmailAgreement: z.boolean().optional(),
-  makeucLiabilityWaiver: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Liability Waiver." }) }),
-  makeucPhotoRelease: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Photo Release." }) }),
+  makeucCodeOfConduct: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Code of Conduct." }) }),
+  makeucHackathonRules: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Hackathon Rules." }) }),
+  makeucLiabilityRelease: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Liability Release." }) }),
   acceptAllAuthorization: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept all authorizations." }) }),
 }).refine(data => {
   return data.school !== "other" || !!data.manualSchoolEntry?.trim();
@@ -99,8 +94,9 @@ export function RegistrationForm() {
   // Watch all relevant checkboxes
   const mlhCodeOfConductAgreement = watch("mlhCodeOfConductAgreement");
   const mlhPrivacyPolicyAgreement = watch("mlhPrivacyPolicyAgreement");
-  const makeucLiabilityWaiver = watch("makeucLiabilityWaiver");
-  const makeucPhotoRelease = watch("makeucPhotoRelease");
+  const makeucCodeOfConduct = watch("makeucCodeOfConduct");
+  const makeucHackathonRules = watch("makeucHackathonRules");
+  const makeucLiabilityRelease = watch("makeucLiabilityRelease");
   const acceptAllAuthorization = watch("acceptAllAuthorization");
   // Optional checkbox
   const mlhEmailAgreement = watch("mlhEmailAgreement");
@@ -112,20 +108,23 @@ export function RegistrationForm() {
     if (acceptAllAuthorization) {
       setValue("mlhCodeOfConductAgreement", true);
       setValue("mlhPrivacyPolicyAgreement", true);
-      setValue("makeucLiabilityWaiver", true);
-      setValue("makeucPhotoRelease", true);
+      setValue("makeucCodeOfConduct", true);
+      setValue("makeucHackathonRules", true);
+      setValue("makeucLiabilityRelease", true);
     }
     // If the user toggles 'accept all' OFF, set all required to false ONLY if all were previously checked
     else if (
       mlhCodeOfConductAgreement &&
       mlhPrivacyPolicyAgreement &&
-      makeucLiabilityWaiver &&
-      makeucPhotoRelease
+      makeucCodeOfConduct &&
+      makeucHackathonRules &&
+      makeucLiabilityRelease
     ) {
       setValue("mlhCodeOfConductAgreement", false);
       setValue("mlhPrivacyPolicyAgreement", false);
-      setValue("makeucLiabilityWaiver", false);
-      setValue("makeucPhotoRelease", false);
+      setValue("makeucCodeOfConduct", false);
+      setValue("makeucHackathonRules", false);
+      setValue("makeucLiabilityRelease", false);
     }
     // Otherwise, do nothing (prevents loop)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,15 +135,22 @@ export function RegistrationForm() {
     if (
       mlhCodeOfConductAgreement &&
       mlhPrivacyPolicyAgreement &&
-      makeucLiabilityWaiver &&
-      makeucPhotoRelease
+      makeucCodeOfConduct &&
+      makeucHackathonRules &&
+      makeucLiabilityRelease
     ) {
       setValue("acceptAllAuthorization", true);
     } else {
       setValue("acceptAllAuthorization", false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mlhCodeOfConductAgreement, mlhPrivacyPolicyAgreement, makeucLiabilityWaiver, makeucPhotoRelease]);
+  }, [
+    mlhCodeOfConductAgreement, 
+    mlhPrivacyPolicyAgreement, 
+    makeucCodeOfConduct, 
+    makeucHackathonRules, 
+    makeucLiabilityRelease,
+  ]);
 
   const { push } = useRouter();
 
@@ -221,7 +227,13 @@ export function RegistrationForm() {
             )}
           </div>
           <FormGroup className="mt-8">
-            <Input control={control} label="Major(s)" name="major" placeholder="Enter Major" />
+            <Combobox
+              control={control}
+              label="Major(s)"
+              name="major"
+              placeholder="Select Major"
+              options={MAJOR_OPTIONS.map(m => ({ key: m, value: m, label: m }))}
+            />
             <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
           </FormGroup>
           <div className="mt-8">
@@ -249,8 +261,9 @@ export function RegistrationForm() {
         <div className="mb-4 flex flex-col gap-4">
           <div className="font-semibold mb-1">MakeUC</div>
           <div className="flex flex-col gap-4">
-            <Checkbox control={control} label={<span dangerouslySetInnerHTML={{ __html: MAKEUC_LIABILITY_WAIVER }} />} name="makeucLiabilityWaiver" />
-            <Checkbox control={control} label={<span dangerouslySetInnerHTML={{ __html: MAKEUC_PHOTO_RELEASE }} />} name="makeucPhotoRelease" />
+            <Checkbox control={control} label={MAKEUC_CODE_OF_CONDUCT} name="makeucCodeOfConduct" />
+            <Checkbox control={control} label={MAKEUC_HACKATHON_RULES} name="makeucHackathonRules" />
+            <Checkbox control={control} label={MAKEUC_LIABILITY_RELEASE} name="makeucLiabilityRelease" />
           </div>
         </div>
         <div className="mt-4">
