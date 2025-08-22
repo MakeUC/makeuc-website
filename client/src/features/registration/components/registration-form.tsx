@@ -3,7 +3,7 @@
 import { isApolloError, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import * as z from "zod";
@@ -18,6 +18,7 @@ import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
 
+import { MAKEUC_LIABILITY_WAIVER, MAKEUC_PHOTO_RELEASE } from "../constants/makeuc-copy";
 import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constants/mlh-copy";
 import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
 import { CreateRegistrantDocument } from "../generated/graphql/graphql";
@@ -45,14 +46,68 @@ const registrationFormSchema = z.object({
   mlhCodeOfConductAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Code of Conduct." }) }),
   mlhPrivacyPolicyAgreement: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MLH Privacy Policy." }) }),
   mlhEmailAgreement: z.boolean().optional(),
+  makeucLiabilityWaiver: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Liability Waiver." }) }),
+  makeucPhotoRelease: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept the MakeUC Photo Release." }) }),
+  acceptAllAuthorization: z.literal<boolean>(true, { errorMap: () => ({ message: "You must accept all authorizations." }) }),
 });
 
 export type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 
+
 export function RegistrationForm() {
-  const { control, handleSubmit } = useForm<RegistrationFormValues>({
+  const { control, handleSubmit, setValue, watch } = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationFormSchema),
   });
+
+  // Watch all relevant checkboxes
+  const mlhCodeOfConductAgreement = watch("mlhCodeOfConductAgreement");
+  const mlhPrivacyPolicyAgreement = watch("mlhPrivacyPolicyAgreement");
+  const makeucLiabilityWaiver = watch("makeucLiabilityWaiver");
+  const makeucPhotoRelease = watch("makeucPhotoRelease");
+  const acceptAllAuthorization = watch("acceptAllAuthorization");
+  // Optional checkbox
+  const mlhEmailAgreement = watch("mlhEmailAgreement");
+
+  // When acceptAllAuthorization is toggled, set all others
+  // Only set all checkboxes when acceptAllAuthorization is toggled directly
+  useEffect(() => {
+    // If the user toggles 'accept all' ON, set all required to true
+    if (acceptAllAuthorization) {
+      setValue("mlhCodeOfConductAgreement", true);
+      setValue("mlhPrivacyPolicyAgreement", true);
+      setValue("makeucLiabilityWaiver", true);
+      setValue("makeucPhotoRelease", true);
+    }
+    // If the user toggles 'accept all' OFF, set all required to false ONLY if all were previously checked
+    else if (
+      mlhCodeOfConductAgreement &&
+      mlhPrivacyPolicyAgreement &&
+      makeucLiabilityWaiver &&
+      makeucPhotoRelease
+    ) {
+      setValue("mlhCodeOfConductAgreement", false);
+      setValue("mlhPrivacyPolicyAgreement", false);
+      setValue("makeucLiabilityWaiver", false);
+      setValue("makeucPhotoRelease", false);
+    }
+    // Otherwise, do nothing (prevents loop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [acceptAllAuthorization, setValue]);
+
+  // If any individual is unchecked, uncheck acceptAllAuthorization
+  useEffect(() => {
+    if (
+      mlhCodeOfConductAgreement &&
+      mlhPrivacyPolicyAgreement &&
+      makeucLiabilityWaiver &&
+      makeucPhotoRelease
+    ) {
+      setValue("acceptAllAuthorization", true);
+    } else {
+      setValue("acceptAllAuthorization", false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mlhCodeOfConductAgreement, mlhPrivacyPolicyAgreement, makeucLiabilityWaiver, makeucPhotoRelease]);
 
   const { push } = useRouter();
 
@@ -117,10 +172,25 @@ export function RegistrationForm() {
         <InputNumber control={control} label="Number of Hackathons Attended" name="hackathonsAttended" placeholder="Enter Number of Hackathons Attended" />
         <TextArea control={control} label="Additional Notes" name="notes" placeholder="Enter Additional Notes" />
       </FormSection>
-      <FormSection name="MLH Authorization" description="We are an MLH Member Event and as such are required to enforce the following.">
-        <Checkbox control={control} label={MLH_CODE_OF_CONDUCT} name="mlhCodeOfConductAgreement" />
-        <Checkbox control={control} label={MLH_PRIVACY_POLICY} name="mlhPrivacyPolicyAgreement" />
-        <Checkbox control={control} label={MLH_EMAILS} name="mlhEmailAgreement" />
+      <FormSection name="Authorization" description="Please review and accept the following required agreements to participate in MakeUC.">
+        <div className="mb-4 flex flex-col gap-4">
+          <div className="font-semibold mb-1">MLH</div>
+          <div className="flex flex-col gap-4">
+            <Checkbox control={control} label={MLH_CODE_OF_CONDUCT} name="mlhCodeOfConductAgreement" />
+            <Checkbox control={control} label={MLH_PRIVACY_POLICY} name="mlhPrivacyPolicyAgreement" />
+            <Checkbox control={control} label={MLH_EMAILS} name="mlhEmailAgreement" />
+          </div>
+        </div>
+        <div className="mb-4 flex flex-col gap-4">
+          <div className="font-semibold mb-1">MakeUC</div>
+          <div className="flex flex-col gap-4">
+            <Checkbox control={control} label={<span dangerouslySetInnerHTML={{ __html: MAKEUC_LIABILITY_WAIVER }} />} name="makeucLiabilityWaiver" />
+            <Checkbox control={control} label={<span dangerouslySetInnerHTML={{ __html: MAKEUC_PHOTO_RELEASE }} />} name="makeucPhotoRelease" />
+          </div>
+        </div>
+        <div className="mt-4">
+          <Checkbox control={control} label="accept all required" name="acceptAllAuthorization" />
+        </div>
       </FormSection>
       <div className="flex justify-center md:justify-end md:col-span-2">
         <Button type="submit">Submit Registration</Button>

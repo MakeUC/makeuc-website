@@ -84,9 +84,10 @@ export interface FormFieldProps {
   fieldState?: ControllerFieldState;
   detachedError?: boolean;
   children?: ReactNode;
+  labelClassName?: string;
 }
 
-export function FormField({ name, label, labelSide = "top", fieldState, detachedError, children }: FormFieldProps): JSX.Element {
+export function FormField({ name, label, labelSide = "top", fieldState, detachedError, children, labelClassName }: FormFieldProps): JSX.Element {
   if (!label) {
     return <>{children}</>;
   }
@@ -94,7 +95,7 @@ export function FormField({ name, label, labelSide = "top", fieldState, detached
   return (
     <FormFieldError fieldState={fieldState} detachedError={detachedError}>
       <div className={cn("flex flex-1 gap-4", labelSide ? LabelSideCss[labelSide] : undefined)}>
-        <Label className="block" htmlFor={name}>{label}</Label>
+        <Label className={cn("block", labelClassName)} htmlFor={name}>{label}</Label>
         <div>{children}</div>
       </div>
     </FormFieldError>

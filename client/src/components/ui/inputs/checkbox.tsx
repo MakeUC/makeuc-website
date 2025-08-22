@@ -29,6 +29,7 @@ const CheckboxRaw = React.forwardRef<
       labelSide={labelSide}
       fieldState={fieldState}
       detachedError={detachedError}
+      labelClassName="leading-[1.45]"
     >
       <CheckboxPrimitive.Root
         ref={ref}
@@ -48,10 +49,7 @@ const CheckboxRaw = React.forwardRef<
     </FormField>
   );
 });
-CheckboxRaw.displayName = CheckboxPrimitive.Root.displayName;
-
-export { CheckboxRaw };
-
+CheckboxRaw.displayName = "CheckboxRaw";
 export const Checkbox = makeWrappedInput<CheckboxProps>(
   (props, { value, ...fieldProps }, fieldState) =>
     <CheckboxRaw {...props} {...fieldProps} checked={value} fieldState={fieldState} />,
