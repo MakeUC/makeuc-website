@@ -6,7 +6,8 @@ import { cn } from "~/utils/className";
 
 import { FormField, makeWrappedInput } from "./input-wrapper";
 
-import type { FormFieldProps } from "./input-wrapper";
+import type { FormFieldProps , WrappedInputProps } from "./input-wrapper";
+import type { FieldValues } from "react-hook-form";
 
 
 export type InputRawProps = React.InputHTMLAttributes<HTMLInputElement> & Omit<FormFieldProps, "children">;
@@ -37,7 +38,9 @@ const InputRaw = React.forwardRef<HTMLInputElement, InputRawProps>(
 InputRaw.displayName = "InputRaw";
 
 export { InputRaw };
-
-export const Input = makeWrappedInput<InputRawProps>(
-  (props, fieldProps, fieldState) => <InputRaw {...props} {...fieldProps} fieldState={fieldState} />,
-);
+export function Input<T extends FieldValues = FieldValues>(props: WrappedInputProps<T> & InputRawProps) {
+  const Comp = makeWrappedInput<InputRawProps, T>(
+    (inputProps, fieldProps, fieldState) => <InputRaw {...inputProps} {...fieldProps} fieldState={fieldState} />,
+  );
+  return <Comp {...props} />;
+}

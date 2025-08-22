@@ -4,7 +4,9 @@ import { InputRaw } from "./input";
 import { makeWrappedInput } from "./input-wrapper";
 
 import type { InputRawProps } from "./input";
+import type { WrappedInputProps } from "./input-wrapper";
 import type { ChangeEventHandler } from "react";
+import type { FieldValues } from "react-hook-form";
 
 
 export interface InputNumberRawProps extends Omit<InputRawProps, "onChange" | "type"> {
@@ -34,7 +36,9 @@ const InputNumberRaw = forwardRef<HTMLInputElement, InputNumberRawProps>(
 InputNumberRaw.displayName = "InputNumberRaw";
 
 export { InputNumberRaw };
-
-export const InputNumber = makeWrappedInput<InputNumberRawProps>(
-  (props, fieldProps, fieldState) => <InputNumberRaw {...props} {...fieldProps} fieldState={fieldState} />,
-);
+export function InputNumber<T extends FieldValues = FieldValues>(props: WrappedInputProps<T> & InputNumberRawProps) {
+  const Comp = makeWrappedInput<InputNumberRawProps, T>(
+    (inputProps, fieldProps, fieldState) => <InputNumberRaw {...inputProps} {...fieldProps} fieldState={fieldState} />,
+  );
+  return <Comp {...props} />;
+}

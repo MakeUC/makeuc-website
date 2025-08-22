@@ -9,7 +9,8 @@ import { cn } from "~/utils/className";
 
 import { FormField, makeWrappedInput } from "./input-wrapper";
 
-import type { FormFieldProps } from "./input-wrapper";
+import type { FormFieldProps , WrappedInputProps } from "./input-wrapper";
+import type { FieldValues } from "react-hook-form";
 
 
 export interface CheckboxProps extends
@@ -50,7 +51,10 @@ const CheckboxRaw = React.forwardRef<
   );
 });
 CheckboxRaw.displayName = "CheckboxRaw";
-export const Checkbox = makeWrappedInput<CheckboxProps>(
-  (props, { value, ...fieldProps }, fieldState) =>
-    <CheckboxRaw {...props} {...fieldProps} checked={value} fieldState={fieldState} />,
-);
+export function Checkbox<T extends FieldValues = FieldValues>(props: WrappedInputProps<T> & CheckboxProps) {
+  const Comp = makeWrappedInput<CheckboxProps, T>(
+    (inputProps, { value, ...fieldProps }, fieldState) =>
+      <CheckboxRaw {...inputProps} {...fieldProps} checked={value} fieldState={fieldState} />,
+  );
+  return <Comp {...props} />;
+}

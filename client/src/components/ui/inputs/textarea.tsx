@@ -5,7 +5,8 @@ import { cn } from "~/utils/className";
 
 import { FormField, makeWrappedInput } from "./input-wrapper";
 
-import type { FormFieldProps } from "./input-wrapper";
+import type { FormFieldProps , WrappedInputProps } from "./input-wrapper";
+import type { FieldValues } from "react-hook-form";
 
 
 export type TextAreaProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "name"> & Omit<FormFieldProps, "children">;
@@ -35,7 +36,9 @@ const TextAreaRaw = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
 TextAreaRaw.displayName = "TextAreaRaw";
 
 export { TextAreaRaw };
-
-export const TextArea = makeWrappedInput<TextAreaProps>(
-  (props, fieldProps, fieldState) => <TextAreaRaw {...props} {...fieldProps} fieldState={fieldState} />,
-);
+export function TextArea<T extends FieldValues = FieldValues>(props: WrappedInputProps<T> & TextAreaProps) {
+  const Comp = makeWrappedInput<TextAreaProps, T>(
+    (inputProps, fieldProps, fieldState) => <TextAreaRaw {...inputProps} {...fieldProps} fieldState={fieldState} />,
+  );
+  return <Comp {...props} />;
+}

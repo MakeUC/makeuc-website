@@ -3,7 +3,7 @@
 import { isApolloError, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import * as z from "zod";
@@ -23,6 +23,7 @@ import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constant
 import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
 import { CreateRegistrantDocument } from "../generated/graphql/graphql";
 
+import styles from "./registration-form.module.css";
 import { SchoolCombobox } from "./school-selector";
 
 import type { SubmitHandler } from "react-hook-form";
@@ -63,7 +64,21 @@ export type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
 export function RegistrationForm() {
   const { control, handleSubmit, setValue, watch } = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationFormSchema),
+    defaultValues: {
+      manualSchoolEntry: "",
+      // Add other default values here if needed
+    },
   });
+
+  // Animation state for manual school input
+  const schoolValue = watch("school");
+  // Only need to track if the input was ever focused, to avoid clearing value on hide
+  const [manualInputTouched, setManualInputTouched] = useState(false);
+  useEffect(() => {
+    if (schoolValue === "other") {
+      setManualInputTouched(true);
+    }
+  }, [schoolValue]);
 
   // Watch all relevant checkboxes
   const mlhCodeOfConductAgreement = watch("mlhCodeOfConductAgreement");
@@ -166,22 +181,38 @@ export function RegistrationForm() {
         </FormGroup>
         <Select control={control} label="Ethnicity" name="ethnicity" placeholder="Enter Ethnicity" options={ETHNICITY_OPTIONS} />
       </FormSection>
+      {/*
+        Note: We use manual margin (mt-8) instead of flex gap for this section because
+        the animated manual school input must not take up space when hidden. Using gap
+        would always reserve space for the hidden element, breaking the animation effect.
+      */}
       <FormSection name="Education" description="Based on your current academic institution and what degree you are working towards.">
-        <SchoolCombobox control={control} name="school" />
-        {control._formValues?.school === "other" && (
-          <Input
-            control={control}
-            label="Enter School Name"
-            name="manualSchoolEntry"
-            placeholder="Type your school name"
-          />
-        )}
-        <FormGroup>
-          <Input control={control} label="Major(s)" name="major" placeholder="Enter Major" />
-          <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
-        </FormGroup>
-        <Combobox control={control} label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />
-        <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" />
+        <div className="flex flex-col">
+          <SchoolCombobox control={control} name="school" />
+          <div
+            className={`transition-all duration-200 ${schoolValue === "other" ? "opacity-100 translate-y-0 h-auto mt-8" : "opacity-0 -translate-y-2 pointer-events-none h-0 m-0"}`}
+            style={{ willChange: "opacity, transform, height" }}
+          >
+            {(schoolValue === "other" || manualInputTouched) && (
+              <Input
+                control={control}
+                label="Enter School Name"
+                name="manualSchoolEntry"
+                placeholder="Type your school name"
+              />
+            )}
+          </div>
+          <FormGroup className="mt-8">
+            <Input control={control} label="Major(s)" name="major" placeholder="Enter Major" />
+            <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
+          </FormGroup>
+          <div className="mt-8">
+            <Combobox control={control} label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />
+          </div>
+          <div className="mt-8">
+            <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" />
+          </div>
+        </div>
       </FormSection>
       <FormSection name="Additional Details" description="All of these fields are optional and you can fill in as much or as little detail as you would like.">
         <FileUpload control={control} label="Resume" name="resume" placeholder="Select Resume" />
