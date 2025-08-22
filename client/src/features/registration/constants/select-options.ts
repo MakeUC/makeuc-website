@@ -216,3 +216,16 @@ export const COUNTRY_OPTIONS = makeSelectOptions(
   "Zambia",
   "Zimbabwe",
 );
+
+export const PARTICIPATION_OPTIONS = makeSelectOptions(
+  "In Person",
+  "Online",
+);
+
+export const TSHIRT_SIZE_OPTIONS = makeSelectOptions(
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+);
