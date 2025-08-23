@@ -2,13 +2,21 @@ import { makeSelectOptions } from "~/utils/select";
 
 
 export const GENDER_OPTIONS = makeSelectOptions(
-  "Male", "Female", "Other", "Prefer not to answer",
+  "Male",
+  "Female",
+  "Other",
+  "Prefer not to answer",
 );
 
 export const ETHNICITY_OPTIONS = makeSelectOptions(
-  "American Indian or Alaska Native", "Asian", "Black or African American",
-  "Hispanic or Latino", "Native Hawaiian or Other Pacific Islander", "White",
-  "Other", "Prefer not to answer",
+  "American Indian or Alaska Native",
+  "Asian",
+  "Black or African American",
+  "Hispanic or Latino",
+  "Native Hawaiian or Other Pacific Islander",
+  "White",
+  "Other",
+  "Prefer not to answer",
 );
 
 export const DEGREE_OPTIONS = makeSelectOptions(
@@ -983,3 +991,13 @@ export const MAJOR_OPTIONS = [
   "Undecided",
   "Other",
 ];
+
+export const PARTICIPATION_OPTIONS = makeSelectOptions("In Person", "Online");
+
+export const TSHIRT_SIZE_OPTIONS = makeSelectOptions(
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+);
