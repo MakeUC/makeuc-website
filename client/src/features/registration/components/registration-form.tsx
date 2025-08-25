@@ -372,7 +372,7 @@ export function RegistrationForm() {
       </FormSection>
       <FormSection
         name="In Person"
-        description="Let us know your preferences for in-person participation."
+        description="Let us know your preferences for in-person participation. In person spots will be first-come-first serve. Keep a lookout for a confirmation email at a later date."
       >
         <FormGroup>
           <Select
