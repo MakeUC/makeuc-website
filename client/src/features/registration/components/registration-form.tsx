@@ -219,7 +219,7 @@ export function RegistrationForm() {
 
   const onSubmit = useCallback(
     (formValues: RegistrationFormValues) => {
-      const { school, expectedGraduationYear, age, hackathonsAttended, ...values } =
+      const { school, expectedGraduationYear, age, hackathonsAttended, acceptAllAuthorization, ...values } =
         formValues;
 
       const promise = createRegistrant({
