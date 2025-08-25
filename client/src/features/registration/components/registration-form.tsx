@@ -63,9 +63,6 @@ const registrationFormSchema = z
     gender: z.string().min(1),
     ethnicity: z.string().min(1),
     school: z.string().min(1),
-    manualSchoolEntry: z.string().optional(),
-    manualSchoolCity: z.string().optional(),
-    manualSchoolCountry: z.string().optional(),
     major: z.string().min(1),
     degree: z.string().min(1),
     country: z.string().min(1),
@@ -105,16 +102,7 @@ const registrationFormSchema = z
     acceptAllAuthorization: z.literal<boolean>(true, {
       errorMap: () => ({ message: "You must accept all authorizations." }),
     }),
-  })
-  .refine(
-    data => {
-      return data.school !== "other" || !!data.manualSchoolEntry?.trim();
-    },
-    {
-      path: ["manualSchoolEntry"],
-      message: "Please enter your school name if it’s not listed.",
-    },
-  );
+  });
 
 export type RegistrationFormValues = Omit<z.infer<typeof registrationFormSchema>, "age" | "hackathonsAttended"> & {
   // the string is for default values to prevent uncontrolled input warnings.
@@ -134,9 +122,6 @@ export function RegistrationForm() {
         gender: undefined,
         ethnicity: undefined,
         school: undefined,
-        manualSchoolEntry: "",
-        manualSchoolCity: "",
-        manualSchoolCountry: "",
         major: undefined,
         degree: undefined,
         country: undefined,
@@ -158,33 +143,14 @@ export function RegistrationForm() {
       },
     });
 
-  const manualSchoolCountry = watch("manualSchoolCountry");
   const { countries, cities, loading } = useCountryCityOptions(undefined);
   // Find the selected country object to get its id
-  const selectedCountry = countries?.find((c: { name: string }) => c.name === manualSchoolCountry);
-  const { cities: filteredCities, loading: loadingCities } = useCountryCityOptions(selectedCountry?.id);
   const countryOptions = countries.map((c: { code?: string; name: string; iso2?: string; id?: number }) => ({
     key: c.id !== undefined ? `${c.id}-${c.name}` : c.code || c.name || c.iso2 || c.id || Math.random().toString(36),
     value: c.name,
     label: c.name,
     id: c.id,
   }));
-  const cityOptions = (filteredCities || []).map((c: { id?: number; name: string }) => ({
-    key: c.id !== undefined ? `${c.id}-${c.name}` : c.name || Math.random().toString(36),
-    value: c.name,
-    label: c.name,
-    id: c.id,
-  }));
-
-  // Animation state for manual school input
-  const schoolValue = watch("school");
-  // Only need to track if the input was ever focused, to avoid clearing value on hide
-  const [manualInputTouched, setManualInputTouched] = useState(false);
-  useEffect(() => {
-    if (schoolValue === "other") {
-      setManualInputTouched(true);
-    }
-  }, [schoolValue]);
 
   // Watch all relevant checkboxes
   const mlhCodeOfConductAgreement = watch("mlhCodeOfConductAgreement");
@@ -253,7 +219,7 @@ export function RegistrationForm() {
 
   const onSubmit = useCallback(
     (formValues: RegistrationFormValues) => {
-      const { school, manualSchoolEntry, expectedGraduationYear, age, hackathonsAttended, ...values } =
+      const { school, expectedGraduationYear, age, hackathonsAttended, ...values } =
         formValues;
 
       const promise = createRegistrant({
@@ -269,9 +235,7 @@ export function RegistrationForm() {
               }
               : undefined,
             school:
-              school === "other"
-                ? { create: { name: manualSchoolEntry || "Unnamed School" } }
-                : { connect: { id: school } },
+             { connect: { id: school } },
           },
         },
       });
@@ -366,47 +330,6 @@ export function RegistrationForm() {
       >
         <div className="flex flex-col">
           <SchoolCombobox control={control} name="school" />
-          <div
-            className={`transition-all duration-200 ${
-              schoolValue === "other"
-                ? "opacity-100 translate-y-0 h-auto mt-8"
-                : "opacity-0 -translate-y-2 pointer-events-none h-0 m-0"
-            }`}
-            style={{ willChange: "opacity, transform, height" }}
-          >
-            {(schoolValue === "other" || manualInputTouched) && (
-              <div className="flex flex-col gap-4">
-                <div className="font-semibold text-lg mb-2">Add a New School</div>
-                <p>
-                  Do not add new <i>highschools</i> here. 
-                  Instead, use the highschool option in the above school input.
-                </p>
-                <Input
-                  control={control}
-                  label="School Name"
-                  name="manualSchoolEntry"
-                  placeholder="Type your school name"
-                />
-                <div className="flex gap-4">
-                  <Combobox
-                    control={control}
-                    label="School Country"
-                    name="manualSchoolCountry"
-                    placeholder="Select a country..."
-                    options={countryOptions}
-                  />
-                  <Combobox
-                    control={control}
-                    label="School City"
-                    name="manualSchoolCity"
-                    placeholder={manualSchoolCountry ? "Select a city..." : "Select a country first"}
-                    options={cityOptions}
-                    disabled={!manualSchoolCountry}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
           <FormGroup className="mt-8">
             <Combobox
               control={control}
@@ -433,7 +356,7 @@ export function RegistrationForm() {
               label="Country"
               name="country"
               placeholder="Select Country"
-              options={countryOptions}
+              options={COUNTRY_OPTIONS}
             />
           </div>
           <div className="mt-8">
