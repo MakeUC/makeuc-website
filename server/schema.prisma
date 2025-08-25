@@ -74,6 +74,14 @@ model Registrant {
   resume_filename                  String?
   hackathonsAttended               Int?
   notes                            String    @default("")
+  participationPreference          String    @default("")
+  tshirtSize                       String    @default("")
+  foodSuggestions                  String    @default("")
+  foodAllergy                      String    @default("")
+  makeucCodeOfConduct              Boolean   @default(false)
+  makeucHackathonRules             Boolean   @default(false)
+  makeucLiabilityRelease           Boolean   @default(false)
+  acceptAllAuthorization           Boolean   @default(false)
   mlhCodeOfConductAgreement        Boolean   @default(false)
   mlhPrivacyPolicyAgreement        Boolean   @default(false)
   mlhEmailAgreement                Boolean   @default(false)

@@ -84,6 +84,17 @@ export const Registrant = list(addCompoundKey({
     hackathonsAttended: integer(),
     notes: text(),
 
+    // In Person section
+    participationPreference: text({ validation: { isRequired: true } }),
+    tshirtSize: text({ validation: { isRequired: true } }),
+    foodSuggestions: text(),
+    foodAllergy: text(),
+
+    // Auth checkboxes
+    makeucCodeOfConduct: checkbox(),
+    makeucHackathonRules: checkbox(),
+    makeucLiabilityRelease: checkbox(),
+    acceptAllAuthorization: checkbox(),
     mlhCodeOfConductAgreement: checkbox(),
     mlhPrivacyPolicyAgreement: checkbox(),
     mlhEmailAgreement: checkbox(),

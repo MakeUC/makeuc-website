@@ -17,6 +17,7 @@ import { Input } from "~/components/ui/inputs/input";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
+import { useCountryCityOptions } from "~/hooks/useCountryCityOptions";
 
 import {
   MAKEUC_CODE_OF_CONDUCT,
@@ -55,21 +56,29 @@ const registrationFormSchema = z
     firstName: z.string().min(1),
     lastName: z.string().min(1),
     email: z.string().email().min(5),
-    age: z.number().min(1),
+    age: z.preprocess(
+      val => val === "" ? undefined : Number(val),
+      z.number().min(1),
+    ),
     gender: z.string().min(1),
     ethnicity: z.string().min(1),
     school: z.string().min(1),
     manualSchoolEntry: z.string().optional(),
+    manualSchoolCity: z.string().optional(),
+    manualSchoolCountry: z.string().optional(),
     major: z.string().min(1),
     degree: z.string().min(1),
     country: z.string().min(1),
     expectedGraduationYear: z.string().min(1),
     participationPreference: z.string().min(1),
     tshirtSize: z.string().min(1),
-    foodSuggestions: z.string().min(1),
-    foodAllergy: z.string().min(1),
+    foodSuggestions: z.string().optional(),
+    foodAllergy: z.string().optional(),
     resume: z.custom<FileList>(file => file instanceof FileList).optional(),
-    hackathonsAttended: z.number().optional(),
+    hackathonsAttended: z.preprocess(
+      val => val === "" ? undefined : Number(val),
+      z.number().optional(),
+    ),
     notes: z.string().optional(),
     mlhCodeOfConductAgreement: z.literal<boolean>(true, {
       errorMap: () => ({ message: "You must accept the MLH Code of Conduct." }),
@@ -107,17 +116,65 @@ const registrationFormSchema = z
     },
   );
 
-export type RegistrationFormValues = z.infer<typeof registrationFormSchema>;
+export type RegistrationFormValues = Omit<z.infer<typeof registrationFormSchema>, "age" | "hackathonsAttended"> & {
+  // the string is for default values to prevent uncontrolled input warnings.
+  age: string | number;
+  hackathonsAttended?: string | number;
+};
 
 export function RegistrationForm() {
   const { control, handleSubmit, setValue, watch } =
     useForm<RegistrationFormValues>({
       resolver: zodResolver(registrationFormSchema),
       defaultValues: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        age: "",
+        gender: undefined,
+        ethnicity: undefined,
+        school: undefined,
         manualSchoolEntry: "",
-        // Add other default values here if needed
+        manualSchoolCity: "",
+        manualSchoolCountry: "",
+        major: undefined,
+        degree: undefined,
+        country: undefined,
+        expectedGraduationYear: undefined,
+        participationPreference: undefined,
+        tshirtSize: undefined,
+        foodSuggestions: "",
+        foodAllergy: "",
+        resume: undefined,
+        hackathonsAttended: "",
+        notes: "",
+        mlhCodeOfConductAgreement: false,
+        mlhPrivacyPolicyAgreement: false,
+        mlhEmailAgreement: false,
+        makeucCodeOfConduct: false,
+        makeucHackathonRules: false,
+        makeucLiabilityRelease: false,
+        acceptAllAuthorization: false,
       },
     });
+
+  const manualSchoolCountry = watch("manualSchoolCountry");
+  const { countries, cities, loading } = useCountryCityOptions(undefined);
+  // Find the selected country object to get its id
+  const selectedCountry = countries?.find((c: { name: string }) => c.name === manualSchoolCountry);
+  const { cities: filteredCities, loading: loadingCities } = useCountryCityOptions(selectedCountry?.id);
+  const countryOptions = countries.map((c: { code?: string; name: string; iso2?: string; id?: number }) => ({
+    key: c.id !== undefined ? `${c.id}-${c.name}` : c.code || c.name || c.iso2 || c.id || Math.random().toString(36),
+    value: c.name,
+    label: c.name,
+    id: c.id,
+  }));
+  const cityOptions = (filteredCities || []).map((c: { id?: number; name: string }) => ({
+    key: c.id !== undefined ? `${c.id}-${c.name}` : c.name || Math.random().toString(36),
+    value: c.name,
+    label: c.name,
+    id: c.id,
+  }));
 
   // Animation state for manual school input
   const schoolValue = watch("school");
@@ -196,13 +253,15 @@ export function RegistrationForm() {
 
   const onSubmit = useCallback(
     (formValues: RegistrationFormValues) => {
-      const { school, manualSchoolEntry, expectedGraduationYear, ...values } =
+      const { school, manualSchoolEntry, expectedGraduationYear, age, hackathonsAttended, ...values } =
         formValues;
 
       const promise = createRegistrant({
         variables: {
           data: {
             ...values,
+            age: age === "" ? undefined : Number(age),
+            hackathonsAttended: hackathonsAttended === "" ? undefined : Number(hackathonsAttended),
             expectedGraduationYear: parseInt(expectedGraduationYear),
             resume: !!values.resume?.[0]
               ? {
@@ -316,12 +375,36 @@ export function RegistrationForm() {
             style={{ willChange: "opacity, transform, height" }}
           >
             {(schoolValue === "other" || manualInputTouched) && (
-              <Input
-                control={control}
-                label="Enter School Name"
-                name="manualSchoolEntry"
-                placeholder="Type your school name"
-              />
+              <div className="flex flex-col gap-4">
+                <div className="font-semibold text-lg mb-2">Add a New School</div>
+                <p>
+                  Do not add new <i>highschools</i> here. 
+                  Instead, use the highschool option in the above school input.
+                </p>
+                <Input
+                  control={control}
+                  label="School Name"
+                  name="manualSchoolEntry"
+                  placeholder="Type your school name"
+                />
+                <div className="flex gap-4">
+                  <Combobox
+                    control={control}
+                    label="School Country"
+                    name="manualSchoolCountry"
+                    placeholder="Select a country..."
+                    options={countryOptions}
+                  />
+                  <Combobox
+                    control={control}
+                    label="School City"
+                    name="manualSchoolCity"
+                    placeholder={manualSchoolCountry ? "Select a city..." : "Select a country first"}
+                    options={cityOptions}
+                    disabled={!manualSchoolCountry}
+                  />
+                </div>
+              </div>
             )}
           </div>
           <FormGroup className="mt-8">
@@ -350,7 +433,7 @@ export function RegistrationForm() {
               label="Country"
               name="country"
               placeholder="Select Country"
-              options={COUNTRY_OPTIONS}
+              options={countryOptions}
             />
           </div>
           <div className="mt-8">
@@ -373,7 +456,7 @@ export function RegistrationForm() {
             control={control}
             label="Participation Preference"
             name="participationPreference"
-            placeholder="Select Participation Preference"
+            placeholder="Select Preference"
             options={PARTICIPATION_OPTIONS}
           />
           <Select

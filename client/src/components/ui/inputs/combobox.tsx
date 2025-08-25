@@ -40,6 +40,7 @@ export interface ComboboxProps extends Omit<FormFieldProps, "children"> {
   value?: string;
   onSearch?: (search: string) => void;
   onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export const ComboboxRaw = React.forwardRef<HTMLDivElement, ComboboxProps>(
@@ -57,6 +58,7 @@ export const ComboboxRaw = React.forwardRef<HTMLDivElement, ComboboxProps>(
     value: _value,
     onSearch,
     onChange: _onChange,
+    disabled = false,
   }, ref) => {
     const [open, setOpen] = useState(false);
     const [internalValue, setInternalValue] = useState("");
@@ -93,39 +95,45 @@ export const ComboboxRaw = React.forwardRef<HTMLDivElement, ComboboxProps>(
 
     return (
       <FormField name={name} label={label} labelSide={labelSide} fieldState={fieldState} detachedError={detachedError}>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild tabIndex={0} onKeyDown={onKeyDown}>
+        <Popover open={open && !disabled} onOpenChange={v => !disabled && setOpen(v)}>
+          <PopoverTrigger asChild tabIndex={disabled ? -1 : 0} onKeyDown={disabled ? undefined : onKeyDown}>
             <div
-              aria-expanded={open}
-              className="flex h-10 w-full rounded-md push-in-top push-in-bottom bg-background-inset px-3 py-2 text-sm items-center justify-between cursor-pointer"
+              aria-expanded={open && !disabled}
+              className={cn(
+                "flex h-10 w-full rounded-md push-in-top push-in-bottom bg-background-inset px-3 py-2 text-sm items-center justify-between",
+                disabled ? "opacity-50 cursor-not-allowed bg-gray-100" : "cursor-pointer",
+              )}
+              aria-disabled={disabled}
             >
               {selectedOption ? selectedOption.label ?? selectedOption.value : <span className="text-foreground-inset">{placeholder}</span>}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command {...command}>
-              <CommandInput ref={inputRef} placeholder={searchText} onValueChange={onSearch} />
-              <CommandEmpty>{empty}</CommandEmpty>
-              <CommandGroup className="overflow-y-auto max-h-60">
-                {options?.map(option => (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => onChange(option.value)}
-                    className="cursor-pointer"
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === option.value ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                    {option.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
+          {!disabled && (
+            <PopoverContent className="w-full p-0">
+              <Command {...command}>
+                <CommandInput ref={inputRef} placeholder={searchText} onValueChange={onSearch} />
+                <CommandEmpty>{empty}</CommandEmpty>
+                <CommandGroup className="overflow-y-auto max-h-60">
+                  {options?.map(option => (
+                    <CommandItem
+                      key={option.value}
+                      onSelect={() => onChange(option.value)}
+                      className="cursor-pointer"
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          value === option.value ? "opacity-100" : "opacity-0",
+                        )}
+                      />
+                      {option.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          )}
         </Popover>
       </FormField>
     );

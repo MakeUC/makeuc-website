@@ -3,11 +3,70 @@ import { graphql } from "@keystone-6/core";
 import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
+import {
+  initializeGeographyState,
+} from "./helpers/geography";
+
+import type {
+  GeographyState,
+} from "./helpers/geography";
 import type { Context } from ".keystone/types";
 
+// Initialize the geography state
+const initializeState = async () => {
+  const geographyState = await initializeGeographyState();
+  if (!geographyState) {
+    throw new Error("Failed to initialize geography state");
+  }
+  return geographyState;
+};
+
+// Initialize on server startup
+let state: GeographyState | null = null;
+initializeState().then(result => {
+  state = result;
+});
 
 export const extendGraphqlSchema = graphql.extend(base => ({
   query: {
+    countries: graphql.field({
+      type: graphql.nonNull(graphql.list(graphql.JSON)),
+      async resolve() {
+        if (!state) return [];
+        return Array.from(state.countries.values()).map(country => ({ ...country }));
+      },
+    }),
+    cities: graphql.field({
+      type: graphql.nonNull(graphql.list(graphql.JSON)),
+      args: {
+        countryId: graphql.arg({ type: graphql.Int }),
+      },
+      async resolve(_source, { countryId }) {
+        if (!state) return [];
+
+        if (countryId) {
+          const country = state.countries.get(countryId);
+          if (!country) return [];
+          if (country.hasStates) { // countries with states
+            const states = country.states;
+            const cities = Array.from(states.values()).flatMap(state =>
+              Array.from(state.cities?.values() || [])?.map(city => ({
+                ...city,
+                name: `${city.name}, ${state.name}`,
+              })));
+            return cities || [];
+          }
+          else { // countries without states
+            const cities = Array.from(country.cities.values()).map(city => ({
+              ...city,
+            }));
+            return cities || [];
+          }
+        }
+
+        return [];
+      },
+    }),
     // Fill in statistics
     statistics: graphql.field({
       type: graphql.String, //Undefined --> Change in the future
