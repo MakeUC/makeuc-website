@@ -1,0 +1,14 @@
+# Country and City GraphQL Queries
+
+# Get all unique countries from schools
+query GetCountries {
+  schools(orderBy: { country: asc }, take: 1000) {
+    country
+  }
+}
+
+
+# Get all cities by country id (number)
+query GetCities($countryId: Int) {
+  cities(countryId: $countryId)
+}

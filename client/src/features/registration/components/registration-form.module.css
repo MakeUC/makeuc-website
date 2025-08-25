@@ -1,0 +1,23 @@
+.school-animate {
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.school-animate-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.school-animate-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.school-animate-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.school-animate-exit-active {
+  opacity: 0;
+  transform: translateY(-8px);
+}

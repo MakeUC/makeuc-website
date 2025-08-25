@@ -9,7 +9,8 @@ import { cn } from "~/utils/className";
 
 import { FormField, makeWrappedInput } from "./input-wrapper";
 
-import type { FormFieldProps } from "./input-wrapper";
+import type { FormFieldProps , WrappedInputProps } from "./input-wrapper";
+import type { FieldValues } from "react-hook-form";
 
 
 export interface CheckboxProps extends
@@ -29,6 +30,7 @@ const CheckboxRaw = React.forwardRef<
       labelSide={labelSide}
       fieldState={fieldState}
       detachedError={detachedError}
+      labelClassName="leading-[1.45]"
     >
       <CheckboxPrimitive.Root
         ref={ref}
@@ -48,11 +50,11 @@ const CheckboxRaw = React.forwardRef<
     </FormField>
   );
 });
-CheckboxRaw.displayName = CheckboxPrimitive.Root.displayName;
-
-export { CheckboxRaw };
-
-export const Checkbox = makeWrappedInput<CheckboxProps>(
-  (props, { value, ...fieldProps }, fieldState) =>
-    <CheckboxRaw {...props} {...fieldProps} checked={value} fieldState={fieldState} />,
-);
+CheckboxRaw.displayName = "CheckboxRaw";
+export function Checkbox<T extends FieldValues = FieldValues>(props: WrappedInputProps<T> & CheckboxProps) {
+  const Comp = makeWrappedInput<CheckboxProps, T>(
+    (inputProps, { value, ...fieldProps }, fieldState) =>
+      <CheckboxRaw {...inputProps} {...fieldProps} checked={value} fieldState={fieldState} />,
+  );
+  return <Comp {...props} />;
+}

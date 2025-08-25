@@ -1,6 +1,6 @@
 "use client";
-import { useSuspenseQuery } from "@apollo/client";
-import { useCallback, useMemo } from "react";
+import { useQuery } from "@apollo/client";
+import { useCallback, useMemo, useState } from "react";
 
 
 import { Combobox } from "~/components/ui/inputs/combobox";
@@ -8,7 +8,7 @@ import { debounce } from "~/lib/lodash";
 
 import { GetSchoolsDocument, OrderDirection, QueryMode } from "../generated/graphql/graphql";
 
-import type { Control, Path } from "react-hook-form";
+import type { Control, Path, FieldValues } from "react-hook-form";
 
 
 const DEFAULT_VARS = {
@@ -18,25 +18,33 @@ const DEFAULT_VARS = {
   where: {},
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface SchoolComboboxProps<ControlType extends Control<any, any>> {
-  control: ControlType;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  name: ControlType extends Control<infer P, any> ? Path<P> : never;
+
+export interface SchoolComboboxProps<T extends FieldValues = FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function SchoolCombobox<ControlType extends Control<any, any>>({
+export function SchoolCombobox<T extends FieldValues = FieldValues>({
   control,
   name,
-}: SchoolComboboxProps<ControlType>) {
-  const { data, refetch } = useSuspenseQuery(GetSchoolsDocument, {
+}: SchoolComboboxProps<T>) {
+  const { data, refetch, loading } = useQuery(GetSchoolsDocument, {
     variables: DEFAULT_VARS,
   });
 
-  const options = data.schools?.map(school => ({ key: school.id, label: school.name ?? "Unknown School", value: school.id }));
+  const options = useMemo(() => {
+    const base = data?.schools?.map(school => ({ key: school.id, label: school.name ?? "Unknown School", value: school.id })) || [];
+    return [
+      ...base,
+      {
+        key: "other",
+        label: "Can't find my school",
+        value: "other",
+      },
+    ];
+  }, [data]);
 
-  const onSearchDebounce = useMemo(() => debounce(refetch), [refetch]);
+  const onSearchDebounce = useMemo(() => debounce(vars => refetch(vars)), [refetch]);
 
   const onSearch = useCallback(async (search: string) => {
     await onSearchDebounce({
@@ -52,7 +60,7 @@ export function SchoolCombobox<ControlType extends Control<any, any>>({
 
   return (
     <Combobox
-      control={control}
+      control={control as Control<FieldValues>}
       options={options}
       onSearch={onSearch}
       label="School"

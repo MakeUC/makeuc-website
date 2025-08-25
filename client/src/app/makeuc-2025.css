@@ -474,8 +474,15 @@ input, button, textarea, select, [type="button"] {
 }
 
 input::placeholder,
-[role="dialog"] input::placeholder {
+textarea::placeholder,
+[role="dialog"] input::placeholder{
   color: var(--foreground) !important;
+  opacity: 0.65 !important;
+}
+
+ [type="button"]:not([role="checkbox"]) span {
+  color: var(--foreground) !important;
+  opacity: 0.825 !important;
 }
 
 .bg-destructive {

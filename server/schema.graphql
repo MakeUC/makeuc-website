@@ -355,6 +355,14 @@ type Registrant {
   resume: FileFieldOutput
   hackathonsAttended: Int
   notes: String
+  participationPreference: String
+  tshirtSize: String
+  foodSuggestions: String
+  foodAllergy: String
+  makeucCodeOfConduct: Boolean
+  makeucHackathonRules: Boolean
+  makeucLiabilityRelease: Boolean
+  acceptAllAuthorization: Boolean
   mlhCodeOfConductAgreement: Boolean
   mlhPrivacyPolicyAgreement: Boolean
   mlhEmailAgreement: Boolean
@@ -397,6 +405,14 @@ input RegistrantWhereInput {
   expectedGraduationYear: IntFilter
   hackathonsAttended: IntNullableFilter
   notes: StringFilter
+  participationPreference: StringFilter
+  tshirtSize: StringFilter
+  foodSuggestions: StringFilter
+  foodAllergy: StringFilter
+  makeucCodeOfConduct: BooleanFilter
+  makeucHackathonRules: BooleanFilter
+  makeucLiabilityRelease: BooleanFilter
+  acceptAllAuthorization: BooleanFilter
   mlhCodeOfConductAgreement: BooleanFilter
   mlhPrivacyPolicyAgreement: BooleanFilter
   mlhEmailAgreement: BooleanFilter
@@ -440,6 +456,14 @@ input RegistrantOrderByInput {
   expectedGraduationYear: OrderDirection
   hackathonsAttended: OrderDirection
   notes: OrderDirection
+  participationPreference: OrderDirection
+  tshirtSize: OrderDirection
+  foodSuggestions: OrderDirection
+  foodAllergy: OrderDirection
+  makeucCodeOfConduct: OrderDirection
+  makeucHackathonRules: OrderDirection
+  makeucLiabilityRelease: OrderDirection
+  acceptAllAuthorization: OrderDirection
   mlhCodeOfConductAgreement: OrderDirection
   mlhPrivacyPolicyAgreement: OrderDirection
   mlhEmailAgreement: OrderDirection
@@ -467,6 +491,14 @@ input RegistrantUpdateInput {
   resume: FileFieldInput
   hackathonsAttended: Int
   notes: String
+  participationPreference: String
+  tshirtSize: String
+  foodSuggestions: String
+  foodAllergy: String
+  makeucCodeOfConduct: Boolean
+  makeucHackathonRules: Boolean
+  makeucLiabilityRelease: Boolean
+  acceptAllAuthorization: Boolean
   mlhCodeOfConductAgreement: Boolean
   mlhPrivacyPolicyAgreement: Boolean
   mlhEmailAgreement: Boolean
@@ -507,6 +539,14 @@ input RegistrantCreateInput {
   resume: FileFieldInput
   hackathonsAttended: Int
   notes: String
+  participationPreference: String
+  tshirtSize: String
+  foodSuggestions: String
+  foodAllergy: String
+  makeucCodeOfConduct: Boolean
+  makeucHackathonRules: Boolean
+  makeucLiabilityRelease: Boolean
+  acceptAllAuthorization: Boolean
   mlhCodeOfConductAgreement: Boolean
   mlhPrivacyPolicyAgreement: Boolean
   mlhEmailAgreement: Boolean
@@ -868,6 +908,8 @@ type Query {
   passportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
   passportStrategyStoragesCount(where: PassportStrategyStorageWhereInput! = {}): Int
   keystone: KeystoneMeta!
+  countries: [JSON]!
+  cities(countryId: Int): [JSON]!
   statistics(year: Int!): String
 }
 

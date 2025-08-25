@@ -19,13 +19,20 @@ import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
 
 import { MLH_CODE_OF_CONDUCT, MLH_EMAILS, MLH_PRIVACY_POLICY } from "../constants/mlh-copy";
-import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS } from "../constants/select-options";
+import { COUNTRY_OPTIONS, DEGREE_OPTIONS, ETHNICITY_OPTIONS, GENDER_OPTIONS, PARTICIPATION_OPTIONS, TSHIRT_SIZE_OPTIONS } from "../constants/select-options";
 import { CreateRegistrantDocument } from "../generated/graphql/graphql";
 
 import { SchoolCombobox } from "./school-selector";
 
 import type { SubmitHandler } from "react-hook-form";
 
+
+const currentYear = new Date().getFullYear();
+const GRADUATION_YEAR_OPTIONS = Array.from({ length: 8 }, (_, i) => ({
+  key: (currentYear + i).toString(),
+  value: (currentYear + i).toString(),
+  label: (currentYear + i).toString(),
+}));
 
 const registrationFormSchema = z.object({
   firstName: z.string().min(1),
@@ -38,7 +45,7 @@ const registrationFormSchema = z.object({
   major: z.string().min(1),
   degree: z.string().min(1),
   country: z.string().min(1),
-  expectedGraduationYear: z.number().min(2000),
+  expectedGraduationYear: z.string().min(1),
   resume: z.custom<FileList>(file => file instanceof FileList).optional(),
   hackathonsAttended: z.number().optional(),
   notes: z.string().optional(),
@@ -48,6 +55,10 @@ const registrationFormSchema = z.object({
   // check if UC student: show checkbox for in-person attendance, show checkbox for photo release form
 
   photoRelease: z.literal<boolean>(true, { errorMap: () => ({ message: "Insert photo release form here" }) }),
+  participationPreference: z.string().min(1),
+  tshirtSize: z.string().min(1),
+  foodSuggestions: z.string().min(1),
+  foodAllergy: z.string().min(1),
 
 });
 
@@ -63,12 +74,13 @@ export function RegistrationFormEdit() {
   const [createRegistrant] = useMutation(CreateRegistrantDocument);
 
   const onSubmit = useCallback<SubmitHandler<RegistrationFormEditValues>>(formValues => {
-    const { school, ...values } = formValues;
+    const { school, expectedGraduationYear, ...values } = formValues;
 
     const promise = createRegistrant({
       variables: {
         data: {
           ...values,
+          expectedGraduationYear: parseInt(expectedGraduationYear),
           resume: !!values.resume?.[0] ? {
             upload: values.resume[0],
           } : undefined,
@@ -114,7 +126,15 @@ export function RegistrationFormEdit() {
           <Select control={control} label="Degree" name="degree" placeholder="Select Degree" options={DEGREE_OPTIONS} />
         </FormGroup>
         <Combobox control={control} label="Country" name="country" placeholder="Select Country" options={COUNTRY_OPTIONS} />
-        <InputNumber control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Enter Expected Graduation Year" readOnly />
+        <Select control={control} label="Expected Graduation Year" name="expectedGraduationYear" placeholder="Select Expected Graduation Year" options={GRADUATION_YEAR_OPTIONS} />
+      </FormSection>
+      <FormSection name="In Person" description="Let us know your preferences for in-person participation.">
+        <FormGroup>
+          <Select control={control} label="Participation Preference" name="participationPreference" placeholder="Select Participation Preference" options={PARTICIPATION_OPTIONS} />
+          <Select control={control} label="T-Shirt Size" name="tshirtSize" placeholder="Select T-Shirt Size" options={TSHIRT_SIZE_OPTIONS} />
+        </FormGroup>
+        <Input control={control} label="Food Suggestions" name="foodSuggestions" placeholder="Enter any food suggestions" />
+        <Input control={control} label="Food Allergy" name="foodAllergy" placeholder="Mention any allergies" />
       </FormSection>
       <FormSection name="Additional Details" description="All of these fields are optional and you can fill in as much or as little detail as you would like.">
         <FileUpload control={control} label="Resume" name="resume" placeholder="Select Resume" />

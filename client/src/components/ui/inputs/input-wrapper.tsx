@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Controller } from "react-hook-form";
 
 import { cn } from "~/utils/className";
@@ -6,39 +6,35 @@ import { cn } from "~/utils/className";
 import { Label } from "./label";
 
 import type { ReactNode } from "react";
-import type { Control, Path, UseControllerReturn, ControllerFieldState } from "react-hook-form";
+import type { Control, Path, UseControllerReturn, ControllerFieldState, FieldValues } from "react-hook-form";
 
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyControl = Control<any, any>;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyControllerReturn = UseControllerReturn<any, any>;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GetName<ControlType extends AnyControl> = ControlType extends Control<infer P, any> ? Path<P> : never
-
-
-export interface WrappedInputProps<ControlType extends AnyControl> {
-  control: ControlType;
-  name: GetName<ControlType>;
+export interface WrappedInputProps<T extends FieldValues = FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
 }
 
-export function makeWrappedInput<ComponentProps>(
-  children: (props: ComponentProps, fieldProps: AnyControllerReturn["field"], fieldState?: AnyControllerReturn["fieldState"]) => JSX.Element,
+
+export function makeWrappedInput<ComponentProps, T extends FieldValues = FieldValues>(
+  children: (props: ComponentProps, fieldProps: UseControllerReturn<T>["field"], fieldState?: UseControllerReturn<T>["fieldState"]) => JSX.Element,
 ) {
   // eslint-disable-next-line react/display-name
-  return <ControlType extends AnyControl>({ control, ...props }: ComponentProps & WrappedInputProps<ControlType>) => {
-    const render = useCallback(
-      ({ field, fieldState }: AnyControllerReturn) => children(props as ComponentProps, field, fieldState),
-      [props],
-    );
-
+  return React.forwardRef(function WrappedInput(
+    { control, name, ...props }: ComponentProps & WrappedInputProps<T>,
+    ref: React.Ref<unknown>,
+  ) {
     return (
-      <Controller control={control} name={props.name} render={render} />
+      <Controller
+        control={control}
+        name={name as Path<T>}
+        render={({ field, fieldState, formState }) => {
+          // Always pass ref for compatibility with all input types
+          return children({ ...(props as ComponentProps), name } as ComponentProps, field, fieldState);
+        }}
+      />
     );
-  };
+  });
 }
 
 
@@ -84,9 +80,10 @@ export interface FormFieldProps {
   fieldState?: ControllerFieldState;
   detachedError?: boolean;
   children?: ReactNode;
+  labelClassName?: string;
 }
 
-export function FormField({ name, label, labelSide = "top", fieldState, detachedError, children }: FormFieldProps): JSX.Element {
+export function FormField({ name, label, labelSide = "top", fieldState, detachedError, children, labelClassName }: FormFieldProps): JSX.Element {
   if (!label) {
     return <>{children}</>;
   }
@@ -94,7 +91,7 @@ export function FormField({ name, label, labelSide = "top", fieldState, detached
   return (
     <FormFieldError fieldState={fieldState} detachedError={detachedError}>
       <div className={cn("flex flex-1 gap-4", labelSide ? LabelSideCss[labelSide] : undefined)}>
-        <Label className="block" htmlFor={name}>{label}</Label>
+        <Label className={cn("block", labelClassName)} htmlFor={name}>{label}</Label>
         <div>{children}</div>
       </div>
     </FormFieldError>

@@ -60,7 +60,7 @@ export default withAuth(
       },
       async pageMiddleware({ context, basePath }) {
         if (basePath.startsWith("/api") || basePath.startsWith("/auth")) { return; }
-  
+
         const req = context.req as ExpressRequest | undefined;
 
         if (!req || req.path.startsWith("/signin")) { return; }
@@ -74,7 +74,14 @@ export default withAuth(
     server: {
       port: parseInt(process.env.PORT ?? "8000"),
       cors: {
-        origin: ["http://localhost:3000", "http://localhost:8000", "https://api.makeuc.io", "https://makeuc.io"],
+        origin: [
+          "http://localhost:3000",
+          "http://localhost:8000",
+          "http://host.docker.internal:3000",
+          "http://host.docker.internal:8000",
+          "https://api.makeuc.io",
+          "https://makeuc.io",
+        ],
         allowedHeaders: ["apollo-require-preflight", "content-type"],
         credentials: true,
         methods: "*",
