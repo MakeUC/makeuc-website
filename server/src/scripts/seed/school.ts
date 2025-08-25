@@ -5,7 +5,7 @@ const FAILED = Symbol("FAILED");
 export async function getSchoolData() {
   const combinedData = [];
   for (let i = 1; i < 5; i++) {
-    const data = await import(`../../../data/universities-${i}.json`)
+    const data = await import(`data/universities-${i}.json`)
       .catch(() => FAILED);
     if (typeof data === "symbol") {
       return [];
