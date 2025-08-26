@@ -3,14 +3,15 @@ import { graphql } from "@keystone-6/core";
 import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
-import {
+import type { Context } from ".keystone/types";
+
+/*import {
   initializeGeographyState,
 } from "./helpers/geography";
 
 import type {
   GeographyState,
 } from "./helpers/geography";
-import type { Context } from ".keystone/types";
 
 // Initialize the geography state
 const initializeState = async () => {
@@ -25,10 +26,11 @@ const initializeState = async () => {
 let state: GeographyState | null = null;
 initializeState().then(result => {
   state = result;
-});
+});*/
 
 export const extendGraphqlSchema = graphql.extend(base => ({
   query: {
+    /*
     countries: graphql.field({
       type: graphql.nonNull(graphql.list(graphql.JSON)),
       async resolve() {
@@ -66,7 +68,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
 
         return [];
       },
-    }),
+    }),*/
     // Fill in statistics
     statistics: graphql.field({
       type: graphql.String, //Undefined --> Change in the future
