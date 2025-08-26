@@ -15,7 +15,7 @@ export interface LoginFormProps {
   strategies: (keyof typeof SUPPORTED_STRATEGIES)[];
 }
 
-export function SignInForm({ strategies }: LoginFormProps) {
+export default function SignInForm({ strategies }: LoginFormProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "1rem", height: "100vh", paddingBottom: "30vh", background: "#121317" }}>
       <Image alt="MakeUC Logo" src={Logo} width={150} height={150} />
