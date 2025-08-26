@@ -15,15 +15,15 @@ export interface LoginFormProps {
   strategies: (keyof typeof SUPPORTED_STRATEGIES)[];
 }
 
-export default function SignInForm({ strategies }: LoginFormProps) {
+export default function SignInForm() {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "1rem", height: "100vh", paddingBottom: "30vh", background: "#121317" }}>
       <Image alt="MakeUC Logo" src={Logo} width={150} height={150} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "230px" }}>
         {    
-          strategies.map(strategyKey => {
-            const strategy = SUPPORTED_STRATEGIES[strategyKey];
+          Object.keys(SUPPORTED_STRATEGIES).map(strategyKey => {
+            const strategy = SUPPORTED_STRATEGIES[strategyKey as keyof typeof SUPPORTED_STRATEGIES];
             return (
               <Link
                 key={strategyKey}
