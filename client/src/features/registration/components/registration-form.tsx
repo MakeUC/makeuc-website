@@ -17,7 +17,7 @@ import { Input } from "~/components/ui/inputs/input";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 import { Select } from "~/components/ui/inputs/select";
 import { TextArea } from "~/components/ui/inputs/textarea";
-import { useCountryCityOptions } from "~/hooks/useCountryCityOptions";
+// import { useCountryCityOptions } from "~/hooks/useCountryCityOptions";
 
 import {
   MAKEUC_CODE_OF_CONDUCT,
@@ -143,24 +143,23 @@ export function RegistrationForm() {
       },
     });
 
-  const { countries, cities, loading } = useCountryCityOptions(undefined);
+  // TODO: store geographical data on server
+  /* const { countries, cities, loading } = useCountryCityOptions(undefined);
   // Find the selected country object to get its id
   const countryOptions = countries.map((c: { code?: string; name: string; iso2?: string; id?: number }) => ({
     key: c.id !== undefined ? `${c.id}-${c.name}` : c.code || c.name || c.iso2 || c.id || Math.random().toString(36),
     value: c.name,
     label: c.name,
     id: c.id,
-  }));
+  })); */
 
-  // Watch all relevant checkboxes
+  // Watch all checkboxes affected by selectAll
   const mlhCodeOfConductAgreement = watch("mlhCodeOfConductAgreement");
   const mlhPrivacyPolicyAgreement = watch("mlhPrivacyPolicyAgreement");
   const makeucCodeOfConduct = watch("makeucCodeOfConduct");
   const makeucHackathonRules = watch("makeucHackathonRules");
   const makeucLiabilityRelease = watch("makeucLiabilityRelease");
   const acceptAllAuthorization = watch("acceptAllAuthorization");
-  // Optional checkbox
-  const mlhEmailAgreement = watch("mlhEmailAgreement");
 
   // When acceptAllAuthorization is toggled, set all others
   // Only set all checkboxes when acceptAllAuthorization is toggled directly
@@ -222,6 +221,14 @@ export function RegistrationForm() {
       const { school, expectedGraduationYear, age, hackathonsAttended, ...values } =
         formValues;
 
+      let resume = values.resume?.[0];
+      if(resume){
+        const specificFileName =  `${values.major}-Graduating${expectedGraduationYear}-${values.firstName.trim().toLowerCase()}-${values.lastName.trim().toLowerCase()}-resume`;
+        resume = new File([resume], specificFileName, {
+          type: resume.type,
+        });
+      }
+
       const promise = createRegistrant({
         variables: {
           data: {
@@ -229,9 +236,9 @@ export function RegistrationForm() {
             age: age === "" ? undefined : Number(age),
             hackathonsAttended: hackathonsAttended === "" ? undefined : Number(hackathonsAttended),
             expectedGraduationYear: parseInt(expectedGraduationYear),
-            resume: !!values.resume?.[0]
+            resume: resume
               ? {
-                upload: values.resume[0],
+                upload: resume,
               }
               : undefined,
             school:

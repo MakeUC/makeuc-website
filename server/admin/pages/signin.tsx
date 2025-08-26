@@ -27,7 +27,7 @@ export default function SignInForm() {
             return (
               <Link
                 key={strategyKey}
-                href={`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/auth/strategy/${strategyKey}/login`}
+                href={`/auth/strategy/${strategyKey}/login?state=isAdminLogin`}
                 className="flex gap-2 px-3 py-2 bg-white text-[#212121] font-medium rounded-full"
               >
                 {strategy.icon} Sign in with {strategy.name}
