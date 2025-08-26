@@ -1,9 +1,18 @@
 const seenNames = new Set<string>();
-
+const CANT_FIND_SCHOOL_OPTION = {
+  attributes: {
+    NAME: "Can't find my school",
+    CITY: "",
+    STATE: "",
+    COUNTY: "",
+    COUNTRY: "",
+    ALIAS: [],
+  },
+};
 const FAILED = Symbol("FAILED");
 
 export async function getSchoolData() {
-  const combinedData = [];
+  const combinedData = [CANT_FIND_SCHOOL_OPTION]; // always include this as a default option
   for (let i = 1; i < 5; i++) {
     const data = await import(`data/universities-${i}.json`)
       .catch(() => FAILED);
