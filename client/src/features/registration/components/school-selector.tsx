@@ -21,6 +21,8 @@ const DEFAULT_VARS = {
   where: {},
 };
 
+const CANT_FIND_SCHOOL_NAME = "Can't find my school";
+
 export interface SchoolComboboxProps<T extends FieldValues = FieldValues> {
   control: Control<T>;
   name: Path<T>;
@@ -43,11 +45,11 @@ export function SchoolCombobox<T extends FieldValues = FieldValues>({
           value: school.id,
         })) || [];
     const cantFindOption = base.find(
-      school => school.label === "Can't find my school",
+      school => school.label === CANT_FIND_SCHOOL_NAME,
     );
     // make sure "Can't find my school" option is always at the end
     return [
-      ...base.filter(option => option.label !== "Can't find my school"),
+      ...base.filter(option => option.label !== CANT_FIND_SCHOOL_NAME),
       ...(cantFindOption ? [cantFindOption] : []),
     ];
   }, [data]);
@@ -62,10 +64,18 @@ export function SchoolCombobox<T extends FieldValues = FieldValues>({
       await onSearchDebounce({
         ...DEFAULT_VARS,
         where: {
-          name: {
-            contains: search,
-            mode: QueryMode.Insensitive,
-          },
+          OR: [
+            {
+              name: {
+                contains: search,
+                mode: QueryMode.Insensitive,
+              },
+            },
+            {
+              // always include "Can't find my school" option
+              name: { equals: CANT_FIND_SCHOOL_NAME },
+            },
+          ],
         },
       });
     },
