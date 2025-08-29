@@ -15,7 +15,6 @@ export const prisma = new PrismaClient({
 
 async function seedData() {
   if (await prisma.school.count() === 0) {
-    // @ts-expect-error data is wrong type, TODO: fix type
     await prisma.school.createMany({ data: [...(await getSchoolData()), ...(await getSchoolIndiaData())] });
   }
 }

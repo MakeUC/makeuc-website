@@ -11,7 +11,7 @@ interface IndianUniversity {
 const seenNames = new Set<string>();
 
 export async function getSchoolIndiaData() {
-  const data = await import(`data/universities-${5}.json`)
+  const data = await import(`../../../data/universities-${5}.json`)
     .catch(() => FAILED);
 
   if (typeof data === "symbol") {
