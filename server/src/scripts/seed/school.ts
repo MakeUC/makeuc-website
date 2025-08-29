@@ -1,41 +1,41 @@
 const seenNames = new Set<string>();
 const CANT_FIND_SCHOOL_OPTION = {
-  attributes: {
-    NAME: "Can't find my school",
-    CITY: "",
-    STATE: "",
-    COUNTY: "",
-    COUNTRY: "",
-    ALIAS: [],
-  },
+  "name": "Can't find my school",
+  "country": "",
+  "state-province": "",
 };
 const FAILED = Symbol("FAILED");
 
 export async function getSchoolData() {
   const combinedData = [CANT_FIND_SCHOOL_OPTION]; // always include this as a default option
-  for (let i = 1; i < 5; i++) {
-    const data = await import(`data/universities-${i}.json`)
-      .catch(() => FAILED);
+  for (let i = 1; i < 2; i++) {
+    const data = await import(`../../../data/universities-${i}.json`)
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.warn(err);
+        return FAILED;
+      }
+      );
     if (typeof data === "symbol") {
       return [];
     }
-    combinedData.push(...data.default.features);
+    combinedData.push(...data.default);
   }
 
   return combinedData
-    .filter(feature => {
-      if (seenNames.has(feature.attributes.NAME)) return false;
-      seenNames.add(feature.attributes.NAME);
+    .filter(school => {
+      if (seenNames.has(school.name)) return false;
+      seenNames.add(school.name);
       return true;
     })
     .map(
-      feature => ({
-        name: feature.attributes.NAME,
-        city: feature.attributes.CITY,
-        state: feature.attributes.STATE,
-        county: feature.attributes.COUNTY,
-        country: feature.attributes.COUNTRY,
-        alias: feature.attributes.ALIAS,
+      school => ({
+        name: school.name,
+        city: "",
+        state: school["state-province"] ?? "",
+        county: "",
+        country: school.country,
+        alias: "",
       })
     );
 }
