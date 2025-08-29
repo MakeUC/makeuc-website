@@ -8,9 +8,7 @@ interface IndianUniversity {
   district: string;
 }
 
-const seenNames = new Set<string>();
-
-export async function getSchoolIndiaData() {
+export async function getSchoolIndiaData(seenNames: Set<string>) {
   const data = await import(`../../../data/universities-${5}.json`)
     .catch(() => FAILED);
 
