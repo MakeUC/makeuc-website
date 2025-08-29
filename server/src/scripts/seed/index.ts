@@ -13,9 +13,16 @@ export const prisma = new PrismaClient({
   },
 });
 
+const seenNames = new Set<string>();
+
 async function seedData() {
   if (await prisma.school.count() === 0) {
-    await prisma.school.createMany({ data: [...(await getSchoolData()), ...(await getSchoolIndiaData())] });
+    await prisma.school.createMany({
+      data: [
+        ...(await getSchoolData(seenNames)),
+        ...(await getSchoolIndiaData(seenNames)),
+      ],
+    });
   }
 }
 
