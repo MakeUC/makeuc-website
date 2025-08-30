@@ -339,7 +339,7 @@ export function RegistrationForm() {
           <SchoolCombobox control={control} name="school" />
           <FormGroup className="mt-8">
             <Combobox
-              control={control}
+              control={control as any} // eslint-disable-line @typescript-eslint/no-explicit-any
               label="Major(s)"
               name="major"
               placeholder="Select Major"
@@ -359,7 +359,7 @@ export function RegistrationForm() {
           </FormGroup>
           <div className="mt-8">
             <Combobox
-              control={control}
+              control={control as any} // eslint-disable-line @typescript-eslint/no-explicit-any
               label="Country"
               name="country"
               placeholder="Select Country"
