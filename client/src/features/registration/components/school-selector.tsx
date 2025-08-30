@@ -11,7 +11,7 @@ import {
   QueryMode,
 } from "../generated/graphql/graphql";
 
-import type { Control, Path, FieldValues } from "react-hook-form";
+import type { Control, FieldValues } from "react-hook-form";
 
 
 const DEFAULT_VARS = {
@@ -23,15 +23,13 @@ const DEFAULT_VARS = {
 
 const CANT_FIND_SCHOOL_NAME = "Can't find my school";
 
-export interface SchoolComboboxProps<T extends FieldValues = FieldValues> {
-  control: Control<T>;
-  name: Path<T>;
+export interface SchoolComboboxProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
+  name: string;
 }
 
-export function SchoolCombobox<T extends FieldValues = FieldValues>({
-  control,
-  name,
-}: SchoolComboboxProps<T>) {
+export function SchoolCombobox({ control, name }: SchoolComboboxProps) {
   const { data, refetch, loading } = useQuery(GetSchoolsDocument, {
     variables: DEFAULT_VARS,
   });
@@ -84,7 +82,7 @@ export function SchoolCombobox<T extends FieldValues = FieldValues>({
 
   return (
     <Combobox
-      control={control as Control<FieldValues>}
+      control={control}
       options={options}
       onSearch={onSearch}
       label="School"
