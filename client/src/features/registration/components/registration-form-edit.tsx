@@ -136,7 +136,7 @@ export function RegistrationFormEdit() {
   const [createRegistrant] = useMutation(CreateRegistrantDocument);
 
   const onSubmit = useCallback(async (formValues: RegistrationFormEditValues) => {
-    const { school, expectedGraduationYear, age, hackathonsAttended, resume, ...values } = formValues;
+    const { school, expectedGraduationYear, age, hackathonsAttended, ...values } = formValues;
     
     let resume = values.resume?.[0];
     if(resume){
