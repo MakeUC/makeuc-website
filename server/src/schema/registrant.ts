@@ -1,5 +1,6 @@
 import { list } from "@keystone-6/core";
 import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
+import { GraphQLError } from "graphql";
 
 import { allOperations, hasRoleOneOf } from "../auth/access";
 import { addCompoundKey } from "../utils/compoundKeys";
@@ -121,6 +122,17 @@ export const Registrant = list(addCompoundKey({
   hooks: {
     async afterOperation({ operation, item }) {
       if (operation !== "create" || !item) return;
+
+      // check if item is actually GraphQLError and not a registrant
+      if (item instanceof GraphQLError && typeof item.message === "string") {
+        // eslint-disable-next-line no-console
+        console.error("Error creating registrant:", item);
+        if (item.message.includes("emailRegistrationYearCompoundKey")) {
+          throw new Error("Registration failed: You have already registered for this year.");
+        }
+
+        throw new Error("Registration failed.");
+      }
 
       await sendRegistrantEmail(item as Lists.Registrant.Item)
         .then(resp => {
