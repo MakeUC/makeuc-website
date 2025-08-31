@@ -257,7 +257,7 @@ export function RegistrationForm() {
             error: error => {
               if (
                 isApolloError(error) &&
-                error.message.includes("emailRegistrationYearCompoundKey")
+                error.message.includes("Registration failed: You have already registered for this year.")
               ) {
                 return "You have already registered.\nPlease check your email for the confirmation link or reach out to us at info@makeuc.io";
               }
