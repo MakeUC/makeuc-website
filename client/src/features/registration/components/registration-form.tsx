@@ -223,7 +223,7 @@ export function RegistrationForm() {
 
       let resume = values.resume?.[0];
       if(resume){
-        const specificFileName =  `${values.major}-Graduating${expectedGraduationYear}-${values.firstName.trim().toLowerCase()}-${values.lastName.trim().toLowerCase()}-resume`;
+        const specificFileName =  `${values.major}-${values.firstName.trim().toLowerCase()}-${values.lastName.trim().toLowerCase()}-resume`;
         resume = new File([resume], specificFileName, {
           type: resume.type,
         });

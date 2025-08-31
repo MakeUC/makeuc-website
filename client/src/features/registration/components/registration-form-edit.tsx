@@ -138,6 +138,14 @@ export function RegistrationFormEdit() {
   const onSubmit = useCallback(async (formValues: RegistrationFormEditValues) => {
     const { school, expectedGraduationYear, age, hackathonsAttended, resume, ...values } = formValues;
     
+    let resume = values.resume?.[0];
+    if(resume){
+      const specificFileName =  `${values.major}-${values.firstName.trim().toLowerCase()}-${values.lastName.trim().toLowerCase()}-resume`;
+      resume = new File([resume], specificFileName, {
+        type: resume.type,
+      });
+    }
+
     const promise = createRegistrant({
       variables: {
         data: {
