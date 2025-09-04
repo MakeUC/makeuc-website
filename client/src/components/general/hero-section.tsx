@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 import HeaderSVG from "~/assets/header.svg";
@@ -8,7 +7,8 @@ import { Logo } from "~/components/ui/Logo";
 
 export function HeroSection() {
   return (
-    <section className="relative flex flex-col min-h-[calc(100vh-70px)]"
+    <section
+      className="relative flex flex-col min-h-[calc(100vh-70px)]"
       style={{
         backgroundImage: "url('/assets/header.svg')",
         backgroundRepeat: "repeat-x",
@@ -29,16 +29,22 @@ export function HeroSection() {
               >
                 MakeUC 2025
               </h1>
-              <span className="block text-white text-xl font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">November 8-9th, 2025</span>
+              <span className="block text-white text-xl font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
+                November 8-9th, 2025
+              </span>
             </div>
-            {/* <Link href="/registration" className="" tabIndex={-1}>
-              <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">Register Now!</Button>
-            </Link> */}
+            {
+              <Link href="/registration" className="" tabIndex={-1}>
+                <Button
+                  className="flex gap-2 mt-4 titillium-web-bold"
+                  size="lg"
+                >
+                  Register Now!
+                </Button>
+              </Link>
+            }
             <Link href="/about" className="" tabIndex={-1}>
-              <Button
-                className="flex gap-2 mt-4 titillium-web-bold"
-                size="lg"
-              >
+              <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">
                 View Hackathon Information
               </Button>
             </Link>

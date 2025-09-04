@@ -6,8 +6,14 @@ This folder contains the Next.js frontend for the MakeUC website.
 
 To enable or disable registration, you must comment or uncomment the registration route in `src/app/registration/page.tsx`.
 
-- **To disable registration:** Comment out the export or main component in [`src/app/registration/page.tsx`](../src/app/registration/page.tsx).
-- **To enable registration:** Uncomment the export or main component in the same file.
+- **To disable registration:** Comment out registration in the following files (hint: Ctrl+F `href="/registration"`):
+
+  - [`src/app/registration/page.tsx`](./src/app/registration/page.tsx).
+  - [`src/components/general/hero-section.tsx`](./src/components/general/hero-section.tsx).
+  - [`src/components/general/navbar-mobile.tsx`](./src/components/general/navbar-mobile.tsx).
+  - [`src/components/general/navbar-mobile.tsx`](./src/components/general/layout-header.tsx).
+
+- **To enable registration:** Uncomment the registration in the same files.
 
 This will control whether the registration page is accessible to users.
 
