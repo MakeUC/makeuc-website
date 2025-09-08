@@ -2,20 +2,22 @@
 
 This folder contains the Next.js frontend for the MakeUC website.
 
-## Registration Enable/Disable Practice
+## Registration and MLH Banner Feature Flags
+You can enable or disable the registration form and the MLH banner using a centralized constants file.
 
-To enable or disable registration, you must comment or uncomment the registration route in `src/app/registration/page.tsx`.
+To enable or disable these features, change the boolean value in src/constants/Config.ts:
 
-- **To disable registration:** Comment out registration in the following files (hint: Ctrl+F `href="/registration"`):
+**To show registration:** Set ShowRegistration: true.
 
-  - [`src/app/registration/page.tsx`](./src/app/registration/page.tsx).
-  - [`src/components/general/hero-section.tsx`](./src/components/general/hero-section.tsx).
-  - [`src/components/general/navbar-mobile.tsx`](./src/components/general/navbar-mobile.tsx).
-  - [`src/components/general/navbar-mobile.tsx`](./src/components/general/layout-header.tsx).
+**To hide registration:** Set ShowRegistration: false.
 
-- **To enable registration:** Uncomment the registration in the same files.
+**To show the MLH banner:** Set ShowMLHBanner: true.
 
-This will control whether the registration page is accessible to users.
+**To hide the MLH banner:** Set ShowMLHBanner: false.
+
+These flags control the visibility of the components across the site, including the registration page itself and the navigation links.
+
+
 
 ## Styling and Theming
 
