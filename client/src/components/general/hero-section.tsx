@@ -3,6 +3,7 @@ import Link from "next/link";
 import HeaderSVG from "~/assets/header.svg";
 import { Button } from "~/components/ui/button";
 import { Logo } from "~/components/ui/Logo";
+import { Config } from "~/constants/config";
 
 
 export function HeroSection() {
@@ -33,7 +34,7 @@ export function HeroSection() {
                 November 8-9th, 2025
               </span>
             </div>
-            {
+            {Config.ShowRegistration && (
               <Link href="/registration" className="" tabIndex={-1}>
                 <Button
                   className="flex gap-2 mt-4 titillium-web-bold"
@@ -42,6 +43,7 @@ export function HeroSection() {
                   Register Now!
                 </Button>
               </Link>
+            )
             }
             <Link href="/about" className="" tabIndex={-1}>
               <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">
