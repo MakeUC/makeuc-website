@@ -2,6 +2,7 @@ import { Edit, CalendarCheck } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
+import { Config } from "~/constants/config";
 
 import { Logo } from "../ui/Logo";
 
@@ -33,7 +34,7 @@ export function LayoutHeader() {
         {/* Left Side */}
         <div className="flex gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Logo width={54}/>
+            <Logo width={54} />
           </Link>
 
           <DesktopNavbar className="sm:flex" links={LINKS} />
@@ -41,9 +42,9 @@ export function LayoutHeader() {
 
         {/* Right Side */}
         <div className="flex justify-end items-center gap-4">
-          {<Link href="/registration" className="hidden sm:block" tabIndex={-1}>
+          {Config.ShowRegistration && (<Link href="/registration" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
-          </Link>}
+          </Link>)}
           {/*<Link href="/live" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">
               Live Site
@@ -51,11 +52,11 @@ export function LayoutHeader() {
             </Button>
           </Link>*/}
           <MobileNavbar className="sm:hidden" links={LINKS} />
-          {/* <div className="self-end">
+          {Config.ShowMLHBanner && (<div className="self-end">
             <div className="relative -bottom-4">
               <MLHBanner />
             </div>
-          </div> */}
+          </div>)}
         </div>
       </nav>
     </div>

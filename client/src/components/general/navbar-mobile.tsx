@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import LogoPng from "~/assets/logo.png";
+import { Config } from "~/constants/config";
 import { cn } from "~/utils/className";
 
 import { Button } from "../ui/button";
@@ -58,9 +59,9 @@ export function MobileNavbar({ className, links }: MobileNavbarProps) {
               >{link.children}</NavLink>
             ))
           }
-          {<Link href="/registration" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
+          {Config.ShowRegistration && (<Link href="/registration" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
             <Button className="flex gap-2 text-xl" size="lg">Register<Edit size="20px" /></Button>
-          </Link>}
+          </Link>)}
           {/*<Link href="/live" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
             <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="20px" /></Button>
           </Link>*/}
