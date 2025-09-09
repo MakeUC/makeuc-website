@@ -4,6 +4,6 @@ export const Config = {
   RevalidationFrequency: 60,
   SearchDebounceWait: 300,
   SearchMaxDebounceWait: 1500,
-  ShowRegistration: false,
+  ShowRegistration: true,
   ShowMLHBanner: false,
 };
