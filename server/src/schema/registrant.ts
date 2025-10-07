@@ -71,6 +71,9 @@ export const Registrant = list(addCompoundKey({
       ],
       validation: { isRequired: true },
     }),
+    // MLH requirements
+    phoneNumber: text({ validation: { isRequired: true } }),
+    linkedInUrl: text({ validation: { isRequired: true } }),
 
     school: relationship({ ref: "School", many: false }),
     major: text({ validation: { isRequired: true } }),

@@ -62,6 +62,8 @@ const registrationFormSchema = z
     ),
     gender: z.string().min(1),
     ethnicity: z.string().min(1),
+    phoneNumber: z.string().min(7),
+    linkedInUrl: z.string().url(),
     school: z.string().min(1),
     major: z.string().min(1),
     degree: z.string().min(1),
@@ -121,6 +123,8 @@ export function RegistrationForm() {
         age: "",
         gender: undefined,
         ethnicity: undefined,
+        phoneNumber: "",
+        linkedInUrl: "",
         school: undefined,
         major: undefined,
         degree: undefined,
@@ -324,6 +328,18 @@ export function RegistrationForm() {
           name="ethnicity"
           placeholder="Enter Ethnicity"
           options={ETHNICITY_OPTIONS}
+        />
+        <Input
+          control={control}
+          label="Phone Number"
+          name="phoneNumber"
+          placeholder="Enter Phone Number (number only, no dashes)"
+        />
+        <Input
+          control={control}
+          label="LinkedInUrl"
+          name="linkedInUrl"
+          placeholder="Enter LinkedIn Url"
         />
       </FormSection>
       {/*
