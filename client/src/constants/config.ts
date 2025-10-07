@@ -5,5 +5,5 @@ export const Config = {
   SearchDebounceWait: 300,
   SearchMaxDebounceWait: 1500,
   ShowRegistration: true,
-  ShowMLHBanner: false,
+  ShowMLHBanner: true,
 };
