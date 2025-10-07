@@ -64,6 +64,7 @@ model Registrant {
   age                              Int
   gender                           String
   ethnicity                        String
+  phoneNumber                      String    @default("")
   school                           School?   @relation("Registrant_school", fields: [schoolId], references: [id])
   schoolId                         String?   @map("school")
   major                            String    @default("")
