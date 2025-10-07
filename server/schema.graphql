@@ -348,7 +348,6 @@ type Registrant {
   gender: String
   ethnicity: String
   phoneNumber: String
-  linkedInUrl: String
   school: School
   major: String
   degree: String
@@ -401,7 +400,6 @@ input RegistrantWhereInput {
   gender: StringFilter
   ethnicity: StringFilter
   phoneNumber: StringFilter
-  linkedInUrl: StringFilter
   school: SchoolWhereInput
   major: StringFilter
   degree: StringFilter
@@ -455,7 +453,6 @@ input RegistrantOrderByInput {
   gender: OrderDirection
   ethnicity: OrderDirection
   phoneNumber: OrderDirection
-  linkedInUrl: OrderDirection
   major: OrderDirection
   degree: OrderDirection
   country: OrderDirection
@@ -490,7 +487,6 @@ input RegistrantUpdateInput {
   gender: String
   ethnicity: String
   phoneNumber: String
-  linkedInUrl: String
   school: SchoolRelateToOneForUpdateInput
   major: String
   degree: String
@@ -540,7 +536,6 @@ input RegistrantCreateInput {
   gender: String
   ethnicity: String
   phoneNumber: String
-  linkedInUrl: String
   school: SchoolRelateToOneForCreateInput
   major: String
   degree: String
