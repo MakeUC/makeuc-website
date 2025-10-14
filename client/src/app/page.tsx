@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { SponsorGridPlaceholder } from "~/features/sponsors";
+
 import { About } from "../components/general/about";
 import { Faq } from "../components/general/faq";
 import { HeroSection } from "../components/general/hero-section";
 import { ViewportSection } from "../components/ui/viewport-section";
 import { TrackGrid } from "../features/tracks/components/track-grid";
+
 
 export default async function HomePage() {
   return (
@@ -54,7 +57,7 @@ export default async function HomePage() {
             !
           </h3>
           <br />
-          {/* <SponsorGridPlaceholder />*/}
+          {<SponsorGridPlaceholder />}
           {/* <div className="flex flex-col justify-center items-center gap-8 border-4 border-dashed border-muted text-muted-gray-foreground rounded mt-8 min-h-[200px] p-4"> */}
           {/* <span className="text-xl font-semibold text-center">There are no sponsors currently. Please check back in the future!</span> */}
           {/* <PlugZap size={48} strokeWidth={1} /> */}

@@ -488,3 +488,7 @@ textarea::placeholder,
 .bg-destructive {
   color: white !important;
 }
+
+.px-8.w-full.max-w-5xl {
+  z-index: 9;
+}

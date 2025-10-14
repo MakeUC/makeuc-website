@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+
+import { SponsorImage } from "~/components/ui/sponsor-image";
 
 import { sponsorData } from "../constants/sponsor-data";
 
@@ -15,7 +16,17 @@ export interface SponsorDetail {
 function SponsorItem({ name, imageSrc, url }: SponsorDetail) {
   if (!imageSrc) return <></>;
 
-  return <Link href={url ?? "#"} target="_blank"><Image alt={name ?? "Sponsor"} src={imageSrc} height={80} /></Link>;
+  const sponsorHeight = 80; // Common height for all sponsor logos
+
+  return (
+    <Link href={url ?? "#"} target="_blank">
+      <SponsorImage 
+        alt={name ?? "Sponsor"} 
+        src={imageSrc} 
+        height={sponsorHeight}
+      />
+    </Link>
+  );
 }
 
 export interface SponsorTier {
