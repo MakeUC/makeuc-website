@@ -33,7 +33,7 @@ Note that yarn and a container engine are required for this project.
 **This means to use the `code .` command in WSL. You can read more [here](https://code.visualstudio.com/docs/remote/wsl).**
 
 For a container engine, one of the following is recommended:
-- [Rancher Desktop](https://rancherdesktop.io/) (Recommended)
+- [Rancher Desktop](https://rancherdesktop.io/) (Validated)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Validated)
 - [Podman](https://podman.io/) (Untested)
 
