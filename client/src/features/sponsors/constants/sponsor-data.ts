@@ -74,11 +74,6 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Birdwing",
     sponsors: [
-      {
-        name: "Kinetic Vision",
-        url: "https://kinetic-vision.com/",
-        imageSrc: KineticVisionImage,
-      },
     ],
   },
   {
@@ -93,6 +88,11 @@ export const sponsorData: SponsorTier[] = [
         name: "MLH",
         url: "https://mlh.io/",
         imageSrc: MLHImage,
+      },
+      {
+        name: "Kinetic Vision",
+        url: "https://kinetic-vision.com/",
+        imageSrc: KineticVisionImage,
       },
       /*
       {
