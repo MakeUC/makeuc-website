@@ -7,13 +7,14 @@
 // import FISImage from "../assets/FIS.svg";
 // import GoogleCloudImage from "../assets/google-cloud.svg";
 // import greatAmericanInsuranceImage from "../assets/great_american_insurance.png";
-import SeeedImage from "../assets/Color Logo-Seeed.png";
-import HiiImage from "../assets/hii.png";
+// import SeeedImage from "../assets/Color Logo-Seeed.png";
+import a1819Image from "../assets/1819.jpg";
+import HIIImage from "../assets/hii.svg";
 // import IBMImage from "../assets/ibm.svg";
-import ICRImage from "../assets/icr.png";
-import InfineraImage from "../assets/infinera.png";
+// import ICRImage from "../assets/icr.png";
+// import InfineraImage from "../assets/infinera.png";
 // import KaoImage from "../assets/kao.png";
-import KineticVisionImage from "../assets/kinetic-vision.png";
+import KineticVisionImage from "../assets/kinetic-vision.svg";
 // import MicrosoftImage from "../assets/Microsoft.png";
 // import NorthropGrummanImage from "../assets/northrop_grumman.png";
 // import OverleafImage from "../assets/overleaf.png";
@@ -25,8 +26,10 @@ import KineticVisionImage from "../assets/kinetic-vision.png";
 // import TCSImage from "../assets/TCS.png";
 // import temboImage from "../assets/tembo.svg";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
-import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
-import XYZImage from "../assets/xyz.png";
+// import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
+import MLHImage from "../assets/mlh.svg";
+import PureButtonsImage from "../assets/pure-buttons.svg";
+import XYZImage from "../assets/xyz.svg";
 
 
 import type { SponsorTier } from "../components/sponsor-grid";
@@ -36,6 +39,11 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Adonis",
     sponsors: [
+      {
+        name: "1819",
+        url: "https://innovation.uc.edu/",
+        imageSrc: a1819Image,
+      },
       // {
       //   name: "IBM",
       //   url: "https://www.ibm.com/us-en",
@@ -54,23 +62,39 @@ export const sponsorData: SponsorTier[] = [
       {
         name: "HII",
         url: "https://hii.com/",
-        imageSrc: HiiImage,
+        imageSrc: HIIImage,
+      },
+      {
+        name: "XYZ",
+        url: "https://gen.xyz/",
+        imageSrc: XYZImage,
       },
     ],
   },
   {
     name: "Birdwing",
     sponsors: [
-      {
-        name: "Kinetic Vision",
-        url: "https://kinetic-vision.com/",
-        imageSrc: KineticVisionImage,
-      },
     ],
   },
   {
     name: "Morpho",
     sponsors: [
+      {
+        name: "Pure Buttons",
+        url: "https://www.purebuttons.com/",
+        imageSrc: PureButtonsImage,
+      },
+      {
+        name: "MLH",
+        url: "https://mlh.io/",
+        imageSrc: MLHImage,
+      },
+      {
+        name: "Kinetic Vision",
+        url: "https://kinetic-vision.com/",
+        imageSrc: KineticVisionImage,
+      },
+      /*
       {
         name: "Seeed Studio",
         url: "https://www.seeedstudio.com/",
@@ -90,7 +114,7 @@ export const sponsorData: SponsorTier[] = [
         name: "ICR",
         url: "https://icr-team.com/",
         imageSrc: ICRImage,
-      },
+      },*/
       // {
       //   name: "Northrop Grumman",
       //   url: "https://www.northropgrumman.com/careers/",
@@ -147,11 +171,6 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Monarch",
     sponsors: [
-      {
-        name: "XYZ",
-        url: "https://gen.xyz/",
-        imageSrc: XYZImage,
-      },
     ],
   },
 ];
