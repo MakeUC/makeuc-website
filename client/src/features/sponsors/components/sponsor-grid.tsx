@@ -19,7 +19,7 @@ function SponsorItem({ name, imageSrc, url }: SponsorDetail) {
   const sponsorHeight = 80; // Common height for all sponsor logos
 
   return (
-    <Link href={url ?? "#"} target="_blank">
+    <Link href={url ?? "#"} target="_blank" className="px-2">
       <SponsorImage 
         alt={name ?? "Sponsor"} 
         src={imageSrc} 

@@ -27,6 +27,7 @@ import KineticVisionImage from "../assets/kinetic-vision.svg";
 // import temboImage from "../assets/tembo.svg";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
 // import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
+import KloobImage from "../assets/kloob.png";
 import MLHImage from "../assets/mlh.svg";
 import PureButtonsImage from "../assets/pure-buttons.svg";
 import XYZImage from "../assets/xyz.svg";
@@ -93,6 +94,11 @@ export const sponsorData: SponsorTier[] = [
         name: "Kinetic Vision",
         url: "https://kinetic-vision.com/",
         imageSrc: KineticVisionImage,
+      },
+      {
+        name: "Kloob",
+        url: "https://www.kloob.app/",
+        imageSrc: KloobImage,
       },
       /*
       {
