@@ -45,11 +45,16 @@ export function HeroSection() {
               </Link>
             )
             }
-            <Link href="/about" className="" tabIndex={-1}>
+            <Link href="/live" className="" tabIndex={-1}>
+              <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">
+                View Live Site!
+              </Button>
+            </Link>
+            {/* <Link href="/about" className="" tabIndex={-1}>
               <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">
                 View Hackathon Information
               </Button>
-            </Link>
+            </Link> */}
           </div>
           <div className="flex-shrink-0">
             <Logo
