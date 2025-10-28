@@ -25,7 +25,7 @@ export default async function LiveSite() {
       </section>
       <h1 className="flex items-center justify-evenly py-8 bg-muted font-bold text-3xl">Helpful Links</h1>
       <section className="flex items-center md:flex-row flex-col justify-evenly py-8 bg-muted">
-        <Link href="https://discord.gg/g2T8QAhaME" className="items-center" target="_blank">
+        <Link href="https://discord.gg/D5N8Xw8JMF" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
         </Link>
 
