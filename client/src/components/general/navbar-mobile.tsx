@@ -62,9 +62,9 @@ export function MobileNavbar({ className, links }: MobileNavbarProps) {
           {Config.ShowRegistration && (<Link href="/registration" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
             <Button className="flex gap-2 text-xl" size="lg">Register<Edit size="20px" /></Button>
           </Link>)}
-          {/*<Link href="/live" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
-            <Button className="flex gap-2" size="sm">Live Site<CalendarCheck size="20px" /></Button>
-          </Link>*/}
+          (<Link href="/live" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
+            <Button className="flex gap-2 text-xl" size="lg">Live Site!<CalendarCheck size="20px" /></Button>
+          </Link>)
         </div>
       }
     </>

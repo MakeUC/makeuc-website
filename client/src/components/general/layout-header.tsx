@@ -45,12 +45,13 @@ export function LayoutHeader() {
           {Config.ShowRegistration && (<Link href="/registration" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">Register<Edit size="16px" /></Button>
           </Link>)}
-          {/*<Link href="/live" className="hidden sm:block" tabIndex={-1}>
+          
+          <Link href="/live" className="hidden sm:block" tabIndex={-1}>
             <Button className="flex gap-2" size="sm">
-              Live Site
+              Live Site!
               <CalendarCheck size="16px" />
             </Button>
-          </Link>*/}
+          </Link>
           <MobileNavbar className="sm:hidden" links={LINKS} />
           {Config.ShowMLHBanner && (<div className="self-end">
             <div className="relative -bottom-4">
