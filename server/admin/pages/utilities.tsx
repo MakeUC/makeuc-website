@@ -31,7 +31,7 @@ async function seedIndiaSchools() {
     mutation {
       seedSchoolIndiaData
     }
-`);
+  `);
 }
 
 const importRegistrants: FormEventHandler<HTMLFormElement> = event => {
@@ -61,8 +61,24 @@ async function sendVerificationEmails() {
     mutation {
       resendVerificationEmails
     }
-`);
+  `);
 }
+async function triggerFullDatabaseBackup() {
+
+
+  // NOTE the URL: /api/utilities is your router prefix, /export-all is the route.
+  // The browser will automatically handle the file download because of the 
+  // Content-Disposition header set by your Express router.
+  window.location.href = "/api/utilities/export-all";
+
+  // We can't use Promises/await here to track completion, so logging a message
+  // is the best we can do client-side.
+
+}
+
+
+
+// --- Component ---
 
 export default function UtilitiesPage() {
   return (
@@ -88,6 +104,17 @@ export default function UtilitiesPage() {
         <Button type="submit" tone="positive">Import Projects</Button>
       </form>
       <br />
+
+      {/* MODIFIED EXPORT SECTION: Now uses the client-side fetching logic */}
+      <H3>Export All Data (SQL)</H3>
+      <br />
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <Button onClick={triggerFullDatabaseBackup} tone="active">
+          Download Databackup
+        </Button>
+      </div>
+      <br />
+
       <H3>Send Verification Emails to Unverified Registrants for {new Date().getFullYear()}</H3>
       <br />
       <div style={{ display: "flex", gap: "1rem" }}>

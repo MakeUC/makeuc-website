@@ -17,6 +17,8 @@ const {
   S3_URL: s3Url = "http://minio:9000",
 } = process.env;
 
+const isDev = process.env.MY_DEV_MODE === "1";
+
 export default withAuth(
   config({
     db: {
@@ -34,7 +36,7 @@ export default withAuth(
       },
     },
     lists,
-    session,
+    ...isDev ? {} : { session },
     telemetry: false,
     extendGraphqlSchema,
     storage: { // TODO: update keystone config
@@ -52,10 +54,9 @@ export default withAuth(
     },
     ui: {
       publicPages: ["/signin"],
-      isAccessAllowed: context => {
+      isAccessAllowed: isDev ? () => true : context => {
         const session = context.session;
         if (!session || !session.item) return false;
-
         return session.item.roles.some((role: string) => role === "admin");
       },
       async pageMiddleware({ context, basePath }) {
@@ -64,11 +65,17 @@ export default withAuth(
         const req = context.req as ExpressRequest | undefined;
 
         if (!req || req.path.startsWith("/signin")) { return; }
-
-        if (!context.session) {
-          // If no session, redirect to login
-          return { kind: "redirect", to: "/signin" };
+        if (!isDev) {
+          if (!context.session) {
+            // If not dev mode and no session, redirect to login
+            return { kind: "redirect", to: "/signin" };
+          }
         }
+
+        //if (!context.session) {
+        // If no session, redirect to login
+        //return { kind: "redirect", to: "/signin" };
+        //}
       },
     },
     server: {
