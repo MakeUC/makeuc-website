@@ -31,8 +31,6 @@ export function FreeResources() {
             <div className="underline text-primary">
               <br />
               <Link href="https://github.com/sahat/hackathon-starter">github.com/sahat/hackathon-starter</Link>
-              <br />
-              <Link href="https://hackathon-starter.walcony.com/">hackathon-starter.walcony.com</Link>
             </div>
             <br />
             <p className="font-normal">

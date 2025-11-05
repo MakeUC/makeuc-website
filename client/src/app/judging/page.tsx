@@ -1,5 +1,5 @@
 import { PageTitle } from "~/components/general/typography";
-import { Judging } from "~/features/live-site";
+import { Judging, JudgingTable } from "~/features/live-site";
 
 
 export default function AboutPage() {
@@ -11,6 +11,14 @@ export default function AboutPage() {
         <div className="flex flex-col gap-8 mt-4">
           <Judging />
         </div>
+      
+        <PageTitle>Judging Criteria</PageTitle>
+        <hr className="border border-muted-foreground" />
+
+        <div className="flex flex-col gap-8 mt-4">
+          <JudgingTable />
+        </div>
       </div>
-    </div>);
+    </div>
+  );
 }
