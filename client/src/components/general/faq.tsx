@@ -25,8 +25,8 @@ const FAQ: Array<FAQEntry> = [
     dropDown: "MakeUC 2025 will be held in person. In-person spots will be limited, if you do not recieve an in person spot please reach out to our organizers at info@makeuc.io",
   },
   {
-    card: "WHO CAN ATTEND IN PERSON?",
-    dropDown: "We will release more information soon about who is eligible to attend in person. First come first serve to register for in person attendance",
+    card: "WHO CAN ATTEND?",
+    dropDown: "Registration is open to high school students aged 16 and above, as well as individuals currently enrolled in higher education programs, with in-person participation limited to those 18 and older.,
   },
   {
     card: "HOW MUCH DOES IT COST?",
