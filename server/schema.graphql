@@ -879,7 +879,6 @@ type Mutation {
   updatePassportStrategyStorages(data: [PassportStrategyStorageUpdateArgs!]!): [PassportStrategyStorage]
   deletePassportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
   deletePassportStrategyStorages(where: [PassportStrategyStorageWhereUniqueInput!]!): [PassportStrategyStorage]
-  endSession: Boolean!
   disqualifyProject(projectId: ID, reason: String): Judgement
   seedSchoolIndiaData: Boolean
   verifyRegistrant(id: ID!): Registrant

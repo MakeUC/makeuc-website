@@ -173,39 +173,35 @@ utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
     }
 
 
-    // 2. --- SET UP ENVIRONMENT VARIABLES FOR pg_dump ---
-    // pg_dump requires standard PG* environment variables. We map yours to them.
+
     const env = {
       ...process.env,
-      PGHOST: process.env.POSTGRES_HOST, // Use your provided variable
+      PGHOST: process.env.POSTGRES_HOST,
       PGPORT: "5432",
       PGUSER: process.env.POSTGRES_USER,
       PGPASSWORD: process.env.POSTGRES_PASSWORD,
-      // Your POSTGRES_DATABASE contains the DB name
       PGDATABASE: process.env.POSTGRES_DATABASE,
     };
 
 
-    // Basic check for required credentials
+
     if (!env.PGHOST || !env.PGUSER || !env.PGPASSWORD || !env.PGDATABASE) {
       return res.status(500).send("Database environment variables are missing.");
     }
 
-    // 3. --- SET HEADERS FOR FILE DOWNLOAD (UPDATED FOR SQL) ---
+
     const timestamp = new Date().toISOString().slice(0, 19).replace("T", "_").replace(/:/g, "-");
-    // Changed extension from .dump to .sql
+
     const filename = `keystone_db_backup_${env.PGDATABASE}_${timestamp}.sql`;
 
-    // Changed Content-Type to application/sql (or text/plain)
+
     res.setHeader("Content-Type", "application/sql");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
 
-    // 4. --- SPAWN THE pg_dump PROCESS (UPDATED FLAGS) ---
-    // No flags are needed for plain-text SQL format, as it is the default.
-    // The pg_dump command will be: pg_dump
+
     const pgDumpProcess = spawn("pg_dump", [], { env });
 
-    // 5. --- STREAM THE BACKUP TO THE HTTP RESPONSE ---
+
     pgDumpProcess.stdout.pipe(res);
 
 
@@ -213,13 +209,12 @@ utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
       if (code !== 0) {
 
         if (!res.headersSent) {
-          // Send a 500 error only if headers haven't been sent yet (i.e., before streaming started)
           res.status(500).end("Database backup failed. Check server logs.");
         }
       } else {
         console.log("Database backup streamed successfully.");
       }
-      // Ensure the response is finalized
+
       if (!res.writableEnded) {
         res.end();
       }
