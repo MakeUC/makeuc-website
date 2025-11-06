@@ -8,14 +8,16 @@ export const metadata = {
 };
 
 export default function RegistrationPage() {
-
-
   function FallbackMessage() {
-    return <div className="flex justify-center text-center">
-      <div className="p-8 w-full max-w-5xl">
-        <div className="text-2xl font-bold">Registration is currently closed</div>
+    return (
+      <div className="flex justify-center text-center">
+        <div className="p-8 w-full max-w-5xl">
+          <div className="text-2xl font-bold">
+            Registration is currently closed
+          </div>
+        </div>
       </div>
-    </div>;
+    );
   }
 
   return (
@@ -27,6 +29,3 @@ export default function RegistrationPage() {
     </div>
   );
 }
-
-
-

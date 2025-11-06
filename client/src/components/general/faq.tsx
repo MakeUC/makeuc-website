@@ -26,7 +26,7 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WHO CAN ATTEND?",
-    dropDown: "Registration is open to high school students aged 16 and above, as well as individuals currently enrolled in higher education programs, with in-person participation limited to those 18 and older.,
+    dropDown: "Registration is open to high school students aged 16 and above, as well as individuals currently enrolled in higher education programs, with in-person participation limited to those 18 and older.",
   },
   {
     card: "HOW MUCH DOES IT COST?",
