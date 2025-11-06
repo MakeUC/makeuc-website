@@ -45,10 +45,6 @@ export default async function LiveSite() {
           <Button className="flex gap-2 mt-4" size="lg">Judging Info</Button>
         </Link>
 
-        {/*<Link href="https://drive.google.com/drive/folders/1WcYK2-0QmweQIlju5xrPwiS2R2nt6M22?usp=sharing" target="_blank">
-          <Button className="flex gap-2 mt-4" size="lg">Venue Maps</Button>
-        </Link> */}
-
         <Link href="https://ctf.cyberatuc.org" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">CTF Website</Button>
         </Link>
@@ -60,6 +56,13 @@ export default async function LiveSite() {
           <HackerScheduleTable />
         </ div>
       </section>
+
+      <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">CTF Schedule</h1>
+      <section className="flex items-center justify-evenly py-8 bg-muted">
+        <div className="flex-grow overflow-auto">
+          <CTFScheduleTable />
+        </ div>
+      </section>
       
       <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">Makerspace Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
@@ -67,6 +70,7 @@ export default async function LiveSite() {
           <MakerspaceScheduleTable />
         </ div>
       </section>
+      
       <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">UC Shuttle Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <div className="flex-grow overflow-x-auto">

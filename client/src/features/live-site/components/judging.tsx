@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+
 import { PageTitle } from "~/components/general/typography";
 import {
   Table,
@@ -76,6 +78,8 @@ export function Judging() {
           Each team will have 5 minutes to present their project live. <br />
           Followed by 5 minutes of questions and answers from the judges.
         </li>
+        <li>All teams are required to fill out this google form to be assigned a judging time: <Link className="underline text-primary text-white" href={"https://forms.gle/q16PCJwk2Wrtz7PQ8"}>Judging Signup Form</Link></li>
+
       </ul>
     </>
   );
