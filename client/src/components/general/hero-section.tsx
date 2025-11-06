@@ -34,7 +34,7 @@ export function HeroSection() {
                 November 8-9th, 2025
               </span>
             </div>
-            {Config.ShowRegistration && (
+            {Config.ShowRegistrationButton && (
               <Link href="/registration" className="" tabIndex={-1}>
                 <Button
                   className="flex gap-2 mt-4 titillium-web-bold"
@@ -43,8 +43,7 @@ export function HeroSection() {
                   Register Now!
                 </Button>
               </Link>
-            )
-            }
+            )}
             <Link href="/live" className="" tabIndex={-1}>
               <Button className="flex gap-2 mt-4 titillium-web-bold" size="lg">
                 View Live Site!
