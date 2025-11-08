@@ -41,7 +41,7 @@ export const scheduleData: EventInfo[] = [
   createData("Kinetic Vision - Connected Living: IoT for Your Home or Dorm Workshop", "Room 230", "YouTube Stream", "Nov 8", "02:30 PM", "3:30 PM"),
   createData("MLH - Intro to Google AI Studio Workshop", "Room 230", "YouTube Stream", "Nov 8", "03:30 PM", "4:30 PM"),
   createData("MLH - Meet Your 5th Teammate: Hacking with GitHub Copilot Workshop", "Room 230", "YouTube Stream", "Nov 8", "04:30 PM", "5:30 PM"),
-  createData("MLH Tech Together", "Room 230", "YouTube Stream", "Nov 8", "05:30 PM", "06:00 PM"),
+  createData("MLH - Tech Together", "Room 230", "YouTube Stream", "Nov 8", "05:30 PM", "06:00 PM"),
   createData("Dinner", "Second Floor Common Area", "-", "Nov 8", "06:00 PM", "06:30 PM"),
   createData("MLH - Bob Ross Painting", "Esports Lab", "-", "Nov 8", "06:30 PM", "07:00 PM"),
   createData("The Art of Not Quitting: Building Tech That Survives Reality Workshop", "Room 230", "YouTube Stream", "Nov 8", "07:00 PM", "08:00 PM"),
