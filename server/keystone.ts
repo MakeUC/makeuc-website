@@ -71,11 +71,6 @@ export default withAuth(
             return { kind: "redirect", to: "/signin" };
           }
         }
-
-        //if (!context.session) {
-        // If no session, redirect to login
-        //return { kind: "redirect", to: "/signin" };
-        //}
       },
     },
     server: {
