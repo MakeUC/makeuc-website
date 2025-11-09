@@ -91,6 +91,9 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
       extendExpressApp(app, context) {
         extendExpressApp?.(app, context);
 
+        // Initialize Passport
+        app.use(passport.initialize());
+
         strategies.forEach(strat => {
           if (!strat.strategy.name) throw new Error("Strategy is missing a name.");
           // eslint-disable-next-line no-console
@@ -105,7 +108,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
             passport.authenticate(strat.strategy, loginOptions)(req, res, next);
           });
           app.get(`/auth/strategy/${strat.strategy.name}/redirect`,
-            passport.authenticate(strat.strategy, { session: false }),
+            passport.authenticate(strat.strategy, { session: true }),
             async (req, res) => {
               const user = KeystonePassportUser.parse(req.user);
 
@@ -153,6 +156,7 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
                   const state = Buffer.from(req.query.state, "base64url").toString("utf-8");
                   if (state === "isAdminLogin") { return res.redirect("/"); }
                 } catch (err) {
+                  // eslint-disable-next-line no-console
                   console.error("Error occurred when parsing req.query.state for passport redirect.");
                 }
               }
