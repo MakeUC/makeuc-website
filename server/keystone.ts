@@ -36,7 +36,7 @@ export default withAuth(
       },
     },
     lists,
-    ...isDev ? {} : { session },
+    session,
     telemetry: false,
     extendGraphqlSchema,
     storage: { // TODO: update keystone config
