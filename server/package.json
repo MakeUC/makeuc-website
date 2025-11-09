@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "src/keystone.ts",
   "scripts": {
-    "dev": "keystone dev",
+    "dev": "MY_DEV_MODE=1 keystone dev",
     "start": "run-s prisma:deploy start:*",
     "start:keystone": "keystone start",
     "build": "keystone build",
