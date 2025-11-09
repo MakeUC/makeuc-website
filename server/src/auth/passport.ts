@@ -1,6 +1,7 @@
 import { list } from "@keystone-6/core";
 import { allOperations } from "@keystone-6/core/access";
 import { relationship, select, text } from "@keystone-6/core/fields";
+import session from "express-session";
 import passport from "passport";
 import { z } from "zod";
 
@@ -91,8 +92,29 @@ export function createPassportAuth<ListTypeInfo extends BaseListTypeInfo>({
       extendExpressApp(app, context) {
         extendExpressApp?.(app, context);
 
-        // Initialize Passport
+        // Initialize Express Session before Passport
+        app.use(session({
+          secret: process.env.SESSION_SECRET || "-- DEV SECRET -- DONT USE IN PRODUCTION --",
+          resave: false,
+          saveUninitialized: false,
+          cookie: {
+            maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
+            secure: process.env.NODE_ENV === "production",
+          },
+        }));
+        
+        // Initialize Passport and restore authentication state from session
         app.use(passport.initialize());
+        app.use(passport.session());
+
+        // Serialize/deserialize user
+        passport.serializeUser((user, done) => {
+          done(null, user as KeystonePassportUserType);
+        });
+        
+        passport.deserializeUser((user, done) => {
+          done(null, user as KeystonePassportUserType);
+        });
 
         strategies.forEach(strat => {
           if (!strat.strategy.name) throw new Error("Strategy is missing a name.");

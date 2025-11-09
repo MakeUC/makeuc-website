@@ -23,9 +23,11 @@
     "@keystone-6/core": "^5.8.0",
     "@keystone-6/fields-document": "^7.0.0",
     "@sendgrid/mail": "^7.7.0",
+    "@types/express-session": "^1.18.2",
+    "archiver": "^5.3.1",
     "csv-parse": "^5.5.2",
     "express-fileupload": "^1.4.0",
-  "archiver": "^5.3.1",
+    "express-session": "^1.18.2",
     "lodash": "^4.17.21",
     "npm-run-all": "^4.1.5",
     "passport": "^0.6.0",
@@ -36,8 +38,8 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@types/express-fileupload": "^1.4.1",
     "@types/archiver": "^5.1.1",
+    "@types/express-fileupload": "^1.4.1",
     "@types/passport": "^1.0.14",
     "@types/passport-google-oauth": "^1.0.44",
     "@types/passport-microsoft": "^1.0.2",

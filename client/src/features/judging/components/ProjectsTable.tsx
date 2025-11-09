@@ -73,7 +73,7 @@ export function ProjectsTable() {
       {!loading && (!data?.projects || data.projects.length === 0) ? (
         <div className="text-center py-8 text-muted-foreground">
           No projects were found. Either you need to: sign back in at{" "}
-          <Link href="/signin" className="text-blue-500 hover:underline">
+          <Link href="/signin" style={{ textDecoration: "underline" }} className="text-popover hover:underline">
             /signin
           </Link>
           , request permission from an admin, or wait until judging starts.
