@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import GoogleLogo from "../assets/google-logo.png";
-import MicrosoftLogo from "../assets/microsoft-logo.png";
+// import MicrosoftLogo from "../assets/microsoft-logo.png";
 
 
 const SUPPORTED_STRATEGIES = {
   google: { name: "Google", icon: <Image alt="Google" src={GoogleLogo} width={20} height={20} />, className: "" },
-  microsoft: { name: "Microsoft", icon: <Image alt="Microsoft" src={MicrosoftLogo} width={20} height={20} />, className: "" },
+  // TODO: temporarily disabling microsoft login
+  // microsoft: { name: "Microsoft", icon: <Image alt="Microsoft" src={MicrosoftLogo} width={20} height={20} />, className: "" },
 } as const;
 
 export interface LoginFormProps {
