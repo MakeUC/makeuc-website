@@ -1,7 +1,11 @@
+import { spawn } from "child_process";
+
 import { parse } from "csv-parse/sync";
 import { Router } from "express";
 import fileUploadMiddleware from "express-fileupload";
 import { z } from "zod";
+
+import type { Request, Response } from "express";
 
 
 const registrantJsonFile = z.array(z.object({
@@ -153,5 +157,76 @@ utilitiesRouter.post("/import-projects", fileUploadMiddleware(), async (req, res
   })
     .catch(err => res.status(400).send(err));
 });
+
+
+
+
+utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
+  try {
+
+    const isDev = process.env.MY_DEV_MODE === "1";
+    if (!isDev) {
+      if (!req.context.session?.data?.isAdmin) {
+
+        return res.status(403).send("Not authorized. Must be an Admin.");
+      }
+    }
+
+
+
+    const env = {
+      ...process.env,
+      PGHOST: process.env.POSTGRES_HOST,
+      PGPORT: "5432",
+      PGUSER: process.env.POSTGRES_USER,
+      PGPASSWORD: process.env.POSTGRES_PASSWORD,
+      PGDATABASE: process.env.POSTGRES_DATABASE,
+    };
+
+
+
+    if (!env.PGHOST || !env.PGUSER || !env.PGPASSWORD || !env.PGDATABASE) {
+      return res.status(500).send("Database environment variables are missing.");
+    }
+
+
+    const timestamp = new Date().toISOString().slice(0, 19).replace("T", "_").replace(/:/g, "-");
+
+    const filename = `keystone_db_backup_${env.PGDATABASE}_${timestamp}.sql`;
+
+
+    res.setHeader("Content-Type", "application/sql");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+
+
+    const pgDumpProcess = spawn("pg_dump", [], { env });
+
+
+    pgDumpProcess.stdout.pipe(res);
+
+
+    pgDumpProcess.on("close", code => {
+      if (code !== 0) {
+
+        if (!res.headersSent) {
+          res.status(500).end("Database backup failed. Check server logs.");
+        }
+      } else {
+        console.log("Database backup streamed successfully.");
+      }
+
+      if (!res.writableEnded) {
+        res.end();
+      }
+    });
+
+  } catch (e) {
+
+    if (!res.headersSent) {
+      res.status(500).send("An internal error occurred.");
+    }
+  }
+});
+
 
 export { utilitiesRouter };

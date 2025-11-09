@@ -31,7 +31,7 @@ async function seedIndiaSchools() {
     mutation {
       seedSchoolIndiaData
     }
-`);
+  `);
 }
 
 const importRegistrants: FormEventHandler<HTMLFormElement> = event => {
@@ -61,8 +61,12 @@ async function sendVerificationEmails() {
     mutation {
       resendVerificationEmails
     }
-`);
+  `);
 }
+async function triggerFullDatabaseBackup() {
+  window.location.href = "/api/utilities/export-all";
+}
+
 
 export default function UtilitiesPage() {
   return (
@@ -88,6 +92,16 @@ export default function UtilitiesPage() {
         <Button type="submit" tone="positive">Import Projects</Button>
       </form>
       <br />
+
+      <H3>Export All Data (SQL)</H3>
+      <br />
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <Button onClick={triggerFullDatabaseBackup} tone="active">
+          Download Databackup
+        </Button>
+      </div>
+      <br />
+
       <H3>Send Verification Emails to Unverified Registrants for {new Date().getFullYear()}</H3>
       <br />
       <div style={{ display: "flex", gap: "1rem" }}>
