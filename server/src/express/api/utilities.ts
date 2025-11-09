@@ -166,8 +166,14 @@ utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
 
     const isDev = process.env.MY_DEV_MODE === "1";
     if (!isDev) {
-      if (!req.context.session?.data?.isAdmin) {
+      // Ensure we have a valid session and user is authenticated
+      if (!req.context.session?.data?.item) {
+        return res.status(401).send("Not authenticated.");
+      }
 
+      // Verify admin status from session data
+      const isAdmin = req.context.session.data.item.roles.includes("admin");
+      if (!isAdmin) {
         return res.status(403).send("Not authorized. Must be an Admin.");
       }
     }
