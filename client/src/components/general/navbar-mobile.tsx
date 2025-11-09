@@ -15,7 +15,6 @@ import type { NavigationLink } from "./layout-header";
 import type { ReactNode } from "react";
 
 
-
 interface NavLinkProps {
   href: string;
   children?: ReactNode;
@@ -25,7 +24,11 @@ interface NavLinkProps {
 // TODO: Add something on hover for all links
 function NavLink({ href, children, onClick }: NavLinkProps) {
   return (
-    <Link href={href} onClick={onClick} className="text-2xl text-foreground font-semibold">
+    <Link
+      href={href}
+      onClick={onClick}
+      className="text-2xl text-foreground font-semibold"
+    >
       {children}
     </Link>
   );
@@ -41,32 +44,64 @@ export function MobileNavbar({ className, links }: MobileNavbarProps) {
 
   return (
     <>
-      <button className={className} onClick={() => setIsMenuOpen(true)}><Menu size="32px" className="text-muted-gray-foreground" /></button>
-      {
-        isMenuOpen &&
-        <div className={cn("fixed flex flex-col items-center top-0 left-0 w-screen h-screen bg-background overflow-y-auto gap-6 p-6", className)}>
-          <button className="self-end mr-7" onClick={() => setIsMenuOpen(false)}><X /></button>
-          <Link href="/" className="flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
+      <button className={className} onClick={() => setIsMenuOpen(true)}>
+        <Menu size="32px" className="text-muted-gray-foreground" />
+      </button>
+      {isMenuOpen && (
+        <div
+          className={cn(
+            "fixed flex flex-col items-center top-0 left-0 w-screen h-screen bg-background overflow-y-auto gap-6 p-6",
+            className,
+          )}
+        >
+          <button
+            className="self-end mr-7"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <X />
+          </button>
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+            onClick={() => setIsMenuOpen(false)}
+          >
             <Image src={LogoPng} alt="MakeUC Logo" width="128" height="128" />
           </Link>
-
-          {
-            links.map(link => (
-              <NavLink
-                key={link.key}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-              >{link.children}</NavLink>
-            ))
-          }
-          {Config.ShowRegistration && (<Link href="/registration" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
-            <Button className="flex gap-2 text-xl" size="lg">Register<Edit size="20px" /></Button>
-          </Link>)}
-          (<Link href="/live" tabIndex={-1} onClick={() => setIsMenuOpen(false)}>
-            <Button className="flex gap-2 text-xl" size="lg">Live Site!<CalendarCheck size="20px" /></Button>
-          </Link>)
+          {links.map(link => (
+            <NavLink
+              key={link.key}
+              href={link.href}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.children}
+            </NavLink>
+          ))}
+          {Config.ShowRegistrationButton && (
+            <Link
+              href="/registration"
+              tabIndex={-1}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Button className="flex gap-2 text-xl" size="lg">
+                Register
+                <Edit size="20px" />
+              </Button>
+            </Link>
+          )}
+          {Config.ShowLiveSiteButton && (
+            <Link
+              href="/live"
+              tabIndex={-1}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Button className="flex gap-2 text-xl" size="lg">
+                Live Site!
+                <CalendarCheck size="20px" />
+              </Button>
+            </Link>
+          )}
         </div>
-      }
+      )}
     </>
   );
 }
