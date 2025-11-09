@@ -461,14 +461,41 @@ utilitiesRouter.get("/calculate-winners/:file", async (req: Request, res: Respon
 
       archive.pipe(res);
 
-      const totalsCSV = objectsToCSV(projectTrackTotals.map(t => ({
-        projectId: t.projectId,
-        projectName: t.projectName,
-        trackId: t.trackId,
-        trackName: t.trackName,
-        averageNormalizedScore: t.averageNormalizedScore,
-        numJudgements: t.numJudgements,
-      })));
+      // Sort projects by average score descending
+      const sortedTotals = [...projectTrackTotals].sort((a, b) => b.averageNormalizedScore - a.averageNormalizedScore);
+      
+      // Group by project to combine tracks
+      const projectMap = new Map();
+      for (const total of sortedTotals) {
+        if (!projectMap.has(total.projectId)) {
+          projectMap.set(total.projectId, {
+            projectName: total.projectName,
+            tracks: new Set([total.trackName]),
+            averageNormalizedScore: total.averageNormalizedScore,
+          });
+        } else {
+          projectMap.get(total.projectId).tracks.add(total.trackName);
+        }
+      }
+
+      // Get project URLs
+      const projects = await req.context.prisma.project.findMany({
+        where: { id: { in: [...projectMap.keys()] } },
+        select: { id: true, url: true },
+      });
+
+      // Create final sorted array with combined data
+      const projectTotals = projects.map(project => {
+        const data = projectMap.get(project.id);
+        return {
+          projectName: data.projectName,
+          devpostUrl: project.url || "",
+          averageScore: data.averageNormalizedScore,
+          tracks: [...data.tracks].join(", "),
+        };
+      }).sort((a, b) => b.averageScore - a.averageScore);
+
+      const totalsCSV = objectsToCSV(projectTotals);
 
       const weightedCSV = objectsToCSV(weightedCalculations.map(w => ({
         judgementId: w.judgementId,
