@@ -167,45 +167,35 @@ utilitiesRouter.post("/import-projects", fileUploadMiddleware(), async (req, res
 
 utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
   try {
-
     if (!ensureHasRole(req, res, [Role.Admin])) return;
 
 
-
-    const env = {
-      ...process.env,
-      PGHOST: process.env.POSTGRES_HOST,
-      PGPORT: "5432",
-      PGUSER: process.env.POSTGRES_USER,
-      PGPASSWORD: process.env.POSTGRES_PASSWORD,
-      PGDATABASE: process.env.POSTGRES_DATABASE,
-    };
-
-
-
-    if (!env.PGHOST || !env.PGUSER || !env.PGPASSWORD || !env.PGDATABASE) {
-      return res.status(500).send("Database environment variables are missing.");
+    const dbUrl = process.env.POSTGRES_PRISMA_URL;
+    if (!dbUrl) {
+      return res.status(500).send("POSTGRES_PRISMA_URL environment variable is missing.");
     }
 
+    // Extract database name for filename
+    let dbName = "database";
+    try {
+      const match = dbUrl.match(/\/([^/?]+)(\?|$)/);
+      if (match && match[1]) dbName = match[1];
+    } catch (e) {
+      // ignore errors in db name extraction
+    }
 
     const timestamp = new Date().toISOString().slice(0, 19).replace("T", "_").replace(/:/g, "-");
-
-    const filename = `keystone_db_backup_${env.PGDATABASE}_${timestamp}.sql`;
-
+    const filename = `keystone_db_backup_${dbName}_${timestamp}.sql`;
 
     res.setHeader("Content-Type", "application/sql");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
 
-
-    const pgDumpProcess = spawn("pg_dump", [], { env });
-
-
+    // Use pg_dump with connection string
+    const pgDumpProcess = spawn("pg_dump", [dbUrl]);
     pgDumpProcess.stdout.pipe(res);
-
 
     pgDumpProcess.on("close", code => {
       if (code !== 0) {
-
         if (!res.headersSent) {
           res.status(500).end("Database backup failed. Check server logs.");
         }
@@ -213,14 +203,12 @@ utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
         // eslint-disable-next-line no-console
         console.log("Database backup streamed successfully.");
       }
-
       if (!res.writableEnded) {
         res.end();
       }
     });
 
   } catch (e) {
-
     if (!res.headersSent) {
       res.status(500).send("An internal error occurred.");
     }

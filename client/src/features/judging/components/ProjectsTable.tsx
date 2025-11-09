@@ -7,7 +7,6 @@ import { useMemo, useState } from "react";
 
 import { DataTable } from "~/components/ui/data-table";
 import { DataTableColumnHeader } from "~/components/ui/data-table/column-header";
-import { useAuth } from "~/features/auth";
 
 import { GetProjectsDocument } from "../generated/graphql/graphql";
 
@@ -21,7 +20,6 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export function ProjectsTable() {
   const { data, loading } = useQuery(GetProjectsDocument);
-  const { isAdmin } = useAuth();
 
   const [projectForJudgement, setProjectForJudgement] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
   const [projectForDisqualification, setProjectForDisqualification] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
@@ -35,7 +33,6 @@ export function ProjectsTable() {
           devpostUrl={row.original.url ?? "#"}
           makeJudgement={setProjectForJudgement}
           disqualifyProject={setProjectForDisqualification}
-          isAdmin={isAdmin}
         />,
     },
     {
