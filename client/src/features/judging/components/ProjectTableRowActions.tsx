@@ -20,6 +20,7 @@ interface ProjectTableRowActionsProps<TData> {
   devpostUrl: string;
   makeJudgement?: (row: TData) => void;
   disqualifyProject?: (row: TData) => void;
+  isAdmin?: boolean;
 }
 
 export function ProjectTableRowActions<TData>({
@@ -27,6 +28,7 @@ export function ProjectTableRowActions<TData>({
   devpostUrl,
   makeJudgement,
   disqualifyProject,
+  isAdmin,
 }: ProjectTableRowActionsProps<TData>) {
   return (
     <DropdownMenu>
@@ -42,8 +44,14 @@ export function ProjectTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem onClick={() => window.open(devpostUrl, "_blank")}>View Devpost</DropdownMenuItem>
         <DropdownMenuItem onClick={() => makeJudgement?.(row.original)}>Make Judgement</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => disqualifyProject?.(row.original)} className="focus:bg-destructive focus:text-destructive-foreground">Disqualify</DropdownMenuItem>
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => disqualifyProject?.(row.original)} className="focus:bg-destructive focus:text-destructive-foreground">
+              Disqualify
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

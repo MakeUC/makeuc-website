@@ -1,10 +1,13 @@
 "use client";
+
 import { useQuery } from "@apollo/client";
 import { XCircle } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { DataTable } from "~/components/ui/data-table";
 import { DataTableColumnHeader } from "~/components/ui/data-table/column-header";
+import { useAuth } from "~/features/auth";
 
 import { GetProjectsDocument } from "../generated/graphql/graphql";
 
@@ -18,11 +21,23 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export function ProjectsTable() {
   const { data, loading } = useQuery(GetProjectsDocument);
+  const { isAdmin } = useAuth();
 
   const [projectForJudgement, setProjectForJudgement] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
   const [projectForDisqualification, setProjectForDisqualification] = useState<NonNullable<NonNullable<typeof data>["projects"]>[number]>();
 
   const columns = useMemo<ColumnDef<NonNullable<GetProjectsQuery["projects"]>[number]>[]>(() => [
+    {
+      id: "actions",
+      cell: ({ row }) =>
+        <ProjectTableRowActions
+          row={row}
+          devpostUrl={row.original.url ?? "#"}
+          makeJudgement={setProjectForJudgement}
+          disqualifyProject={setProjectForDisqualification}
+          isAdmin={isAdmin}
+        />,
+    },
     {
       accessorKey: "name",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Project Name" className="min-w-[300px]" />,
@@ -54,26 +69,25 @@ export function ProjectsTable() {
       cell: ({ getValue }) => getValue() ? <span className="flex justify-center"><XCircle className="text-destructive" /></span> : "",
       filterFn: (row, id, value) => value.includes(row.getValue(id)),
     },
-    {
-      id: "actions",
-      cell: ({ row }) =>
-        <ProjectTableRowActions
-          row={row}
-          devpostUrl={row.original.url ?? "#"}
-          makeJudgement={setProjectForJudgement}
-          disqualifyProject={setProjectForDisqualification}
-        />,
-    },
   ], []);
 
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={data?.projects ?? []}
-        isLoading={loading}
-      />
-
+      {!loading && (!data?.projects || data.projects.length === 0) ? (
+        <div className="text-center py-8 text-muted-foreground">
+          No projects were found. Either you need to: sign back in at{" "}
+          <Link href="/signin" className="text-blue-500 hover:underline">
+            /signin
+          </Link>
+          , request permission from an admin, or wait until judging starts.
+        </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={data?.projects ?? []}
+          isLoading={loading}
+        />
+      )}
       {
         projectForDisqualification && (
           <div className="flex flex-col items-center justify-center fixed top-0 left-0 bg-[#00000080] w-screen h-screen z-50">
