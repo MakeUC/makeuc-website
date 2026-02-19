@@ -1,4 +1,5 @@
 # Rai's Monkeypatched Developemnt Setup Guide
+
 note, this is outdated a bit since some issues with workarounds listed here have been fixed! (ex, discord env variable requirement)
 
 Basically, I'll detail how I set up the repository (only the client for now, but will update) in painful details so hopefully you can get the site ready for local development. This is completely objective and based on my personal experience setting up the site, so things might change, and other debugging stuff might and will get added as I get more user stories in.
@@ -41,9 +42,9 @@ If the build fails, particularly on the client, a cached build may have been use
 
 #### Windows 10 Known Bugs
 
-- In the devcontainer setup, there is a command that is ran before container setup that *expects* a Linux environment (it is written in bash). This will fail the setup step for Windows users since Powershell cannot run bash commands. This command basically checks whether an `.env.local` already exist, and if not, create a copy of the `.env.local.default` and rename it to `.env.local`. One of the ways to monkeypatch this issue is to delete the `"initializeCommand"` field in the `/.devcontainer/.devcontainer.json`, and create the `.env.local` yourself and copy in the content of the `.env.local.default` file.
+- In the devcontainer setup, there is a command that is ran before container setup that _expects_ a Linux environment (it is written in bash). This will fail the setup step for Windows users since Powershell cannot run bash commands. This command basically checks whether an `.env.local` already exist, and if not, create a copy of the `.env.local.default` and rename it to `.env.local`. One of the ways to monkeypatch this issue is to delete the `"initializeCommand"` field in the `/.devcontainer/.devcontainer.json`, and create the `.env.local` yourself and copy in the content of the `.env.local.default` file.
 
-- If you get an error related to `docker-credential-wincred`, *restart your laptop*. This error seems to be from the fact that some docker executable are not added to the Windows PATH yet. If you reset and this still doesn't work, log into your Docker account (create one on the Docker website) with `docker login`. I doubt that would work, but I am logged in, so do that too just in case.
+- If you get an error related to `docker-credential-wincred`, _restart your laptop_. This error seems to be from the fact that some docker executable are not added to the Windows PATH yet. If you reset and this still doesn't work, log into your Docker account (create one on the Docker website) with `docker login`. I doubt that would work, but I am logged in, so do that too just in case.
 
 #### WSL Known Bugs
 
@@ -73,8 +74,8 @@ Note that this method will supposedly compile locally faster, but will have docu
 
 ### Backend
 
-TBA
+The backend is built with KeystoneJS. For information on schema updates and database management, see [Database Management Guide](documentation/database_management.md).
 
 ### Discord Bot
 
-The bot is currently non-functional due to breaking changes from `discord-js`. Petition to change the bot to `discord.py`.
+The bot handles participant verification. For configuration and yearly setup, see [Discord Bot Setup Guide](documentation/discord_setup.md).
