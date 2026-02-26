@@ -49,6 +49,8 @@ If the build fails, particularly on the client, a cached build may have been use
 
 - Docker daemon not working. I've encountered this bug a while ago (like 2023) with Docker Desktop. Basically, Docker Desktop cannot tunnel to WSL and give it access to Docker. I believe Rancher Desktop plays nicer with WSL, so use that instead. Otherwise, look up how to tunnel Docker to WSL with Docker Desktop/Rancher Desktop. You can check whether Docker is accessible within WSL by running `docker --version` inside WSL and see if the command executes.
 
+
+
 #### Linux Known Bugs
 
 #### Mac Known Bugs
