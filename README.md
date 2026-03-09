@@ -41,6 +41,7 @@ For a container engine, one of the following is recommended:
 Here are the steps to contributing to the MakeUC Website:
 
 1. Clone the repository
+
 2. Open the repository in VSCode
 3. Run `Dev Containers: Reopen in Container` in the command pallet in VSCode (`CTRL+SHIFT+P` by default)
 4. Using the terminal inside of VSCode, run `yarn dev`
