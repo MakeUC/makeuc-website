@@ -38,6 +38,8 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
+    "@esbuild/darwin-arm64": "0.20.2",
+    "@esbuild/darwin-x64": "0.20.2",
     "@types/archiver": "^5.1.1",
     "@types/express-fileupload": "^1.4.1",
     "@types/passport": "^1.0.14",
