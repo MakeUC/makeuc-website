@@ -3,15 +3,15 @@ import { graphql } from "@keystone-6/core";
 import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
-import type { Context } from ".keystone/types";
 
-/*import {
+import {
   initializeGeographyState,
 } from "./helpers/geography";
 
 import type {
   GeographyState,
 } from "./helpers/geography";
+import type { Context } from ".keystone/types";
 
 // Initialize the geography state
 const initializeState = async () => {
@@ -26,16 +26,20 @@ const initializeState = async () => {
 let state: GeographyState | null = null;
 initializeState().then(result => {
   state = result;
-});*/
+});
 
 export const extendGraphqlSchema = graphql.extend(base => ({
   query: {
-    /*
     countries: graphql.field({
       type: graphql.nonNull(graphql.list(graphql.JSON)),
-      async resolve() {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async resolve(): Promise<any[]> {
         if (!state) return [];
-        return Array.from(state.countries.values()).map(country => ({ ...country }));
+        return Array.from(state.countries.values()).map(country => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+          const { states, cities, ...rest } = country as any;
+          return rest;
+        });
       },
     }),
     cities: graphql.field({
@@ -68,7 +72,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
 
         return [];
       },
-    }),*/
+    }),
     // Fill in statistics
     statistics: graphql.field({
       type: graphql.String, //Undefined --> Change in the future
@@ -140,7 +144,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
       async resolve(_source, _, context: Context) {
         if (!context.session) return null;
 
-        await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
+        await context.prisma.school.createMany({ data: await getSchoolIndiaData(new Set<string>()) });
         return true;
       },
     }),

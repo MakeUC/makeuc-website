@@ -1,28 +1,30 @@
+/* eslint-env browser */
 import { PageContainer } from "@keystone-6/core/admin-ui/components";
 import { Button } from "@keystone-ui/button";
 import { Heading, H1, H3 } from "@keystone-ui/core";
 
 import type { FormEventHandler } from "react";
 
+
 export const gql = ([content]: TemplateStringsArray) => content;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function fetchGraphQL(
   query: string,
-  variables?: Record<string, any>
+  variables?: Record<string, unknown>
 ) {
   return fetch("/api/graphql", {
     method: "POST",
     body: JSON.stringify({ query, variables }),
     headers: { "Content-Type": "application/json" },
   })
-    .then((x) => x.json())
+    .then(x => x.json())
     .then(({ data, errors }) => {
       if (errors) {
         throw new Error(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           `GraphQL errors occurred:\n${errors
-            .map((x: any) => x.message)
+            .map((x: { message: string }) => x.message)
             .join("\n")}`
         );
       }
@@ -38,7 +40,7 @@ async function seedIndiaSchools() {
   `);
 }
 
-const importRegistrants: FormEventHandler<HTMLFormElement> = (event) => {
+const importRegistrants: FormEventHandler<HTMLFormElement> = event => {
   event.preventDefault();
 
   const formData = new FormData(event.target as HTMLFormElement);
@@ -49,7 +51,7 @@ const importRegistrants: FormEventHandler<HTMLFormElement> = (event) => {
   });
 };
 
-const importProjects: FormEventHandler<HTMLFormElement> = (event) => {
+const importProjects: FormEventHandler<HTMLFormElement> = event => {
   event.preventDefault();
 
   const formData = new FormData(event.target as HTMLFormElement);
