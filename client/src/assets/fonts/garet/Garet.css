@@ -1,6 +1,6 @@
 /* Garet font faces */
 @font-face {
-  font-family: "Garet";
+  font-family: Garet;
   src: url("/assets/fonts/garet/Garet-Book.woff2") format("woff2"),
        url("/assets/fonts/garet/Garet-Book.woff") format("woff"),
        url("/assets/fonts/garet/Garet-Book.ttf") format("truetype"),
@@ -8,8 +8,9 @@
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
-  font-family: "Garet";
+  font-family: Garet;
   src: url("/assets/fonts/garet/Garet-Heavy.woff2") format("woff2"),
        url("/assets/fonts/garet/Garet-Heavy.woff") format("woff"),
        url("/assets/fonts/garet/Garet-Heavy.ttf") format("truetype"),
