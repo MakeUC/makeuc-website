@@ -1,0 +1,31 @@
+name: Create Yearly Checklist Issue
+
+on:
+  schedule:
+    # Run at 00:00 on August 1st every year
+    - cron: "0 0 1 8 *"
+  workflow_dispatch:
+    # Allow manual trigger for testing or early start
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Yearly Checklist Issue
+        uses: imjohnbo/issue-bot@v3
+        with:
+          assignees: "@me" # Assign to the person who triggered or a specific team
+          labels: "yearly-setup"
+          title: "Yearly Website Preparation Checklist ${{ github.event.schedule && '(Scheduled)' || '' }}"
+          body: |
+            This issue was automatically created to track the necessary updates for the upcoming hackathon season.
+            Please follow the checklist in the template below:
+
+            $(cat .github/ISSUE_TEMPLATE/yearly_checklist.md)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
