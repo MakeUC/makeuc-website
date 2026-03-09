@@ -105,10 +105,19 @@ export const initializeGeographyState = async (): Promise<GeographyState | null>
 
     // First pass: Initialize countries
     for (const country of countriesData) {
-      countries.set(country.id, {
-        ...country,
-        states: country.hasStates ? new Map<number, State>() : undefined,
-      });
+      if (country.hasStates) {
+        countries.set(country.id, {
+          ...country,
+          hasStates: true,
+          states: new Map<number, State>(),
+        });
+      } else {
+        countries.set(country.id, {
+          ...country,
+          hasStates: false,
+          cities: new Map<number, City>(),
+        });
+      }
     }
 
     // Second pass: Link states to countries
