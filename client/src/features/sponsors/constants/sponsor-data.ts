@@ -27,7 +27,7 @@ import KineticVisionImage from "../assets/kinetic-vision.svg";
 // import temboImage from "../assets/tembo.svg";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
 // import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
-import KloobImage from "../assets/kloob.png";
+import KloobImage from "../assets/KloobLogoAllWhiteWithText.svg";
 import MLHImage from "../assets/mlh.svg";
 import PureButtonsImage from "../assets/pure-buttons.svg";
 import XYZImage from "../assets/xyz.svg";
