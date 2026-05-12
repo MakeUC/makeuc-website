@@ -27,10 +27,7 @@ Refer to each folder's README for details on working with that part of the codeb
 
 ## Getting Started
 
-Note that yarn and a container engine are required for this project.
-
-**If you are using Windows as your main environment, WSL is _strongly_ recommended as using the devcontainer is very inconsistent on just Windows.**
-**This means to use the `code .` command in WSL. You can read more [here](https://code.visualstudio.com/docs/remote/wsl).**
+Note that Node.js, yarn, and a container engine are required for this project.
 
 For a container engine, one of the following is recommended:
 
