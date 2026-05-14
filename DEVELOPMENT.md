@@ -54,6 +54,9 @@ If Dev Containers fail to start, check the "Terminal" tab in VS Code. If it's a 
 
 - If you get an error related to `docker-credential-wincred`, _restart your laptop_. This error seems to be from the fact that some docker executable are not added to the Windows PATH yet. If you reset and this still doesn't work, log into your Docker account (create one on the Docker website) with `docker login`. I doubt that would work, but I am logged in, so do that too just in case.
 
+### Cannot join network
+- If you get an error that tells you that you cannot join network and tells you that it is restarting `wait until the container is running`, go inside the logs inside of container and check the error. If the errors is inside `db-1` and/or `shadow-db-1`. This is most likely a version issue. Go inside of `docker-compose.yml` and find `db` and `shadow-db` and change `postgres:latest` to `postgres:17`. Then wipe docker and rebuild container
+
 ## Development
 
 ### Frontend
