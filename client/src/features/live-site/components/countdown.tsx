@@ -72,6 +72,17 @@ function TimerNumber({ time, name }: TimerNumberProps) {
   );
 }
 
+function MobileTimerNumber({ time, name }: TimerNumberProps) {
+  return (
+    <div className="flex bg-base-800 rounded">
+      <div className="flex flex-col items-center content-center p-2 w-16 sm:w-24">
+        <div className="text-3xl sm:text-5xl tabular-nums">{time}</div>
+        <div className="text-xs sm:text-base">{name}</div>
+      </div>
+    </div>
+  );
+}
+
 export function Timer() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | undefined>();
 
@@ -113,10 +124,12 @@ export function Timer() {
           <TimerNumber time={timeLeft.minutes} name="MINUTES" />
           <TimerNumber time={timeLeft.seconds} name="SECONDS" />
         </div>
-        <div className="flex md:hidden  flex-grow justify-evenly">
 
-          <TimerNumber time={timeLeft.hours} name="HOURS" />
-          <TimerNumber time={timeLeft.minutes} name="MINUTES" />
+        <div className="flex md:hidden text  w-full justify-evenly">
+          <MobileTimerNumber time={timeLeft.days} name="DAYS" />
+          <MobileTimerNumber time={timeLeft.hours} name="HOURS" />
+          <MobileTimerNumber time={timeLeft.minutes} name="MINUTES" />
+          <MobileTimerNumber time={timeLeft.seconds} name="SECONDS" />
         </div>
       </div>
     </>
