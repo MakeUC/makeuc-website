@@ -247,7 +247,7 @@ body {
     1488px 1629px #fff, 1545px 1875px #fff, 978px 1201px #fff,
     1126px 1916px #fff, 412px 592px #fff, 852px 732px #fff, 1060px 444px #fff,
     323px 1676px #fff, 1593px 1616px #fff;
-  animation: animStar 100s linear infinite;
+  animation: anim-star 100s linear infinite;
 }
 
 #stars2::after {
@@ -340,7 +340,7 @@ body {
     267px 1851px #fff, 1293px 1431px #fff, 1159px 433px #fff, 1725px 1170px #fff,
     1067px 296px #fff, 746px 463px #fff, 412px 349px #fff, 1193px 1421px #fff,
     564px 455px #fff, 1675px 589px #fff;
-  animation: animStar 150s linear infinite;
+  animation: anim-star 150s linear infinite;
 }
 
 #stars3::after {
@@ -402,13 +402,18 @@ body {
   padding-left: 10px;
 }
 
+[type="button"]:not([role="checkbox"]) span {
+  color: var(--foreground) !important;
+  opacity: 0.825 !important;
+}
+
 #title span {
   background: linear-gradient(white, #38495a);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-@keyframes animStar {
+@keyframes anim-star {
   from {
     transform: translateY(0);
   }
@@ -480,10 +485,6 @@ textarea::placeholder,
   opacity: 0.65 !important;
 }
 
- [type="button"]:not([role="checkbox"]) span {
-  color: var(--foreground) !important;
-  opacity: 0.825 !important;
-}
 
 .bg-destructive {
   color: white !important;

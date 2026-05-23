@@ -886,6 +886,8 @@ export type ProjectWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query';
+  cities: Array<Maybe<Scalars['JSON']['output']>>;
+  countries: Array<Maybe<Scalars['JSON']['output']>>;
   discordScheduledMessage?: Maybe<DiscordScheduledMessage>;
   discordScheduledMessages?: Maybe<Array<DiscordScheduledMessage>>;
   discordScheduledMessagesCount?: Maybe<Scalars['Int']['output']>;
@@ -912,6 +914,11 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type QueryCitiesArgs = {
+  countryId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1078,6 +1085,7 @@ export enum QueryMode {
 
 export type Registrant = {
   __typename?: 'Registrant';
+  acceptAllAuthorization?: Maybe<Scalars['Boolean']['output']>;
   acceptPhotoRelease?: Maybe<Scalars['Boolean']['output']>;
   age?: Maybe<Scalars['Int']['output']>;
   country?: Maybe<Scalars['String']['output']>;
@@ -1089,24 +1097,33 @@ export type Registrant = {
   ethnicity?: Maybe<Scalars['String']['output']>;
   expectedGraduationYear?: Maybe<Scalars['Int']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
+  foodAllergy?: Maybe<Scalars['String']['output']>;
+  foodSuggestions?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   hackathonsAttended?: Maybe<Scalars['Int']['output']>;
   id: Scalars['ID']['output'];
   invitedInPerson?: Maybe<Scalars['Boolean']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   major?: Maybe<Scalars['String']['output']>;
+  makeucCodeOfConduct?: Maybe<Scalars['Boolean']['output']>;
+  makeucHackathonRules?: Maybe<Scalars['Boolean']['output']>;
+  makeucLiabilityRelease?: Maybe<Scalars['Boolean']['output']>;
   mlhCodeOfConductAgreement?: Maybe<Scalars['Boolean']['output']>;
   mlhEmailAgreement?: Maybe<Scalars['Boolean']['output']>;
   mlhPrivacyPolicyAgreement?: Maybe<Scalars['Boolean']['output']>;
   notes?: Maybe<Scalars['String']['output']>;
+  participationPreference?: Maybe<Scalars['String']['output']>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
   registrationYear?: Maybe<Scalars['Int']['output']>;
   resume?: Maybe<FileFieldOutput>;
   school?: Maybe<School>;
+  tshirtSize?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type RegistrantCreateInput = {
+  acceptAllAuthorization?: InputMaybe<Scalars['Boolean']['input']>;
   age?: InputMaybe<Scalars['Int']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1115,16 +1132,24 @@ export type RegistrantCreateInput = {
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   expectedGraduationYear?: InputMaybe<Scalars['Int']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
+  foodAllergy?: InputMaybe<Scalars['String']['input']>;
+  foodSuggestions?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   hackathonsAttended?: InputMaybe<Scalars['Int']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   major?: InputMaybe<Scalars['String']['input']>;
+  makeucCodeOfConduct?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucHackathonRules?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucLiabilityRelease?: InputMaybe<Scalars['Boolean']['input']>;
   mlhCodeOfConductAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  participationPreference?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
+  tshirtSize?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserRelateToOneForCreateInput>;
 };
 
@@ -1135,6 +1160,7 @@ export type RegistrantManyRelationFilter = {
 };
 
 export type RegistrantOrderByInput = {
+  acceptAllAuthorization?: InputMaybe<OrderDirection>;
   acceptPhotoRelease?: InputMaybe<OrderDirection>;
   age?: InputMaybe<OrderDirection>;
   country?: InputMaybe<OrderDirection>;
@@ -1146,17 +1172,25 @@ export type RegistrantOrderByInput = {
   ethnicity?: InputMaybe<OrderDirection>;
   expectedGraduationYear?: InputMaybe<OrderDirection>;
   firstName?: InputMaybe<OrderDirection>;
+  foodAllergy?: InputMaybe<OrderDirection>;
+  foodSuggestions?: InputMaybe<OrderDirection>;
   gender?: InputMaybe<OrderDirection>;
   hackathonsAttended?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   invitedInPerson?: InputMaybe<OrderDirection>;
   lastName?: InputMaybe<OrderDirection>;
   major?: InputMaybe<OrderDirection>;
+  makeucCodeOfConduct?: InputMaybe<OrderDirection>;
+  makeucHackathonRules?: InputMaybe<OrderDirection>;
+  makeucLiabilityRelease?: InputMaybe<OrderDirection>;
   mlhCodeOfConductAgreement?: InputMaybe<OrderDirection>;
   mlhEmailAgreement?: InputMaybe<OrderDirection>;
   mlhPrivacyPolicyAgreement?: InputMaybe<OrderDirection>;
   notes?: InputMaybe<OrderDirection>;
+  participationPreference?: InputMaybe<OrderDirection>;
+  phoneNumber?: InputMaybe<OrderDirection>;
   registrationYear?: InputMaybe<OrderDirection>;
+  tshirtSize?: InputMaybe<OrderDirection>;
   verified?: InputMaybe<OrderDirection>;
 };
 
@@ -1178,6 +1212,7 @@ export type RegistrantUpdateArgs = {
 };
 
 export type RegistrantUpdateInput = {
+  acceptAllAuthorization?: InputMaybe<Scalars['Boolean']['input']>;
   age?: InputMaybe<Scalars['Int']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1186,16 +1221,24 @@ export type RegistrantUpdateInput = {
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   expectedGraduationYear?: InputMaybe<Scalars['Int']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
+  foodAllergy?: InputMaybe<Scalars['String']['input']>;
+  foodSuggestions?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   hackathonsAttended?: InputMaybe<Scalars['Int']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   major?: InputMaybe<Scalars['String']['input']>;
+  makeucCodeOfConduct?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucHackathonRules?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucLiabilityRelease?: InputMaybe<Scalars['Boolean']['input']>;
   mlhCodeOfConductAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  participationPreference?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
+  tshirtSize?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserRelateToOneForUpdateInput>;
 };
 
@@ -1203,6 +1246,7 @@ export type RegistrantWhereInput = {
   AND?: InputMaybe<Array<RegistrantWhereInput>>;
   NOT?: InputMaybe<Array<RegistrantWhereInput>>;
   OR?: InputMaybe<Array<RegistrantWhereInput>>;
+  acceptAllAuthorization?: InputMaybe<BooleanFilter>;
   acceptPhotoRelease?: InputMaybe<BooleanFilter>;
   age?: InputMaybe<IntFilter>;
   country?: InputMaybe<StringFilter>;
@@ -1214,18 +1258,26 @@ export type RegistrantWhereInput = {
   ethnicity?: InputMaybe<StringFilter>;
   expectedGraduationYear?: InputMaybe<IntFilter>;
   firstName?: InputMaybe<StringFilter>;
+  foodAllergy?: InputMaybe<StringFilter>;
+  foodSuggestions?: InputMaybe<StringFilter>;
   gender?: InputMaybe<StringFilter>;
   hackathonsAttended?: InputMaybe<IntNullableFilter>;
   id?: InputMaybe<IdFilter>;
   invitedInPerson?: InputMaybe<BooleanFilter>;
   lastName?: InputMaybe<StringFilter>;
   major?: InputMaybe<StringFilter>;
+  makeucCodeOfConduct?: InputMaybe<BooleanFilter>;
+  makeucHackathonRules?: InputMaybe<BooleanFilter>;
+  makeucLiabilityRelease?: InputMaybe<BooleanFilter>;
   mlhCodeOfConductAgreement?: InputMaybe<BooleanFilter>;
   mlhEmailAgreement?: InputMaybe<BooleanFilter>;
   mlhPrivacyPolicyAgreement?: InputMaybe<BooleanFilter>;
   notes?: InputMaybe<StringFilter>;
+  participationPreference?: InputMaybe<StringFilter>;
+  phoneNumber?: InputMaybe<StringFilter>;
   registrationYear?: InputMaybe<IntNullableFilter>;
   school?: InputMaybe<SchoolWhereInput>;
+  tshirtSize?: InputMaybe<StringFilter>;
   user?: InputMaybe<UserWhereInput>;
   verified?: InputMaybe<BooleanFilter>;
 };

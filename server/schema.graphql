@@ -913,6 +913,8 @@ type Query {
   passportStrategyStorage(where: PassportStrategyStorageWhereUniqueInput!): PassportStrategyStorage
   passportStrategyStoragesCount(where: PassportStrategyStorageWhereInput! = {}): Int
   keystone: KeystoneMeta!
+  countries: [JSON]!
+  cities(countryId: Int): [JSON]!
   statistics(year: Int!): String
 }
 
