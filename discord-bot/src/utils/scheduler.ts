@@ -7,6 +7,7 @@ import { DISCORD_CONFIG as config } from "../config";
 import { prisma } from "./prisma";
 
 
+
 export class UnknownScheduledEvent extends Error {
   constructor() {
     super("That event has not been registered.");
@@ -48,9 +49,10 @@ export class Scheduler {
     // All the events for this guild
     const events = await prisma.discordScheduledMessage.findMany({ where: { guildId: config.MAKEUC_GUILD_ID } });
 
-    events.forEach(
-      async event => await this.setupEvent(event.id, { ...event, unixExecutionTime: Number(event.unixExecutionTime) })
-    );
+    for (const event of events) {
+      await this.setupEvent(event.id, { ...event, unixExecutionTime: Number(event.unixExecutionTime) });
+    }
+
   }
 
   private setupEvent(eventId: string, event: Omit<ScheduledEvent, "timeout">) {
