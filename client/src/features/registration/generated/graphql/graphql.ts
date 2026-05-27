@@ -886,6 +886,8 @@ export type ProjectWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query';
+  cities: Array<Maybe<Scalars['JSON']['output']>>;
+  countries: Array<Maybe<Scalars['JSON']['output']>>;
   discordScheduledMessage?: Maybe<DiscordScheduledMessage>;
   discordScheduledMessages?: Maybe<Array<DiscordScheduledMessage>>;
   discordScheduledMessagesCount?: Maybe<Scalars['Int']['output']>;
@@ -914,6 +916,10 @@ export type Query = {
   usersCount?: Maybe<Scalars['Int']['output']>;
 };
 
+
+export type QueryCitiesArgs = {
+  countryId?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type QueryDiscordScheduledMessageArgs = {
   where: DiscordScheduledMessageWhereUniqueInput;
@@ -1078,6 +1084,7 @@ export enum QueryMode {
 
 export type Registrant = {
   __typename?: 'Registrant';
+  acceptAllAuthorization?: Maybe<Scalars['Boolean']['output']>;
   acceptPhotoRelease?: Maybe<Scalars['Boolean']['output']>;
   age?: Maybe<Scalars['Int']['output']>;
   country?: Maybe<Scalars['String']['output']>;
@@ -1089,24 +1096,33 @@ export type Registrant = {
   ethnicity?: Maybe<Scalars['String']['output']>;
   expectedGraduationYear?: Maybe<Scalars['Int']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
+  foodAllergy?: Maybe<Scalars['String']['output']>;
+  foodSuggestions?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   hackathonsAttended?: Maybe<Scalars['Int']['output']>;
   id: Scalars['ID']['output'];
   invitedInPerson?: Maybe<Scalars['Boolean']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
   major?: Maybe<Scalars['String']['output']>;
+  makeucCodeOfConduct?: Maybe<Scalars['Boolean']['output']>;
+  makeucHackathonRules?: Maybe<Scalars['Boolean']['output']>;
+  makeucLiabilityRelease?: Maybe<Scalars['Boolean']['output']>;
   mlhCodeOfConductAgreement?: Maybe<Scalars['Boolean']['output']>;
   mlhEmailAgreement?: Maybe<Scalars['Boolean']['output']>;
   mlhPrivacyPolicyAgreement?: Maybe<Scalars['Boolean']['output']>;
   notes?: Maybe<Scalars['String']['output']>;
+  participationPreference?: Maybe<Scalars['String']['output']>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
   registrationYear?: Maybe<Scalars['Int']['output']>;
   resume?: Maybe<FileFieldOutput>;
   school?: Maybe<School>;
+  tshirtSize?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type RegistrantCreateInput = {
+  acceptAllAuthorization?: InputMaybe<Scalars['Boolean']['input']>;
   age?: InputMaybe<Scalars['Int']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1115,16 +1131,24 @@ export type RegistrantCreateInput = {
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   expectedGraduationYear?: InputMaybe<Scalars['Int']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
+  foodAllergy?: InputMaybe<Scalars['String']['input']>;
+  foodSuggestions?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   hackathonsAttended?: InputMaybe<Scalars['Int']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   major?: InputMaybe<Scalars['String']['input']>;
+  makeucCodeOfConduct?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucHackathonRules?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucLiabilityRelease?: InputMaybe<Scalars['Boolean']['input']>;
   mlhCodeOfConductAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  participationPreference?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForCreateInput>;
+  tshirtSize?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserRelateToOneForCreateInput>;
 };
 
@@ -1178,6 +1202,7 @@ export type RegistrantUpdateArgs = {
 };
 
 export type RegistrantUpdateInput = {
+  acceptAllAuthorization?: InputMaybe<Scalars['Boolean']['input']>;
   age?: InputMaybe<Scalars['Int']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1186,16 +1211,24 @@ export type RegistrantUpdateInput = {
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   expectedGraduationYear?: InputMaybe<Scalars['Int']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
+  foodAllergy?: InputMaybe<Scalars['String']['input']>;
+  foodSuggestions?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   hackathonsAttended?: InputMaybe<Scalars['Int']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   major?: InputMaybe<Scalars['String']['input']>;
+  makeucCodeOfConduct?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucHackathonRules?: InputMaybe<Scalars['Boolean']['input']>;
+  makeucLiabilityRelease?: InputMaybe<Scalars['Boolean']['input']>;
   mlhCodeOfConductAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhEmailAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   mlhPrivacyPolicyAgreement?: InputMaybe<Scalars['Boolean']['input']>;
   notes?: InputMaybe<Scalars['String']['input']>;
+  participationPreference?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
   resume?: InputMaybe<FileFieldInput>;
   school?: InputMaybe<SchoolRelateToOneForUpdateInput>;
+  tshirtSize?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UserRelateToOneForUpdateInput>;
 };
 
@@ -1203,6 +1236,7 @@ export type RegistrantWhereInput = {
   AND?: InputMaybe<Array<RegistrantWhereInput>>;
   NOT?: InputMaybe<Array<RegistrantWhereInput>>;
   OR?: InputMaybe<Array<RegistrantWhereInput>>;
+  acceptAllAuthorization?: InputMaybe<BooleanFilter>;
   acceptPhotoRelease?: InputMaybe<BooleanFilter>;
   age?: InputMaybe<IntFilter>;
   country?: InputMaybe<StringFilter>;
@@ -1214,16 +1248,21 @@ export type RegistrantWhereInput = {
   ethnicity?: InputMaybe<StringFilter>;
   expectedGraduationYear?: InputMaybe<IntFilter>;
   firstName?: InputMaybe<StringFilter>;
+  foodAllergy?: InputMaybe<StringFilter>;
+  foodSuggestions?: InputMaybe<StringFilter>;
   gender?: InputMaybe<StringFilter>;
   hackathonsAttended?: InputMaybe<IntNullableFilter>;
   id?: InputMaybe<IdFilter>;
   invitedInPerson?: InputMaybe<BooleanFilter>;
   lastName?: InputMaybe<StringFilter>;
   major?: InputMaybe<StringFilter>;
+  participationPreference?: InputMaybe<StringFilter>;
+  phoneNumber?: InputMaybe<StringFilter>;
   mlhCodeOfConductAgreement?: InputMaybe<BooleanFilter>;
   mlhEmailAgreement?: InputMaybe<BooleanFilter>;
   mlhPrivacyPolicyAgreement?: InputMaybe<BooleanFilter>;
   notes?: InputMaybe<StringFilter>;
+  tshirtSize?: InputMaybe<StringFilter>;
   registrationYear?: InputMaybe<IntNullableFilter>;
   school?: InputMaybe<SchoolWhereInput>;
   user?: InputMaybe<UserWhereInput>;
@@ -1506,6 +1545,19 @@ export type UserWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type GetCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCountriesQuery = { __typename?: 'Query', schools?: Array<{ __typename?: 'School', country?: string | null }> | null };
+
+export type GetCitiesQueryVariables = Exact<{
+  countryId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCitiesQuery = { __typename?: 'Query', cities: Array<any | null> };
+
+
 export type CreateRegistrantMutationVariables = Exact<{
   data: RegistrantCreateInput;
 }>;
@@ -1531,6 +1583,8 @@ export type GetSchoolsQueryVariables = Exact<{
 export type GetSchoolsQuery = { __typename?: 'Query', schools?: Array<{ __typename?: 'School', id: string, name?: string | null }> | null };
 
 
-export const CreateRegistrantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateRegistrant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegistrantCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRegistrant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRegistrantMutation, CreateRegistrantMutationVariables>;
-export const VerifyRegistrantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyRegistrant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyRegistrant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<VerifyRegistrantMutation, VerifyRegistrantMutationVariables>;
-export const GetSchoolsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSchools"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SchoolWhereInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SchoolOrderByInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"schools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetSchoolsQuery, GetSchoolsQueryVariables>;
+export const GetCountriesDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetCountries" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "schools" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "orderBy" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "country" }, "value": { "kind": "EnumValue", "value": "asc" } }] } }, { "kind": "Argument", "name": { "kind": "Name", "value": "take" }, "value": { "kind": "IntValue", "value": "1000" } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "country" } }] } }] } }] } as unknown as DocumentNode<GetCountriesQuery, GetCountriesQueryVariables>;
+export const GetCitiesDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetCities" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "countryId" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "cities" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "countryId" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "countryId" } } }] }] } }] } as unknown as DocumentNode<GetCitiesQuery, GetCitiesQueryVariables>;
+export const CreateRegistrantDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "mutation", "name": { "kind": "Name", "value": "CreateRegistrant" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "data" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "RegistrantCreateInput" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "createRegistrant" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "data" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "data" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }] } }] } }] } as unknown as DocumentNode<CreateRegistrantMutation, CreateRegistrantMutationVariables>;
+export const VerifyRegistrantDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "mutation", "name": { "kind": "Name", "value": "VerifyRegistrant" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "ID" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "verifyRegistrant" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }] } }] } }] } as unknown as DocumentNode<VerifyRegistrantMutation, VerifyRegistrantMutationVariables>;
+export const GetSchoolsDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetSchools" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "where" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "SchoolWhereInput" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "orderBy" } }, "type": { "kind": "NonNullType", "type": { "kind": "ListType", "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "SchoolOrderByInput" } } } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "schools" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "where" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "where" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "orderBy" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "orderBy" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "skip" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "take" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }] } }] } }] } as unknown as DocumentNode<GetSchoolsQuery, GetSchoolsQueryVariables>;
