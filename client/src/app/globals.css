@@ -8,62 +8,69 @@
 
 @layer base {
   :root {
-    --logo: #e8b32d;
-    --background: #000;
-    --background-inset-color: #513cba;
-    --foreground: #e8b32d;
-    --foreground-inset-color: #513cba;
-    --muted: #513cba;
-    --muted-foreground: #e8b32d;
-    --muted-gray-foreground: #e8b32d;
-    --popover: #8a3797;
-    --popover-foreground: #e8b32d;
-    --card: #e8b32d;
-    --card-foreground: #e8b32d;
-    --border: #8697b7;
-    --input: #513cba;
-    --primary: #e8b32d;
-    --primary-foreground: #46505f;
-    --secondary: #513cba;
-    --secondary-foreground: #e8b32d;
-    --accent: #e8b32d;
-    --accent-foreground: #46505f;
-    --destructive: #d15635;
-    --destructive-foreground: #e8b32d;
-    --ring: #542d92;
+    --logo: #f5c518;                          
+    --background: #0d1f0d;                    
+    --background-inset-color: #1a2e1a;        
+    --foreground: #00ff41;                    
+    --foreground-inset-color: #2e4a2e;        
+    --muted: #243824;                         
+    --muted-foreground: #7fff7f;              
+    --muted-gray-foreground: #5a8a5a;         
+    --popover: #1a2e1a;                       
+    --popover-foreground: #00ff41;            
+    --card: #2e4a2e;                          
+    --card-foreground: #00ff41;               
+    --border: #3d5c3d;                        
+    --input: #1a2e1a;                         
+    --primary: #00ff41;                       
+    --primary-foreground: #0d1f0d;            
+    --secondary: #f5c518;                     
+    --secondary-foreground: #1a0e00;         
+    --accent: #39ff14;                        
+    --accent-foreground: #0d1f0d;             
+    --destructive: #d15635;                   
+    --destructive-foreground: #fff5f0;
+    --ring: #00ff41;                          
     --radius: 0.5rem;
-    --push-in-top-shadow: inset 0 2px 2px #513cba;
-    --push-in-top-shadow-no-overhang: inset 0 0 2px #513cba;
-    --push-in-bottom-shadow: 0 2px 0 #513cba;
+
+    /* CRT scanline & glow utilities */
+    --crt-scanline-opacity: 0.18;
+    --crt-glow: 0 0 10px rgb(0 255 65 / 55%);
+    --crt-text-glow: 0 0 6px rgb(0 255 65 / 75%);
+
+    /* Shadow utilities — updated to green tone */
+    --push-in-top-shadow: inset 0 2px 2px #1a2e1a;
+    --push-in-top-shadow-no-overhang: inset 0 0 2px #1a2e1a;
+    --push-in-bottom-shadow: 0 2px 0 #1a2e1a;
   }
 
   .dark {
-    --background: #000;
-    --background-inset-color: #513cba;
-    --foreground: #e8b32d;
-    --foreground-inset-color: #513cba;
-    --muted: #513cba;
-    --muted-foreground: #e8b32d;
-    --muted-gray-foreground: #e8b32d;
-    --popover: #8a3797;
-    --popover-foreground: #e8b32d;
-    --card: #e8b32d;
-    --card-foreground: #e8b32d;
-    --border: #8697b7;
-    --input: #513cba;
-    --primary: #e8b32d;
-    --primary-foreground: #46505f;
-    --secondary: #513cba;
-    --secondary-foreground: #e8b32d;
-    --accent: #e8b32d;
-    --accent-foreground: #46505f;
+    --background: #0d1f0d;
+    --background-inset-color: #1a2e1a;
+    --foreground: #00ff41;
+    --foreground-inset-color: #2e4a2e;
+    --muted: #243824;
+    --muted-foreground: #7fff7f;
+    --muted-gray-foreground: #00ff41;
+    --popover: #1a2e1a;
+    --popover-foreground: #00ff41;
+    --card: #2e4a2e;
+    --card-foreground: #00ff41;
+    --border: #3d5c3d;
+    --input: #1a2e1a;
+    --primary: #00ff41;
+    --primary-foreground: #0d1f0d;
+    --secondary: #f5c518;
+    --secondary-foreground: #1a0e00;
+    --accent: #39ff14;
+    --accent-foreground: #0d1f0d;
     --destructive: #d15635;
-    --destructive-foreground: #e8b32d;
-    --ring: #542d92;
+    --destructive-foreground: #fff5f0;
+    --ring: #00ff41;
     --radius: 0.5rem;
-    --push-in-top-shadow: inset 0 2px 2px #513cba;
-    --push-in-top-shadow-no-overhang: inset 0 0 2px #513cba;
-    --push-in-bottom-shadow: 0 2px 0 #513cba;
+    --push-in-top-shadow: inset 0 2px 2px #1a2e1a;
+    --push-in-top-shadow-no-overhang: inset 0 0 2px #1a2e1a;
+    --push-in-bottom-shadow: 0 2px 0 #1a2e1a;
   }
 
   @layer base {
@@ -74,7 +81,57 @@
     body {
       @apply bg-background text-foreground;
 
+      /* Phosphor terminal layered background:
+         - repeating-linear-gradient for subtle scanlines
+         - two radial glows for green phosphor bloom
+         - linear gradient base using existing theme vars
+      */
+      background-image:
+        repeating-linear-gradient(0deg, rgb(0 0 0 / var(--crt-scanline-opacity)) 0 2px, rgb(0 0 0 / 0%) 2px 4px),
+        radial-gradient(ellipse at 10% 10%, rgb(0 255 65 / 6%), transparent 15%),
+        radial-gradient(ellipse at 80% 80%, rgb(57 255 20 / 2%), transparent 30%),
+        linear-gradient(180deg, var(--background), var(--background-inset-color) 60%);
+      background-blend-mode: overlay, screen, screen, normal;
+      background-attachment: fixed;
+      background-size: cover;
+      background-repeat: no-repeat;
       font-feature-settings: "rlig" 1, "calt" 1;
+    }
+
+    /* CRT scanline overlay — apply .crt-screen to any section */
+    .crt-screen {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .crt-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgb(0 0 0 / var(--crt-scanline-opacity)) 2px,
+        rgb(0 0 0 / var(--crt-scanline-opacity)) 4px
+      );
+      z-index: 2;
+    }
+
+    /* Blinking cursor utility */
+    .crt-cursor {
+      display: inline-block;
+      width: 9px;
+      height: 14px;
+      background: var(--foreground);
+      vertical-align: middle;
+      animation: crt-blink 1s step-end infinite;
+    }
+
+    @keyframes crt-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
     }
   }
 
@@ -109,16 +166,24 @@
     }
 
     .push-in-top-no-overhang.push-in-bottom {
-      box-shadow: var(--push-in-bottom-shadow),
-        var(--push-in-top-shadow-no-overhang);
+      box-shadow: var(--push-in-bottom-shadow), var(--push-in-top-shadow-no-overhang);
     }
 
     .bump-out {
-      box-shadow: 0 1px 1px #000, inset 0 3px 1px #fff;
+      box-shadow: 0 1px 1px #000, inset 0 3px 1px rgb(0 255 65 / 20%);
     }
 
     .dark .bump-out {
-      box-shadow: 0 3px 2px #000, inset 0 3px 1px #fff;
+      box-shadow: 0 3px 2px #000, inset 0 3px 1px rgb(0 255 65 / 15%);
+    }
+
+    /* Phosphor glow helpers */
+    .glow-text {
+      text-shadow: var(--crt-text-glow);
+    }
+
+    .glow-border {
+      box-shadow: var(--crt-glow);
     }
   }
 
@@ -128,6 +193,7 @@
     }
   }
 
+  /* ── Font utilities (unchanged) ── */
   .titillium-web-extralight {
     font-family: "Titillium Web", sans-serif;
     font-weight: 200;
