@@ -37,6 +37,8 @@
     --crt-scanline-opacity: 0.18;
     --crt-glow: 0 0 10px rgb(0 255 65 / 55%);
     --crt-text-glow: 0 0 6px rgb(0 255 65 / 75%);
+    --crt-sweep-duration: 3.0s; /* refresh rate speed */
+    --crt-sweep-color: rgb(160 255 100); 
 
     /* Shadow utilities — updated to green tone */
     --push-in-top-shadow: inset 0 2px 2px #1a2e1a;
@@ -96,7 +98,33 @@
       background-size: cover;
       background-repeat: no-repeat;
       font-feature-settings: "rlig" 1, "calt" 1;
+      position: relative;
     }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(160 255 100 / 0%) 35%,
+      rgb(160 255 100 / 7%) 50%,
+      rgb(160 255 100 / 13%) 55%,
+      rgb(160 255 100 / 7%) 60%,
+      rgb(160 255 100 / 0%) 75%,
+      transparent 100%
+      );
+      background-size: 100% 200%;
+      animation: crt-refresh var(--crt-sweep-duration) linear infinite;
+      }
+
+      @keyframes crt-refresh {
+      0% { background-position: 0% 100%; }
+      100% { background-position: 0% -100%; }
+      }
 
     /* CRT scanline overlay — apply .crt-screen to any section */
     .crt-screen {
