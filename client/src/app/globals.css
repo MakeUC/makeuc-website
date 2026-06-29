@@ -1,3 +1,4 @@
+@import 'https://fonts.googleapis.com/css2?family=VT323&display=swap';
 @import "../assets/fonts/poppins/Poppins.css";
 @import "../assets/fonts/GulfsDisplay-Normal/GulfsDisplay.css";
 @import "../assets/fonts/garet/Garet.css";
@@ -8,23 +9,23 @@
 
 @layer base {
   :root {
-    --logo: #f5c518;                          
-    --background: #0d1f0d;                    
+    --logo: #fff;                          
+    --background: #047e00;                    
     --background-inset-color: #1a2e1a;        
     --foreground: #00ff41;                    
     --foreground-inset-color: #2e4a2e;        
     --muted: #243824;                         
     --muted-foreground: #7fff7f;              
     --muted-gray-foreground: #5a8a5a;         
-    --popover: #1a2e1a;                       
-    --popover-foreground: #00ff41;            
+    --popover: #39ff14;                       
+    --popover-foreground: #39ff14;            
     --card: #2e4a2e;                          
     --card-foreground: #00ff41;               
     --border: #3d5c3d;                        
     --input: #1a2e1a;                         
     --primary: #00ff41;                       
     --primary-foreground: #0d1f0d;            
-    --secondary: #f5c518;                     
+    --secondary: transparent;                     
     --secondary-foreground: #1a0e00;         
     --accent: #39ff14;                        
     --accent-foreground: #0d1f0d;             
@@ -62,7 +63,7 @@
     --input: #1a2e1a;
     --primary: #00ff41;
     --primary-foreground: #0d1f0d;
-    --secondary: #f5c518;
+    --secondary: transparent;
     --secondary-foreground: #1a0e00;
     --accent: #39ff14;
     --accent-foreground: #0d1f0d;
@@ -213,6 +214,18 @@
     .glow-border {
       box-shadow: var(--crt-glow);
     }
+
+   
+  .hacker-schedule-table .header-row td {
+    background-color: #39ff14 !important;
+    color: #1a2e1a !important;
+  }
+
+  .hacker-schedule-table tr:not(.header-row):hover td,
+  .hacker-schedule-table tr:not(.header-row):hover th {
+    background-color: #39ff14 !important;
+    color: #1a2e1a !important;
+  }
   }
 
   @layer utilities {
@@ -289,12 +302,12 @@
   }
 
   .text-large {
-    font-size: 40px;
+    font-size: 5rem;
   }
 
   * {
-    font-family: Garet, sans-serif !important;
-    font-weight: 400;
+    font-family: "VT323", monospace !important;
+    font-weight: 900;
     font-style: normal;
   }
 
@@ -303,16 +316,16 @@
   h4,
   h5,
   h6 {
-    font-family: Poppins, sans-serif !important;
-    font-weight: 600 !important;
+    font-family: "VT323", monospace !important;
+    font-weight: 400 !important;
     font-style: normal;
   }
 
   h1,
   header,
   .header-text {
-    font-family: "Gulfs Display", sans-serif !important;
-    font-weight: 1 !important;
+    font-family: "VT323", monospace !important;
+    font-weight: 400 !important;
     font-style: normal;
   }
 

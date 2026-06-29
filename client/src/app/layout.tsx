@@ -1,5 +1,4 @@
 import "./globals.css";
-import { Montserrat } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
 import { LayoutFooter } from "~/components/general/layout-footer";
@@ -10,8 +9,6 @@ import { ApolloWrapper } from "~/lib/apollo-provider";
 
 import type { ReactNode } from "react";
 
-
-const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: {
@@ -29,7 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body
-        className={`${montserrat.className} flex flex-col min-h-screen dark`}
+        className={"flex flex-col min-h-screen dark"}
       >
         <ApolloWrapper>
           <Toaster
