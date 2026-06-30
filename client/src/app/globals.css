@@ -9,7 +9,7 @@
 
 @layer base {
   :root {
-    --logo: #fff;                          
+    --logo: #00ff41;                          
     --background: #047e00;                    
     --background-inset-color: #1a2e1a;        
     --foreground: #00ff41;                    
@@ -317,7 +317,7 @@
   h5,
   h6 {
     font-family: "VT323", monospace !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     font-style: normal;
   }
 
@@ -325,7 +325,7 @@
   header,
   .header-text {
     font-family: "VT323", monospace !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     font-style: normal;
   }
 
