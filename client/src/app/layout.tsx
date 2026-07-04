@@ -1,17 +1,14 @@
 import "./globals.css";
-import { Montserrat } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
 import { LayoutFooter } from "~/components/general/layout-footer";
 import { LayoutHeader } from "~/components/general/layout-header";
-import { Stars } from "~/components/general/stars";
+//import { Stars } from "~/components/general/stars";
 import { Config } from "~/constants/config";
 import { ApolloWrapper } from "~/lib/apollo-provider";
 
 import type { ReactNode } from "react";
 
-
-const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: {
@@ -29,7 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body
-        className={`${montserrat.className} flex flex-col min-h-screen dark`}
+        className={"flex flex-col min-h-screen dark"}
       >
         <ApolloWrapper>
           <Toaster
@@ -44,7 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             }}
           />
           <LayoutHeader />
-          <Stars />
+          {/* <Stars /> */}
           <div className="flex flex-col flex-1">{children}</div>
           <LayoutFooter />
         </ApolloWrapper>
