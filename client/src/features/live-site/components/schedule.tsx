@@ -21,11 +21,12 @@ export interface EventInfo {
   end?: string;
 }
 
-function createData(name:string, location:string, location_virt:ReactNode, date:string, start:string, end:string) {
+function createData(name: string,
+  location: string, location_virt: ReactNode, date: string, start: string, end: string) {
   return { name, location, location_virt, date, start, end };
 }
 
-function createDataInPerson(name:string, location:string, date:string, start:string, end:string) {
+function createDataInPerson(name: string, location: string, date: string, start: string, end: string) {
   return { name, location, date, start, end };
 }
 
@@ -50,7 +51,7 @@ export const scheduleData: EventInfo[] = [
   createData("Board Games/Quiplash Games", "Second Floor Common Area", "Discord #🎮game-room-1-vc", "Nov 9", "01:00 AM", "02:00 AM"),
   createData("Sim Racing", "Room 230", "-", "Nov 9", "04:00 AM", "05:00 AM"),
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 9", "09:00 AM", "10:00 AM"),
-  createData("Hacking Ends", "-", "-", "Nov 9", "12:00 PM", "12:00 PM"),  
+  createData("Hacking Ends", "-", "-", "Nov 9", "12:00 PM", "12:00 PM"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 9", "12:00 PM", "1:00 PM"),
   createData("Judging", "Assigned Discord Judging VC", "Assigned Discord Judging VC", "Nov 9", "01:00 PM", "04:00 PM"),
   createData("Closing Ceremony", "Room 230", "YouTube Stream", "Nov 9", "05:00 PM", "06:00 PM"),
@@ -122,10 +123,10 @@ export interface ScheduleGridProps {
 
 export function HackerScheduleTable() {
   return (
-    <Table className="flex flex-col sm:items-center sm:justify-evenly">
-      
+    <Table className="hacker-schedule-table flex flex-col sm:items-center sm:justify-evenly">
+
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary rounded">
+        <TableRow className="header-row h-12 px-4 text-left align-middle font-medium bg-primary rounded">
           <TableCell className="text-center font-semibold border-1 border-white">Event</TableCell>
           <TableCell className="text-center font-semibold border-1 border-white">In-Person Location</TableCell>
           <TableCell className="text-center font-semibold border-1 border-white">Virtual Location</TableCell>
@@ -141,9 +142,9 @@ export function HackerScheduleTable() {
 
 export function CTFScheduleTable() {
   return (
-    <Table className="flex flex-col sm:items-center sm:justify-evenly">
+    <Table className="hacker-schedule-table flex flex-col sm:items-center sm:justify-evenly">
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
+        <TableRow className="header-row h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Event</TableCell>
           <TableCell className="text-center font-semibold">In-Person Location</TableCell>
           <TableCell className="text-center font-semibold">Virtual Location</TableCell>
@@ -159,9 +160,9 @@ export function CTFScheduleTable() {
 
 export function MakerspaceScheduleTable() {
   return (
-    <Table className="flex flex-col sm:items-center sm:justify-evenly">
+    <Table className="hacker-schedule-table flex flex-col sm:items-center sm:justify-evenly">
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
+        <TableRow className="header-row h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Event</TableCell>
           <TableCell className="text-center font-semibold">Location</TableCell>
           <TableCell className="text-center font-semibold">Date</TableCell>
@@ -176,9 +177,9 @@ export function MakerspaceScheduleTable() {
 
 export function TransportScheduleTable() {
   return (
-    <Table className="flex flex-col sm:items-center sm:justify-evenly">
+    <Table className="hacker-schedule-table flex flex-col sm:items-center sm:justify-evenly">
       <TableBody>
-        <TableRow className="h-12 px-4 text-left align-middle font-medium bg-primary">
+        <TableRow className="header-row h-12 px-4 text-left align-middle font-medium bg-primary">
           <TableCell className="text-center font-semibold">Purpose</TableCell>
           <TableCell className="text-center font-semibold">Pick-Up Location</TableCell>
           <TableCell className="text-center font-semibold">Drop-Off Location</TableCell>
