@@ -3,11 +3,7 @@
 main,
 body {
   height: 100%;
-  background: radial-gradient(
-    ellipse at bottom,
-    var(--background-inset-color) 0%,
-    var(--background) 100%
-  );
+  background: transparent;
 }
 
 #stars {

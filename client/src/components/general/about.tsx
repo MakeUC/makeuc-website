@@ -8,6 +8,7 @@ import Logo2021 from "~/assets/old-logos/2021.png";
 import Logo2022 from "~/assets/old-logos/2022.png";
 import Logo2023 from "~/assets/old-logos/2023.png";
 import Logo2024 from "~/assets/old-logos/2024.png";
+import Logo2025 from "~/assets/old-logos/2025.webp";
 
 
 export function About() {
@@ -119,6 +120,17 @@ export function About() {
           </div>
           <h4 className="text-center text-muted-foreground">Fall 2024</h4>
         </Link>
+
+        <Link
+          href="https://makeuc-2025.devpost.com/"
+          className="flex flex-col flex-1 justify-center items-center gap-4 hover:brightness-125"
+        >
+          <div className="flex items-center h-full">
+            <Image src={Logo2025} alt="MakeUC Logo 2025" width={160} />
+          </div>
+          <h4 className="text-center text-muted-foreground">Fall 2025</h4>
+        </Link>
+
       </div>
     </>
   );
