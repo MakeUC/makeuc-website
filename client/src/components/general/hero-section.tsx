@@ -28,10 +28,10 @@ export function HeroSection() {
                 }}
                 className="drop-shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
               >
-                MakeUC 2025
+                MakeUC 2026
               </h1>
               <span className="block text-white text-xl font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
-                November 8-9th, 2025
+                November 8-9th, 2026
               </span>
             </div>
             {Config.ShowRegistrationButton && (
