@@ -7,9 +7,14 @@
   "workspaceFolder": "/workspace",
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
-  "forwardPorts": [3000, 5432, 9090, 9091],
+  "forwardPorts": [
+    3000,
+    5432,
+    9090,
+    9091
+  ],
   "initializeCommand": "node .devcontainer/setup.js",
-  "postCreateCommand": "yarn install",
+  "postCreateCommand": "yarn install && cd server && yarn download-data",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -5,7 +5,7 @@ export const Config = {
   SearchDebounceWait: 300,
   SearchMaxDebounceWait: 1500,
   // Sometimes we want to hide the registration button, 
-  ShowRegistrationButton: false,
+  ShowRegistrationButton: true,
   // but keep registration actually enabled for stragglers day-of
   ShowRegistration: true,
   ShowMLHBanner: true,
