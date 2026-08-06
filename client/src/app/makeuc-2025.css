@@ -398,6 +398,12 @@ body {
   padding-left: 10px;
 }
 
+
+[type="button"]:not([role="checkbox"]) span{
+  color: var(--foreground) !important;
+  opacity: 0.825 !important;
+}
+
 #title span {
   background: linear-gradient(white, #38495a);
   background-clip: text;
@@ -476,10 +482,6 @@ textarea::placeholder,
   opacity: 0.65 !important;
 }
 
-[type="button"]:not([role="checkbox"]) span:not(#title span) {
-  color: var(--foreground) !important;
-  opacity: 0.825 !important;
-}
 
 .bg-destructive {
   color: white !important;

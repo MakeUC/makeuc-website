@@ -3,7 +3,7 @@ import { PageTitle } from "~/components/general/typography";
 import { Config } from "~/constants/config";
 
 
-export const revalidate = Config.RevalidationFrequency;
+export const dynamic = "force-dynamic";
 
 export default function StatsPage() {
   const year = new Date().getFullYear() - 1;
