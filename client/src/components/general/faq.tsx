@@ -18,7 +18,7 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WHEN IS MAKEUC?",
-    dropDown: "MakeUC 2025 will start on November 8th and lasts 24 hours, ending on November 9th.",
+    dropDown: "MakeUC 2025 will start on November 7th and lasts 24 hours, ending on November 8th.",
   },
   {
     card: "WILL MAKEUC BE IN PERSON?",
