@@ -37,13 +37,7 @@ export function About() {
       <p className="text-center titillium-web-bold">
         The MakeUC hackathon is brought to by
         <br />
-        <Link
-          href="https://ieee.uc.edu"
-          target="_blank"
-          className="text-primary"
-        >
-          IEEE@UC
-        </Link>{" "}
+        {" "}
         {/* supported by{" "}
         <Link
           href="https://innovation.uc.edu/"
@@ -52,7 +46,6 @@ export function About() {
         >
           1819 Innovation Hub
         </Link> */}
-        .
       </p>
       <div className="flex flex-col gap-8 justify-center items-center md:flex-row">
         <Link

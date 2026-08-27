@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "MY_DEV_MODE=1 ts-node src/index.ts",
-    "generate": "prisma generate",
+    "generate": "ln -sf ../server/schema.prisma schema.prisma && prisma generate",
     "lint": "eslint src/*.ts src/**/*.ts --max-warnings 0",
     "start": "node dist/index.js"
   },

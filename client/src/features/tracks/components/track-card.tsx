@@ -31,7 +31,7 @@ export function TrackCard({
     if (Array.isArray(description)) {
       return (
         <CardDescription>
-          <ul className="list-disc pl-5 space-y-1 text-sm">
+          <ul className="list-disc pl-5 space-y-1 text-base">
             {description.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
