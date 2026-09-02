@@ -28,7 +28,12 @@ This issue tracks the necessary updates for the upcoming hackathon season.
 - [ ] Update the CSS import in `client/src/app/layout.tsx`
 - [ ] Update any yearly dates/text on the landing page
 
+## SendGrid:
+ - [ ] Update Sendgrid style and year
+ 
 ## Verification
 
 - [ ] Test the registration flow from start to finish
 - [ ] Test Discord verification with the new role
+
+

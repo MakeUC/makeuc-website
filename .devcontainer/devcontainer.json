@@ -14,7 +14,7 @@
     9091
   ],
   "initializeCommand": "node .devcontainer/setup.js",
-  "postCreateCommand": "yarn install && cd server && yarn download-data",
+  "postCreateCommand": "yarn install && cd server && yarn download-data && yarn seed-data",
   "customizations": {
     "vscode": {
       "extensions": [
