@@ -14,7 +14,7 @@ import HIIImage from "../assets/hii.svg";
 // import ICRImage from "../assets/icr.png";
 // import InfineraImage from "../assets/infinera.png";
 // import KaoImage from "../assets/kao.png";
-import KineticVisionImage from "../assets/kinetic-vision.svg";
+// import KineticVisionImage from "../assets/kinetic-vision.svg";
 // import MicrosoftImage from "../assets/Microsoft.png";
 // import NorthropGrummanImage from "../assets/northrop_grumman.png";
 // import OverleafImage from "../assets/overleaf.png";
@@ -27,9 +27,9 @@ import KineticVisionImage from "../assets/kinetic-vision.svg";
 // import temboImage from "../assets/tembo.svg";
 // import WolframAlphaImage from "../assets/wolfram-alpha.png";
 // import SiemensImage from "../assets/Siemens-Logo UPDATED 2021.png";
-import KloobImage from "../assets/kloob.png";
+// import KloobImage from "../assets/kloob.png";
 import MLHImage from "../assets/mlh.svg";
-import PureButtonsImage from "../assets/pure-buttons.svg";
+// import PureButtonsImage from "../assets/pure-buttons.svg";
 import XYZImage from "../assets/xyz.svg";
 
 
@@ -60,11 +60,11 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Swallowtail",
     sponsors: [
-      {
-        name: "HII",
-        url: "https://hii.com/",
-        imageSrc: HIIImage,
-      },
+      //    {
+      //      name: "HII",
+      //       url: "https://hii.com/",
+      //       imageSrc: HIIImage,
+      //     },
       {
         name: "XYZ",
         url: "https://gen.xyz/",
@@ -80,26 +80,26 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Morpho",
     sponsors: [
-      {
-        name: "Pure Buttons",
-        url: "https://www.purebuttons.com/",
-        imageSrc: PureButtonsImage,
-      },
+      //     {
+      //        name: "Pure Buttons",
+      //        url: "https://www.purebuttons.com/",
+      //        imageSrc: PureButtonsImage,
+      //      },
       {
         name: "MLH",
         url: "https://mlh.io/",
         imageSrc: MLHImage,
       },
-      {
-        name: "Kinetic Vision",
-        url: "https://kinetic-vision.com/",
-        imageSrc: KineticVisionImage,
-      },
-      {
-        name: "Kloob",
-        url: "https://www.kloob.app/",
-        imageSrc: KloobImage,
-      },
+      //      {
+      //        name: "Kinetic Vision",
+      //        url: "https://kinetic-vision.com/",
+      //        imageSrc: KineticVisionImage,
+      //      },
+      //      {
+      //        name: "Kloob",
+      //        url: "https://www.kloob.app/",
+      //        imageSrc: KloobImage,
+      //      },
       /*
       {
         name: "Seeed Studio",
