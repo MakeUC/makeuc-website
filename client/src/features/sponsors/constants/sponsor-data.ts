@@ -38,7 +38,7 @@ import type { SponsorTier } from "../components/sponsor-grid";
 
 export const sponsorData: SponsorTier[] = [
   {
-    name: "Adonis",
+    name: "Bronze",
     sponsors: [
       {
         name: "1819",
@@ -58,7 +58,7 @@ export const sponsorData: SponsorTier[] = [
     ],
   },
   {
-    name: "Swallowtail",
+    name: "Silver",
     sponsors: [
       //    {
       //      name: "HII",
@@ -73,12 +73,12 @@ export const sponsorData: SponsorTier[] = [
     ],
   },
   {
-    name: "Birdwing",
+    name: "Gold",
     sponsors: [
     ],
   },
   {
-    name: "Morpho",
+    name: "Platinum",
     sponsors: [
       //     {
       //        name: "Pure Buttons",

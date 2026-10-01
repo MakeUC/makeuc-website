@@ -3,6 +3,7 @@
   "packageManager": "yarn@1.22.22",
   "license": "MIT",
   "scripts": {
+    "prebuild": "yarn generate",
     "build": "tsc",
     "dev": "MY_DEV_MODE=1 ts-node src/index.ts",
     "generate": "ln -sf ../server/schema.prisma schema.prisma && prisma generate",

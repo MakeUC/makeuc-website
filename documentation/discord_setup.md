@@ -8,11 +8,12 @@ Each year, you must update the bot's configuration to point to the correct parti
 
 ### 1. Update Role ID
 
-When a user is verified, the bot assigns them a specific role.
+When a user is verified, the bot assigns them the **@Participant (2026)** role. Set the environment variable to that role's ID.
 
 - **Environment Variable:** `DISCORD_VERIFIED_ROLE_ID`
 - **Location:** Update this in your hosting provider's environment variables (e.g., Railway).
 - **How to get ID:** In Discord, right-click the role and select "Copy Role ID" (Developer Mode must be enabled).
+- The bot must have **Manage Roles**, and its highest role must be above **@Participant (2026)** in the server's role hierarchy.
 
 ### 2. Manual Permission Check
 
@@ -31,6 +32,8 @@ The `/verify` command checks an environment variable to see if verification is c
 - **Values:**
   - `open`: Verification is enabled.
   - `closed` (or any other value): Verification is disabled, and users will be told to come back later.
+
+After a valid registration is verified, `/verify` assigns **@Participant (2026)**. Keep the survey as a separate onboarding announcement in the appropriate channel.
 
 ### 4. Update Current Year in Bot
 

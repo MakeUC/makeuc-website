@@ -41,8 +41,8 @@ client.on(Events.InteractionCreate, async interaction => {
   try {
     await command.execute(interaction);
   } catch (err) {
-    console.error(`Error on command: ${command}:`);
-    console.error(err);
+    const interactionAgeMs = Date.now() - interaction.createdTimestamp;
+    console.error(`Error on /${commandName} (interaction ${interaction.id}, age ${interactionAgeMs}ms):`, err);
   }
 });
 
