@@ -882,7 +882,7 @@ type Mutation {
   endSession: Boolean!
   disqualifyProject(projectId: ID, reason: String): Judgement
   seedSchoolIndiaData: Boolean
-  verifyRegistrant(id: ID!): Registrant
+  verifyRegistrant(token: String!): Boolean!
   resendVerificationEmails: [String]
   massSendRegistrantEmail(sendGridId: String!, where: RegistrantWhereInput, skip: Int, take: Int): [String]!
 }

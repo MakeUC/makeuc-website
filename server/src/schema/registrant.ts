@@ -1,3 +1,5 @@
+import { createHash, randomBytes } from "crypto";
+
 import { list } from "@keystone-6/core";
 import { integer, relationship, text, timestamp, select, checkbox, file } from "@keystone-6/core/fields";
 import { GraphQLError } from "graphql";
@@ -9,6 +11,18 @@ import { FROM_ADDRESS, REGISTRATION_URL, sendgrid } from "../utils/sendgrid";
 import type { Lists } from ".keystone/types";
 
 
+const VERIFICATION_TOKEN_LIFETIME_MS = 24 * 60 * 60 * 1000;
+
+
+export function createRegistrantVerificationToken() {
+  const token = randomBytes(32).toString("hex");
+  return {
+    token,
+    hash: createHash("sha256").update(token).digest("hex"),
+    expiresAt: new Date(Date.now() + VERIFICATION_TOKEN_LIFETIME_MS),
+  };
+}
+
 export function sendEmailToRegistrant(registrant: Lists.Registrant.Item, sendgridTemplateId: string) {
   return sendgrid.send({
     from: FROM_ADDRESS,
@@ -18,7 +32,7 @@ export function sendEmailToRegistrant(registrant: Lists.Registrant.Item, sendgri
   });
 }
 
-export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
+export function sendRegistrantEmail(registrant: Lists.Registrant.Item, token: string) {
   return sendgrid.send({
     from: FROM_ADDRESS,
     to: registrant.email,
@@ -26,7 +40,7 @@ export function sendRegistrantEmail(registrant: Lists.Registrant.Item) {
     templateId: "d-7e6b4ad4255e45ce8295638c61ef346c",
     dynamicTemplateData: {
       name: `${registrant.firstName} ${registrant.lastName}`,
-      regURL: `${REGISTRATION_URL}${registrant.id}`,
+      regURL: `${REGISTRATION_URL}${token}`,
     },
   });
 }
@@ -112,6 +126,13 @@ export const Registrant = list(addCompoundKey({
       defaultValue: { kind: "now" },
     }),
     verified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
+    verificationTokenHash: text({
+      isIndexed: true,
+      graphql: { omit: { read: true, create: true, update: true } },
+    }),
+    verificationTokenExpiresAt: timestamp({
+      graphql: { omit: { read: true, create: true, update: true } },
+    }),
     discordVerified: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     acceptPhotoRelease: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
     invitedInPerson: checkbox({ defaultValue: false, graphql: { omit: { create: true, update: true } } }),
@@ -122,7 +143,7 @@ export const Registrant = list(addCompoundKey({
     }),
   },
   hooks: {
-    async afterOperation({ operation, item }) {
+    async afterOperation({ operation, item, context }) {
       if (operation !== "create" || !item) return;
 
       // check if item is actually GraphQLError and not a registrant
@@ -136,7 +157,17 @@ export const Registrant = list(addCompoundKey({
         throw new Error("Registration failed.");
       }
 
-      await sendRegistrantEmail(item as Lists.Registrant.Item)
+      const registrant = item as Lists.Registrant.Item;
+      const verificationToken = createRegistrantVerificationToken();
+      await context.prisma.registrant.update({
+        where: { id: registrant.id },
+        data: {
+          verificationTokenHash: verificationToken.hash,
+          verificationTokenExpiresAt: verificationToken.expiresAt,
+        },
+      });
+
+      await sendRegistrantEmail(registrant, verificationToken.token)
         .then(resp => {
           if (!resp[0]) { return; }
           if (resp[0].statusCode === 202) { return; }

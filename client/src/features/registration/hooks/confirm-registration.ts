@@ -7,9 +7,9 @@ import { VerifyRegistrantDocument } from "../generated/graphql/graphql";
 export function useConfirmRegistration() {
   const [verifyRegistrant] = useMutation(VerifyRegistrantDocument);
 
-  const confirmRegistration = useCallback((id: string) => {
+  const confirmRegistration = useCallback((token: string) => {
     return verifyRegistrant({
-      variables: { id },
+      variables: { token },
     });
   }, [verifyRegistrant]);
 

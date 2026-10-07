@@ -4,8 +4,6 @@ mutation CreateRegistrant($data: RegistrantCreateInput!) {
   }
 }
 
-mutation VerifyRegistrant($id: ID!) {
-  verifyRegistrant(id: $id) {
-    id
-  }
+mutation VerifyRegistrant($token: String!) {
+  verifyRegistrant(token: $token)
 }

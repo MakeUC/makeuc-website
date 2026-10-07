@@ -30,6 +30,7 @@ import HIIImage from "../assets/hii.svg";
 // import KloobImage from "../assets/kloob.png";
 import MLHImage from "../assets/mlh.svg";
 // import PureButtonsImage from "../assets/pure-buttons.svg";
+import ScrimbaImage from "../assets/v-black.png";
 import XYZImage from "../assets/xyz.svg";
 
 
@@ -38,7 +39,7 @@ import type { SponsorTier } from "../components/sponsor-grid";
 
 export const sponsorData: SponsorTier[] = [
   {
-    name: "Bronze",
+    name: "Platinum",
     sponsors: [
       {
         name: "1819",
@@ -58,7 +59,7 @@ export const sponsorData: SponsorTier[] = [
     ],
   },
   {
-    name: "Silver",
+    name: "Gold",
     sponsors: [
       //    {
       //      name: "HII",
@@ -66,6 +67,12 @@ export const sponsorData: SponsorTier[] = [
       //       imageSrc: HIIImage,
       //     },
       {
+        name: "Scrimba",
+        url: "https://scrimba.com/",
+        imageSrc: ScrimbaImage,
+      },
+      {
+
         name: "XYZ",
         url: "https://gen.xyz/",
         imageSrc: XYZImage,
@@ -78,7 +85,7 @@ export const sponsorData: SponsorTier[] = [
     ],
   },
   {
-    name: "Platinum",
+    name: "Silver",
     sponsors: [
       //     {
       //        name: "Pure Buttons",
@@ -175,7 +182,7 @@ export const sponsorData: SponsorTier[] = [
     ],
   },
   {
-    name: "Monarch",
+    name: "Bronze",
     sponsors: [
     ],
   },

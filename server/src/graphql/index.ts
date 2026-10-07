@@ -1,6 +1,15 @@
-import { graphql } from "@keystone-6/core";
+import { createHash } from "crypto";
 
-import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
+import { graphql } from "@keystone-6/core";
+import { GraphQLError } from "graphql";
+
+import { requireRole } from "../auth/access";
+import {
+  createRegistrantVerificationToken,
+  sendEmailToRegistrant,
+  sendRegistrantConfirmationEmail,
+  sendRegistrantEmail,
+} from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
@@ -138,38 +147,64 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     seedSchoolIndiaData: graphql.field({
       type: graphql.Boolean,
       async resolve(_source, _, context: Context) {
-        if (!context.session) return null;
+        requireRole(context, "admin");
 
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
         return true;
       },
     }),
     verifyRegistrant: graphql.field({
-      type: base.object("Registrant"),
-      args: { id: graphql.arg({ type: graphql.nonNull(graphql.ID) }) },
-      async resolve(_source, { id }, context: Context) {
+      type: graphql.nonNull(graphql.Boolean),
+      args: { token: graphql.arg({ type: graphql.nonNull(graphql.String) }) },
+      async resolve(_source, { token }, context: Context) {
+        const verificationTokenHash = createHash("sha256").update(token).digest("hex");
+        const now = new Date();
         const foundRegistrant = await context.prisma.registrant.findFirst({
-          where: { id, verified: { equals: false } },
+          where: {
+            verificationTokenHash,
+            verificationTokenExpiresAt: { gt: now },
+            verified: false,
+          },
         });
 
-        if (!foundRegistrant) { throw Error("You have already been verified!"); }
+        if (!foundRegistrant) {
+          throw new GraphQLError("Invalid or expired verification token.", {
+            extensions: { code: "BAD_USER_INPUT" },
+          });
+        }
 
-        const registrant = await context.prisma.registrant.update({
-          data: { verified: true },
-          where: { id },
+        const result = await context.prisma.registrant.updateMany({
+          where: {
+            id: foundRegistrant.id,
+            verificationTokenHash,
+            verificationTokenExpiresAt: { gt: now },
+            verified: false,
+          },
+          data: {
+            verified: true,
+            verificationTokenHash: "",
+            verificationTokenExpiresAt: null,
+          },
         });
 
-        if (!registrant) { return null; }
+        if (result.count !== 1) {
+          throw new GraphQLError("Invalid or expired verification token.", {
+            extensions: { code: "BAD_USER_INPUT" },
+          });
+        }
 
+        const registrant = await context.prisma.registrant.findUniqueOrThrow({
+          where: { id: foundRegistrant.id },
+        });
         await sendRegistrantConfirmationEmail(registrant);
 
-        return registrant;
+        return true;
       },
     }),
     resendVerificationEmails: graphql.field({
       type: graphql.list(graphql.String),
       async resolve(_source, _, context: Context) {
-        if (!context.session) return null;
+        requireRole(context, "admin");
 
         // Get all of the registrants from the current year that are NOT verified
         const unverifiedRegistrants = await context.prisma.registrant.findMany({
@@ -178,7 +213,15 @@ export const extendGraphqlSchema = graphql.extend(base => ({
 
         // Send emails for each unverified registrant
         for (const registrant of unverifiedRegistrants) {
-          await sendRegistrantEmail(registrant);
+          const verificationToken = createRegistrantVerificationToken();
+          await context.prisma.registrant.update({
+            where: { id: registrant.id },
+            data: {
+              verificationTokenHash: verificationToken.hash,
+              verificationTokenExpiresAt: verificationToken.expiresAt,
+            },
+          });
+          await sendRegistrantEmail(registrant, verificationToken.token);
         }
 
         return unverifiedRegistrants.map(registrant => registrant.email);
@@ -193,13 +236,17 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         take: graphql.arg({ type: graphql.Int }),
       },
       async resolve(_source, { sendGridId, where, skip, take }, context: Context) {
-        if (!context.session) return [];
+        requireRole(context, "admin");
 
-        // Get all of the registrants from the current year that are NOT verified
-        const registrants = await context.sudo().db.Registrant.findMany({
-          where: { registrationYear: { equals: new Date().getFullYear() }, ...where },
-          skip: skip || undefined,
-          take: take || undefined,
+        const registrants = await context.db.Registrant.findMany({
+          where: {
+            AND: [
+              { registrationYear: { equals: new Date().getFullYear() } },
+              ...(where ? [where] : []),
+            ],
+          },
+          skip: skip ?? undefined,
+          take: take ?? undefined,
         });
 
         // Send emails for each unverified registrant

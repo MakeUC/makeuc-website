@@ -13,15 +13,18 @@ export default function ConfirmRegistrationPage() {
   const { confirmRegistration } = useConfirmRegistration();
   const { get: getSearchParam } = useSearchParams();
 
-  const id = useMemo(() => getSearchParam("id"), [getSearchParam]);
+  const token = useMemo(() => getSearchParam("id"), [getSearchParam]);
   const [isRegistrationConfirmed, setIsRegistrationConfirmed] = useState<boolean | undefined>(undefined);
 
 
   useEffect(() => {
-    if (!id || !confirmRegistration) return;
+    if (!token) {
+      setIsRegistrationConfirmed(false);
+      return;
+    }
 
     toast.promise(
-      confirmRegistration(id),
+      confirmRegistration(token),
       {
         success: "Successfully confirmed registration!",
         error: "Failed to confirm registration.",
@@ -30,7 +33,7 @@ export default function ConfirmRegistrationPage() {
     )
       .then(() => setIsRegistrationConfirmed(true))
       .catch(() => setIsRegistrationConfirmed(false));
-  }, [confirmRegistration, id]);
+  }, [confirmRegistration, token]);
 
   return (
     <div className="flex justify-center">
@@ -43,7 +46,7 @@ export default function ConfirmRegistrationPage() {
               ? <i>Confirming Registration <Loader className="animate-spin" /></i>
               : isRegistrationConfirmed
                 ? <span>Your registration has been successfully confirmed!</span>
-                : <span>Your registration has already been confirmed!</span>
+                : <span>This confirmation link is invalid, expired, or has already been used.</span>
           }
         </div>
       </div>
