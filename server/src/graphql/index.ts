@@ -3,6 +3,7 @@ import { createHash } from "crypto";
 import { graphql } from "@keystone-6/core";
 import { GraphQLError } from "graphql";
 
+import { requireRole } from "../auth/access";
 import {
   createRegistrantVerificationToken,
   sendEmailToRegistrant,
@@ -146,7 +147,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     seedSchoolIndiaData: graphql.field({
       type: graphql.Boolean,
       async resolve(_source, _, context: Context) {
-        if (!context.session) return null;
+        requireRole(context, "admin");
 
         await context.prisma.school.createMany({ data: await getSchoolIndiaData() });
         return true;
@@ -203,7 +204,7 @@ export const extendGraphqlSchema = graphql.extend(base => ({
     resendVerificationEmails: graphql.field({
       type: graphql.list(graphql.String),
       async resolve(_source, _, context: Context) {
-        if (!context.session) return null;
+        requireRole(context, "admin");
 
         // Get all of the registrants from the current year that are NOT verified
         const unverifiedRegistrants = await context.prisma.registrant.findMany({
@@ -235,13 +236,17 @@ export const extendGraphqlSchema = graphql.extend(base => ({
         take: graphql.arg({ type: graphql.Int }),
       },
       async resolve(_source, { sendGridId, where, skip, take }, context: Context) {
-        if (!context.session) return [];
+        requireRole(context, "admin");
 
-        // Get all of the registrants from the current year that are NOT verified
-        const registrants = await context.sudo().db.Registrant.findMany({
-          where: { registrationYear: { equals: new Date().getFullYear() }, ...where },
-          skip: skip || undefined,
-          take: take || undefined,
+        const registrants = await context.db.Registrant.findMany({
+          where: {
+            AND: [
+              { registrationYear: { equals: new Date().getFullYear() } },
+              ...(where ? [where] : []),
+            ],
+          },
+          skip: skip ?? undefined,
+          take: take ?? undefined,
         });
 
         // Send emails for each unverified registrant

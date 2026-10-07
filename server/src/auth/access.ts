@@ -1,3 +1,5 @@
+import { GraphQLError } from "graphql";
+
 import type { KeystonePassportUserType } from "./passport";
 import type { TypeInfo, Context, UserRoleType } from ".keystone/types";
 import type { AccessOperation } from "@keystone-6/core/dist/declarations/src/types/config/access-control";
@@ -32,6 +34,18 @@ export function hasRoleOneOf(...roles: UserRoleType[]) {
 
     return session.item.roles.some(role => roles.includes(role));
   };
+}
+
+interface RoleContext {
+  session?: { item?: { roles?: UserRoleType[] } } | null;
+}
+
+export function requireRole(context: RoleContext, ...roles: UserRoleType[]) {
+  if (context.session?.item?.roles?.some(role => roles.includes(role))) return;
+
+  throw new GraphQLError("Forbidden", {
+    extensions: { code: "FORBIDDEN" },
+  });
 }
 
 export function everyPredicate(...predicates: AccessPredicate[]): AccessPredicate {
