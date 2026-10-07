@@ -89,6 +89,8 @@ model Registrant {
   registrationYear                 Int?      @default(2026)
   createdAt                        DateTime? @default(now())
   verified                         Boolean   @default(false)
+  verificationTokenHash            String    @default("")
+  verificationTokenExpiresAt       DateTime?
   discordVerified                  Boolean   @default(false)
   acceptPhotoRelease               Boolean   @default(false)
   invitedInPerson                  Boolean   @default(false)
@@ -99,6 +101,7 @@ model Registrant {
   @@index([email])
   @@index([schoolId])
   @@index([registrationYear])
+  @@index([verificationTokenHash])
   @@index([userId])
 }
 

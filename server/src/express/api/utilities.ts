@@ -167,7 +167,7 @@ utilitiesRouter.post("/import-projects", fileUploadMiddleware(), async (req, res
 
 utilitiesRouter.get("/export-all", async (req: Request, res: Response) => {
   try {
-    if (!ensureHasRole(req, res, [Role.Admin])) return;
+    if (!(await ensureHasRole(req, res, [Role.Admin]))) return;
 
 
     const dbUrl = process.env.POSTGRES_PRISMA_URL;
@@ -364,7 +364,7 @@ function objectsToCSV(rows: Record<string, unknown>[], columns?: string[]) {
 
 utilitiesRouter.get("/calculate-winners/:file", async (req: Request, res: Response) => {
   try {
-    if (!ensureHasRole(req, res, [Role.Organizer, Role.Admin])) return;
+    if (!(await ensureHasRole(req, res, [Role.Organizer, Role.Admin]))) return;
 
     const file = req.params.file || "totals";
 

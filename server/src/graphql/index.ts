@@ -1,6 +1,14 @@
-import { graphql } from "@keystone-6/core";
+import { createHash } from "crypto";
 
-import { sendEmailToRegistrant, sendRegistrantConfirmationEmail, sendRegistrantEmail } from "../schema/registrant";
+import { graphql } from "@keystone-6/core";
+import { GraphQLError } from "graphql";
+
+import {
+  createRegistrantVerificationToken,
+  sendEmailToRegistrant,
+  sendRegistrantConfirmationEmail,
+  sendRegistrantEmail,
+} from "../schema/registrant";
 import { getSchoolIndiaData } from "../scripts/seed/schoolIndia";
 
 import type { Context } from ".keystone/types";
@@ -145,25 +153,51 @@ export const extendGraphqlSchema = graphql.extend(base => ({
       },
     }),
     verifyRegistrant: graphql.field({
-      type: base.object("Registrant"),
-      args: { id: graphql.arg({ type: graphql.nonNull(graphql.ID) }) },
-      async resolve(_source, { id }, context: Context) {
+      type: graphql.nonNull(graphql.Boolean),
+      args: { token: graphql.arg({ type: graphql.nonNull(graphql.String) }) },
+      async resolve(_source, { token }, context: Context) {
+        const verificationTokenHash = createHash("sha256").update(token).digest("hex");
+        const now = new Date();
         const foundRegistrant = await context.prisma.registrant.findFirst({
-          where: { id, verified: { equals: false } },
+          where: {
+            verificationTokenHash,
+            verificationTokenExpiresAt: { gt: now },
+            verified: false,
+          },
         });
 
-        if (!foundRegistrant) { throw Error("You have already been verified!"); }
+        if (!foundRegistrant) {
+          throw new GraphQLError("Invalid or expired verification token.", {
+            extensions: { code: "BAD_USER_INPUT" },
+          });
+        }
 
-        const registrant = await context.prisma.registrant.update({
-          data: { verified: true },
-          where: { id },
+        const result = await context.prisma.registrant.updateMany({
+          where: {
+            id: foundRegistrant.id,
+            verificationTokenHash,
+            verificationTokenExpiresAt: { gt: now },
+            verified: false,
+          },
+          data: {
+            verified: true,
+            verificationTokenHash: "",
+            verificationTokenExpiresAt: null,
+          },
         });
 
-        if (!registrant) { return null; }
+        if (result.count !== 1) {
+          throw new GraphQLError("Invalid or expired verification token.", {
+            extensions: { code: "BAD_USER_INPUT" },
+          });
+        }
 
+        const registrant = await context.prisma.registrant.findUniqueOrThrow({
+          where: { id: foundRegistrant.id },
+        });
         await sendRegistrantConfirmationEmail(registrant);
 
-        return registrant;
+        return true;
       },
     }),
     resendVerificationEmails: graphql.field({
@@ -178,7 +212,15 @@ export const extendGraphqlSchema = graphql.extend(base => ({
 
         // Send emails for each unverified registrant
         for (const registrant of unverifiedRegistrants) {
-          await sendRegistrantEmail(registrant);
+          const verificationToken = createRegistrantVerificationToken();
+          await context.prisma.registrant.update({
+            where: { id: registrant.id },
+            data: {
+              verificationTokenHash: verificationToken.hash,
+              verificationTokenExpiresAt: verificationToken.expiresAt,
+            },
+          });
+          await sendRegistrantEmail(registrant, verificationToken.token);
         }
 
         return unverifiedRegistrants.map(registrant => registrant.email);
