@@ -3,13 +3,12 @@ import Link from "next/link";
 
 import GoogleLogo from "../assets/google-logo.png";
 import Logo from "../assets/logo.png";
-// import MicrosoftLogo from "../assets/microsoft-logo.png";
+import MicrosoftLogo from "../assets/microsoft-logo.png";
 
 
 const SUPPORTED_STRATEGIES = {
   google: { name: "Google", icon: <Image alt="Google" src={GoogleLogo} width={20} height={20} />, className: "" },
-  // TODO: temporarily disabling microsoft login
-  // microsoft: { name: "Microsoft", icon: <Image alt="Microsoft" src={MicrosoftLogo} width={20} height={20} />, className: "" },
+  microsoft: { name: "Microsoft", icon: <Image alt="Microsoft" src={MicrosoftLogo} width={20} height={20} />, className: "" },
 } as const;
 
 export interface LoginFormProps {
@@ -22,7 +21,7 @@ export default function SignInForm() {
       <Image alt="MakeUC Logo" src={Logo} width={150} height={150} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "230px" }}>
-        {    
+        {
           Object.keys(SUPPORTED_STRATEGIES).map(strategyKey => {
             const strategy = SUPPORTED_STRATEGIES[strategyKey as keyof typeof SUPPORTED_STRATEGIES];
             return (
