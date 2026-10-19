@@ -1,6 +1,6 @@
 "use client";
 
-import { isApolloError, useMutation } from "@apollo/client";
+import { isApolloError, useMutation, useQuery } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/inputs/checkbox";
 import { InputNumber } from "~/components/ui/inputs/input-number";
 
-import { GetProjectsDocument, SubmitJudgementDocument } from "../generated/graphql/graphql";
+import { GetProjectsDocument, GetTracksDocument, SubmitJudgementDocument } from "../generated/graphql/graphql";
 
 import type { SubmitHandler } from "react-hook-form";
 
@@ -21,11 +21,7 @@ const judgementFormSchema = z.object({
   implementationAttempt: z.number().min(0).max(10),
   demonstrationAbility: z.number().min(0).max(10),
   presentationProfessionalism: z.number().min(0).max(10),
-  greenTechTrack: z.boolean().optional(),
-  educationTrack: z.boolean().optional(),
-  socialIssuesTrack: z.boolean().optional(),
-  securityTrack: z.boolean().optional(),
-  hardwareTrack: z.boolean().optional(),
+  tracks: z.array(z.boolean()).optional(),
 });
 
 export type JudgementFormValues = z.infer<typeof judgementFormSchema>;
@@ -40,26 +36,22 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
     resolver: zodResolver(judgementFormSchema),
   });
 
+  const { data: tracksData, loading: tracksLoading, error: tracksError } = useQuery(GetTracksDocument);
   const [submitJudgement] = useMutation(SubmitJudgementDocument, {
     refetchQueries: [GetProjectsDocument],
   });
 
   const onSubmit = useCallback<SubmitHandler<JudgementFormValues>>(formValues => {
-    const { greenTechTrack, securityTrack, socialIssuesTrack, educationTrack, hardwareTrack, ...values } = formValues;
+    const { tracks: selectedTracks, ...values } = formValues;
     const promise = submitJudgement({
       variables: {
         data: {
           ...values,
           overallScore: Object.values(values).reduce((prev, current) => prev + current, 0),
           applicableTracks: {
-            connect: [
-              // TODO: Don't hard code
-              ...(greenTechTrack ? [{ name: "Green Tech" }] : []),
-              ...(educationTrack ? [{ name: "Education" }] : []),
-              ...(socialIssuesTrack ? [{ name: "Social Issues" }] : []),
-              ...(securityTrack ? [{ name: "Security" }] : []),
-              ...(hardwareTrack ? [{ name: "Hardware" }] : []),
-            ],
+            connect: (tracksData?.tracks ?? []).flatMap((track, index) =>
+              selectedTracks?.[index] && track.name ? [{ name: track.name }] : [],
+            ),
           },
           project: {
             connect: {
@@ -74,7 +66,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       loading: "Submitting Judgement...",
       success: "Judgement submitted successfully.",
       error: error => {
-        if (isApolloError(error) && error.message.includes("judgeProjectCompoundKey")) {
+        if (isApolloError(error) && error.message.includes("xjudgeProjectCompoundKey")) {
           return "You have already submitted a judgement.";
         }
         return "Error occurred when submitting judgement.";
@@ -83,22 +75,27 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       duration: 10000,
     })
       .then(() => { onCancel?.(); });
-  }, [onCancel, projectId, submitJudgement]);
+  }, [onCancel, projectId, submitJudgement, tracksData]);
 
   return (
 
-    <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
       <InputNumber control={control} label="Concept Caliber" name="conceptCaliber" placeholder="Enter Concept Caliber" />
       <InputNumber control={control} label="Implementation Attempt" name="implementationAttempt" placeholder="Enter Implementation Attempt" />
       <InputNumber control={control} label="Demonstration Ability" name="demonstrationAbility" placeholder="Enter Demonstration Ability" />
       <InputNumber control={control} label="Presentation Professionalism" name="presentationProfessionalism" placeholder="Enter Presentation Professionalism" />
       <hr className="border border-muted-foreground" />
       <h4 className="text-lg font-bold">Select All Applicable Tracks (optional)</h4>
-      <Checkbox control={control} label="Applicable to Green Tech Track?" name="greenTechTrack" />
-      <Checkbox control={control} label="Applicable to Education Track?" name="educationTrack" />
-      <Checkbox control={control} label="Applicable to Social Issues Track?" name="socialIssuesTrack" />
-      <Checkbox control={control} label="Applicable to Security Track?" name="securityTrack" />
-      <Checkbox control={control} label="Applicable to Hardware Track?" name="hardwareTrack" />
+      {tracksLoading && <p>Loading tracks...</p>}
+      {tracksError && <p role="alert">Unable to load tracks: {tracksError.message}</p>}
+      {tracksData?.tracks?.map((track, index) => track.name && (
+        <Checkbox
+          key={track.name}
+          control={control}
+          label={`Applicable to ${track.name} Track?`}
+          name={`tracks.${index}`}
+        />
+      ))}
       <div className="flex justify-center gap-2 md:justify-end md:col-span-2">
         <Button className="bg-muted-gray-foreground" onClick={onCancel}>Cancel</Button>
         <Button type="submit">Submit Judgment</Button>
