@@ -21,7 +21,7 @@ import { ProjectNodeToolbar } from "./ProjectNodeToolbar";
 import { ProjectTableRowActions } from "./ProjectTableRowActions";
 import { ProjectTelemetryPanel } from "./ProjectTelemetryPanel";
 
-import type { ProjectItem, SortOption, StatusFilter, ViewMode } from "../types";
+import type { ProjectItem, SortOption, StatusFilter } from "../types";
 import type { ColumnDef } from "@tanstack/react-table";
 
 
@@ -32,8 +32,11 @@ export function ProjectsTable() {
   const [projectForDisqualification, setProjectForDisqualification] = useState<ProjectItem>();
   const [isDemoActive, setIsDemoActive] = useState<boolean>(false);
 
-  // Filter & View States
-  const [viewMode, setViewMode] = useState<ViewMode>("node");
+  // View state: Node view is now the original/default view (isListView = false)
+  const [isListView, setIsListView] = useState<boolean>(false);
+  const [groupByCluster, setGroupByCluster] = useState<boolean>(false);
+
+  // Filter & Sort States
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
@@ -108,7 +111,6 @@ export function ProjectsTable() {
     result.sort((a, b) => {
       switch (sortBy) {
         case "priority": {
-          // Unjudged first (asc judgements), then in review, then completed, disqualified last
           const aDisq = a.disqualified ? 1 : 0;
           const bDisq = b.disqualified ? 1 : 0;
           if (aDisq !== bDisq) return aDisq - bDisq;
@@ -254,7 +256,7 @@ export function ProjectsTable() {
             onSelectFilter={setStatusFilter}
           />
 
-          {/* Controls & Filter Toolbar */}
+          {/* Controls & Filter Toolbar with Top-Right List View Toggle */}
           <ProjectNodeToolbar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -266,38 +268,36 @@ export function ProjectsTable() {
             onStatusChange={setStatusFilter}
             sortBy={sortBy}
             onSortChange={setSortBy}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
+            isListView={isListView}
+            onToggleListView={setIsListView}
+            groupByCluster={groupByCluster}
+            onToggleGroupByCluster={setGroupByCluster}
             onResetFilters={handleResetFilters}
             isFiltered={isFiltered}
             totalFilteredCount={processedProjects.length}
             totalCount={rawProjects.length}
           />
 
-          {/* View Modes */}
-          {viewMode === "node" && (
-            <ProjectNodeGrid
-              projects={processedProjects}
-              onJudge={setProjectForJudgement}
-              onDisqualify={setProjectForDisqualification}
-              onResetFilters={isFiltered ? handleResetFilters : undefined}
+          {/* View Modes: List View when toggled ON; otherwise original Node View (Grid or Cluster) */}
+          {isListView ? (
+            <DataTable
+              columns={tableColumns}
+              data={processedProjects}
+              isLoading={loading}
             />
-          )}
-
-          {viewMode === "cluster" && (
+          ) : groupByCluster ? (
             <ProjectClusterView
               projects={processedProjects}
               onJudge={setProjectForJudgement}
               onDisqualify={setProjectForDisqualification}
               onResetFilters={isFiltered ? handleResetFilters : undefined}
             />
-          )}
-
-          {viewMode === "table" && (
-            <DataTable
-              columns={tableColumns}
-              data={processedProjects}
-              isLoading={loading}
+          ) : (
+            <ProjectNodeGrid
+              projects={processedProjects}
+              onJudge={setProjectForJudgement}
+              onDisqualify={setProjectForDisqualification}
+              onResetFilters={isFiltered ? handleResetFilters : undefined}
             />
           )}
         </>
