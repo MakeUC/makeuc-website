@@ -44,15 +44,6 @@ export function Stats({ year }: StatsProps) {
         console.error(result.error);
         return undefined;
       }
-      // TODO: temporarily hardcoded until 2026
-      result.data = {
-        countRegistrants: 560,
-        femalePercent: 25.54,
-        countSchoolsRepresented: 70,
-        countCountriesRepresented: 30,
-        ethnicityBreakdown: {},
-        educationBreakdown: {},
-      };
       return result.data;
     } catch (error) {
       // eslint-disable-next-line no-console

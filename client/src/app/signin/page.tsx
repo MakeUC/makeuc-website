@@ -11,8 +11,7 @@ export default function RegistrationPage() {
     <div className="flex justify-center">
       <div className="px-8 w-full max-w-5xl flex flex-col items-center">
         <PageTitle>Sign In</PageTitle>
-        {/* TODO: Temporarily disabling microsoft login */}
-        <SignInForm strategies={["google"/*, "microsoft"*/]} />
+        <SignInForm strategies={["google", "microsoft"]} />
       </div>
     </div>
   );

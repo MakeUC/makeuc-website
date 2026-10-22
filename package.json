@@ -11,7 +11,7 @@
     "build:bot": "cd discord-bot && yarn build",
     "compile": "run-s compile:*",
     "compile:client": "cd client && yarn compile",
-    "dev": "run-s dev:*",
+    "dev": "run-p dev:*",
     "dev-turbo": "run-s dev:server dev-turbo:client",
     "dev:client": "cd client && yarn dev",
     "dev-turbo:client": "cd client && yarn dev-turbo",
