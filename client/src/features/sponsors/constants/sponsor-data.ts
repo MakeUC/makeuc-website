@@ -9,6 +9,7 @@
 // import greatAmericanInsuranceImage from "../assets/great_american_insurance.png";
 // import SeeedImage from "../assets/Color Logo-Seeed.png";
 import a1819Image from "../assets/1819.jpg";
+import CyberImage from "../assets/CyberAtUC.svg";
 import HIIImage from "../assets/hii.svg";
 // import IBMImage from "../assets/ibm.svg";
 // import ICRImage from "../assets/icr.png";
@@ -96,6 +97,11 @@ export const sponsorData: SponsorTier[] = [
         name: "MLH",
         url: "https://mlh.io/",
         imageSrc: MLHImage,
+      },
+      {
+        name: "CyberAtUC",
+        url: "https://cyberatuc.org/",
+        imageSrc: CyberImage,
       },
       //      {
       //        name: "Kinetic Vision",
