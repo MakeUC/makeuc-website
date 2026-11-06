@@ -9,7 +9,7 @@
 // import greatAmericanInsuranceImage from "../assets/great_american_insurance.png";
 // import SeeedImage from "../assets/Color Logo-Seeed.png";
 import a1819Image from "../assets/1819.jpg";
-import CyberImage from "../assets/CyberAtUC.svg";
+import Digikey from "../assets/digikey.png";
 import HIIImage from "../assets/hii.svg";
 // import IBMImage from "../assets/ibm.svg";
 // import ICRImage from "../assets/icr.png";
@@ -33,7 +33,6 @@ import MLHImage from "../assets/mlh.svg";
 // import PureButtonsImage from "../assets/pure-buttons.svg";
 import ScrimbaImage from "../assets/v-black.png";
 import XYZImage from "../assets/xyz.svg";
-
 
 import type { SponsorTier } from "../components/sponsor-grid";
 
@@ -68,41 +67,36 @@ export const sponsorData: SponsorTier[] = [
       //       imageSrc: HIIImage,
       //     },
       {
+        name: "MLH",
+        url: "https://mlh.io/",
+        imageSrc: MLHImage,
+      },
+    ],
+  },
+
+  {
+    name: "Silver",
+    sponsors: [
+
+      {
         name: "Scrimba",
         url: "https://scrimba.com/",
         imageSrc: ScrimbaImage,
       },
       {
-
-        name: "XYZ",
-        url: "https://gen.xyz/",
-        imageSrc: XYZImage,
+        name: "Digi-Key",
+        url: "https://www.digikey.com/",
+        imageSrc: Digikey,
       },
-    ],
-  },
-  {
-    name: "Gold",
-    sponsors: [
-    ],
-  },
-  {
-    name: "Silver",
-    sponsors: [
+
+
       //     {
       //        name: "Pure Buttons",
       //        url: "https://www.purebuttons.com/",
       //        imageSrc: PureButtonsImage,
       //      },
-      {
-        name: "MLH",
-        url: "https://mlh.io/",
-        imageSrc: MLHImage,
-      },
-      {
-        name: "CyberAtUC",
-        url: "https://cyberatuc.org/",
-        imageSrc: CyberImage,
-      },
+
+
       //      {
       //        name: "Kinetic Vision",
       //        url: "https://kinetic-vision.com/",
@@ -190,6 +184,12 @@ export const sponsorData: SponsorTier[] = [
   {
     name: "Bronze",
     sponsors: [
+      {
+
+        name: "XYZ",
+        url: "https://gen.xyz/",
+        imageSrc: XYZImage,
+      },
     ],
   },
 ];
