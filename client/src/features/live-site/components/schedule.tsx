@@ -67,10 +67,8 @@ export const makerspaceData: EventInfo[] = [
 ];
 
 export const transportData: EventInfo[] = [
-  createData("Event Start", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 7", "10:00 AM", "12:00 PM"),
-  createData("Late Night", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 7", "11:00 PM", "01:00 AM"),
-  createData("Early Morning", "Behind Lindner College of Business", "1819 Innovation Hub", "Nov 8", "07:00 AM", "09:00 AM"),
-  createData("Event Close", "1819 Innovation Hub", "Behind Lindner College of Business", "Nov 8", "05:00 PM", "07:00 PM"),
+  createData("Event Start", "Campus Green Dr - Lindner Hall", "1819 Innovation Hub", "Nov 7", "09:00 AM", "12:00 PM"),
+  createData("Event Close", "1819 Innovation Hub", "Campus Green Dr - Lindner Hall", "Nov 8", "06:00 PM", "08:00 PM"),
 ];
 
 function ScheduleGrid({ name, location, location_virt, date, start, end }: EventInfo) {
