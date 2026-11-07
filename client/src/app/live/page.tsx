@@ -29,7 +29,7 @@ export default async function LiveSite() {
           <Button className="flex gap-2 mt-4" size="lg">Discord</Button>
         </Link>
 
-        <Link href="https://makeuc-2025.devpost.com/" className="items-center" target="_blank">
+        <Link href="https://makeuc-2026-30884.devpost.com/" className="items-center" target="_blank">
           <Button className="flex gap-2 mt-4" size="lg">Devpost</Button>
         </Link>
 
@@ -63,14 +63,14 @@ export default async function LiveSite() {
           <CTFScheduleTable />
         </ div>
       </section>
-      
+
       <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">Makerspace Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <div className="flex-grow overflow-auto">
           <MakerspaceScheduleTable />
         </ div>
       </section>
-      
+
       <h1 className="flex items-center justify-evenly bg-muted py-8 font-bold text-3xl">UC Shuttle Schedule</h1>
       <section className="flex items-center justify-evenly py-8 bg-muted">
         <div className="flex-grow overflow-x-auto">
