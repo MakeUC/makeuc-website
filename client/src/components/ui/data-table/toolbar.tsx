@@ -27,7 +27,7 @@ const DISQUALIFIED_OPTIONS: DataTableFacetedFilterOption[] = [{ label: "Not Disq
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const TRACK_OPTIONS: DataTableFacetedFilterOption[] = [
-  { label: "Green Tech", value: "Green Tech" },
+  //{ label: "Green Tech", value: "Green Tech" },
   { label: "Education", value: "Education" },
   { label: "Social Issues", value: "Social Issues" },
   { label: "Security", value: "Security" },

@@ -14,7 +14,7 @@ import type { SortOption, StatusFilter } from "../types";
 
 
 const TRACK_OPTIONS = [
-  "Green Tech",
+  //"Green Tech",
   "Education",
   "Social Issues",
   "Security",
