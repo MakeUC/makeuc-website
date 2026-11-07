@@ -33,16 +33,18 @@ function createDataInPerson(name: string, location: string, date: string, start:
 export const scheduleData: EventInfo[] = [
   createData("Check-In", "First Floor Main Desk", "Discord #✅verification", "Nov 7", "09:30 AM", "11:00 AM"),
   createData("Sponsor Expo", "Second Floor Common Area", "Discord Sponsors Channels", "Nov 7", "10:00 AM", "2:00 PM"),
-  createData("Opening Ceremony", "Room 230", "YouTube Stream", "Nov 7", "11:00 AM", "11:45 AM"),
+  createData("Opening Ceremony", "Room 230", "-", "Nov 7", "11:00 AM", "11:45 AM"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 7", "12:00 PM", "01:00 PM"),
   createData("Hacking Begins", "-", "-", "Nov 7", "12:00 PM", "-"),
-  createData("Hackathon 101", "Room 220", "YouTube Stream", "Nov 7", "12:30 PM", "01:00 PM"),
+  createData("Hackathon 101", "Room 220", "-", "Nov 7", "12:30 PM", "01:00 PM"),
   createData("Team Formation", "Room 220", "Discord #🤸team-formation", "Nov 7", "01:00 PM", "01:30 PM"),
-  createData("MLH - Intro to Google AI Studio Workshop", "Room 230", "YouTube Stream", "Nov 7", "01:30 PM", "02:30 PM"),
-  createData("MLH - Space XSI", "Room 230", "YouTube Stream", "Nov 7", "02:30 PM", "3:30 PM"),
-  createData("MLH - Tech Together", "Room 230", "YouTube Stream", "Nov 7", "03:30 PM", "4:00 PM"),
+  createData("MLH - Intro to Google AI Studio Workshop", "Room 230", "-", "Nov 7", "02:00 PM", "02:30 PM"),
+  createData("MLH - Space XSI", "Room 230", "-", "Nov 7", "02:30 PM", "3:00 PM"),
+  createData("MLH - Tech Together", "Room 230", "-", "Nov 7", "03:00 PM", "3:30 PM"),
+  createData("PCB - Kikad", "Room 230", "-", "Nov 7", "04:30 PM", "5:30 PM"),
   createData("Dinner", "Second Floor Common Area", "-", "Nov 7", "06:00 PM", "07:00 PM"),
   createData("Bob Ross Painting", "Room 220", "Discord #🎮game-room-1-vc", "Nov 7", "07:00 PM", "08:00 PM"),
+  createData("Intro To Blender", "Room 230", "-", "Nov 7", "08:30 PM", "09:00 PM"),
   createData("Movie Night", "Second Floor Common Area", "-", "Nov 7", "10:00 PM", "11:00 PM"),
   createData("Midnight Snack", "Second Floor Common Area", "-", "Nov 8", "12:00 AM", "01:00 AM"),
   createData("Board Games/Quiplash Games", "Second Floor Common Area", "Discord #🎮game-room-1-vc", "Nov 8", "01:00 AM", "02:00 AM"),
@@ -51,12 +53,12 @@ export const scheduleData: EventInfo[] = [
   createData("Hacking Ends", "-", "-", "Nov 8", "12:00 PM", "-"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 8", "12:00 PM", "1:00 PM"),
   createData("Judging", "Assigned Discord Judging VC", "Assigned Discord Judging VC", "Nov 8", "01:00 PM", "04:00 PM"),
-  createData("Closing Ceremony", "Room 230", "YouTube Stream", "Nov 8", "05:00 PM", "06:00 PM"),
+  createData("Closing Ceremony", "Room 230", "-", "Nov 8", "05:00 PM", "06:00 PM"),
 ];
 
 export const cyberData: EventInfo[] = [
   createData("CTF Start", "-", "-", "Nov 7", "12:00 PM", "12:00 PM"),
-  createData("Intro to CTF", "Room 220", "YouTube Stream", "Nov 7", "01:30 PM", "02:00 PM"),
+  createData("Intro to CTF", "Room 220", "-", "Nov 7", "01:30 PM", "02:00 PM"),
   createData("CTF End", "-", "-", "Nov 8", "12:00 AM", "12:00 AM"),
 ];
 
