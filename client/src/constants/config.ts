@@ -7,7 +7,7 @@ export const Config = {
   // Sometimes we want to hide the registration button, 
   ShowRegistrationButton: true,
   // but keep registration actually enabled for stragglers day-of
-  ShowRegistration: true,
+  ShowRegistration: false,
   ShowMLHBanner: true,
   ShowLiveSiteButton: true,
 };
