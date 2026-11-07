@@ -34,22 +34,19 @@ export const scheduleData: EventInfo[] = [
   createData("Check-In", "First Floor Main Desk", "Discord #✅verification", "Nov 7", "09:30 AM", "11:00 AM"),
   createData("Sponsor Expo", "Second Floor Common Area", "Discord Sponsors Channels", "Nov 7", "10:00 AM", "2:00 PM"),
   createData("Opening Ceremony", "Room 230", "YouTube Stream", "Nov 7", "11:00 AM", "11:45 AM"),
-  createData("Lunch", "Second Floor Common Area", "-", "Nov 7", "12:00 PM", "12:30 PM"),
+  createData("Lunch", "Second Floor Common Area", "-", "Nov 7", "12:00 PM", "01:00 PM"),
   createData("Hacking Begins", "-", "-", "Nov 7", "12:00 PM", "12:00 PM"),
   createData("Hackathon 101", "Room 220", "YouTube Stream", "Nov 7", "12:30 PM", "01:00 PM"),
   createData("Team Formation", "Room 220", "Discord #🤸team-formation", "Nov 7", "01:00 PM", "01:30 PM"),
-  createData("Kloob - Intro to Mobile Development Workshop", "Room 230", "YouTube Stream", "Nov 7", "01:30 PM", "2:30 PM"),
-  createData("Kinetic Vision - Connected Living: IoT for Your Home or Dorm Workshop", "Room 230", "YouTube Stream", "Nov 7", "02:30 PM", "3:30 PM"),
-  createData("MLH - Intro to Google AI Studio Workshop", "Room 230", "YouTube Stream", "Nov 7", "03:30 PM", "4:30 PM"),
-  createData("MLH - Meet Your 5th Teammate: Hacking with GitHub Copilot Workshop", "Room 230", "YouTube Stream", "Nov 7", "04:30 PM", "5:30 PM"),
-  createData("MLH - Tech Together", "Room 230", "YouTube Stream", "Nov 7", "05:30 PM", "06:00 PM"),
-  createData("Dinner", "Second Floor Common Area", "-", "Nov 7", "06:00 PM", "06:30 PM"),
-  createData("MLH - Bob Ross Painting", "Esports Lab", "-", "Nov 7", "06:30 PM", "07:00 PM"),
-  createData("The Art of Not Quitting: Building Tech That Survives Reality Workshop", "Room 230", "YouTube Stream", "Nov 7", "07:00 PM", "08:00 PM"),
-  createData("Super Smash Bros Tournament", "Esports Lab", "Discord #🎮game-room-1-vc", "Nov 7", "10:00 PM", "11:00 PM"),
-  createData("Midnight Snack", "Second Floor Common Area", "-", "Nov 8", "12:00 AM", "12:30 AM"),
+  createData("MLH - Intro to Google AI Studio Workshop", "Room 230", "YouTube Stream", "Nov 7", "01:30 PM", "02:30 PM"),
+  createData("MLH - Space XSI", "Room 230", "YouTube Stream", "Nov 7", "02:30 PM", "3:30 PM"),
+  createData("MLH - Tech Together", "Room 230", "YouTube Stream", "Nov 7", "03:30 PM", "4:00 PM"),
+  createData("Dinner", "Second Floor Common Area", "-", "Nov 7", "06:00 PM", "07:00 PM"),
+  createData("Bob Ross Painting", "Room 220", "Discord #🎮game-room-1-vc", "Nov 7", "07:00 PM", "08:00 PM"),
+  createData("Movie Night", "Second Floor Common Area", "-", "Nov 7", "10:00 PM", "11:00 PM"),
+  createData("Midnight Snack", "Second Floor Common Area", "-", "Nov 8", "12:00 AM", "01:00 AM"),
   createData("Board Games/Quiplash Games", "Second Floor Common Area", "Discord #🎮game-room-1-vc", "Nov 8", "01:00 AM", "02:00 AM"),
-  createData("Sim Racing", "Room 230", "-", "Nov 8", "04:00 AM", "05:00 AM"),
+  createData("Board Games/Quiplash Games", "Second Floor Common Area", "Discord #🎮game-room-1-vc", "Nov 8", "04:00 AM", "05:00 AM"),
   createData("Breakfast", "Second Floor Common Area", "-", "Nov 8", "09:00 AM", "10:00 AM"),
   createData("Hacking Ends", "-", "-", "Nov 8", "12:00 PM", "12:00 PM"),
   createData("Lunch", "Second Floor Common Area", "-", "Nov 8", "12:00 PM", "1:00 PM"),
@@ -104,7 +101,7 @@ function ScheduleGridInPerson({ name, location, date, start, end }: EventInfo) {
 export function ScheduleRow({ scheduleEvent }: ScheduleGridProps) {
   return (
     <TableBody>
-      {scheduleEvent.map(value => <ScheduleGrid key={value.name} {...value} />)}
+      {scheduleEvent.map((value, idx) => <ScheduleGrid key={`${value.name}-${value.start}-${idx}`} {...value} />)}
     </TableBody>
   );
 }
@@ -112,7 +109,7 @@ export function ScheduleRow({ scheduleEvent }: ScheduleGridProps) {
 export function ScheduleRowInPerson({ scheduleEvent }: ScheduleGridProps) {
   return (
     <TableBody>
-      {scheduleEvent.map(value => <ScheduleGridInPerson key={value.name} {...value} />)}
+      {scheduleEvent.map((value, idx) => <ScheduleGridInPerson key={`${value.name}-${value.start}-${idx}`} {...value} />)}
     </TableBody>
   );
 }
