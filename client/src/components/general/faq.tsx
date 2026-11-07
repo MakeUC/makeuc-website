@@ -18,11 +18,11 @@ const FAQ: Array<FAQEntry> = [
   },
   {
     card: "WHEN IS MAKEUC?",
-    dropDown: "MakeUC 2025 will start on November 7th and lasts 24 hours, ending on November 8th.",
+    dropDown: "MakeUC 2026 will start on November 7th and lasts 24 hours, ending on November 8th.",
   },
   {
     card: "WILL MAKEUC BE IN PERSON?",
-    dropDown: "MakeUC 2025 will be held in person. In-person spots will be limited, if you do not recieve an in person spot please reach out to our organizers at info@makeuc.io",
+    dropDown: "MakeUC 2026 will be held in person. In-person spots will be limited, if you do not recieve an in person spot please reach out to our organizers at info@makeuc.io",
   },
   {
     card: "WHO CAN ATTEND?",
