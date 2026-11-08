@@ -21,7 +21,7 @@ const judgementFormSchema = z.object({
   implementationAttempt: z.number().min(0).max(10),
   demonstrationAbility: z.number().min(0).max(10),
   presentationProfessionalism: z.number().min(0).max(10),
-  tracks: z.array(z.boolean()).optional(),
+  tracks: z.array(z.boolean().optional()).optional(),
 });
 
 export type JudgementFormValues = z.infer<typeof judgementFormSchema>;
@@ -66,7 +66,7 @@ export function JudgementForm({ projectId, onCancel }: JudgementFormProps) {
       loading: "Submitting Judgement...",
       success: "Judgement submitted successfully.",
       error: error => {
-        if (isApolloError(error) && error.message.includes("xjudgeProjectCompoundKey")) {
+        if (isApolloError(error) && error.message.includes("judgeProjectCompoundKey")) {
           return "You have already submitted a judgement.";
         }
         return "Error occurred when submitting judgement.";
